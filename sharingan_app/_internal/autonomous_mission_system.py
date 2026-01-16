@@ -394,6 +394,7 @@ class AutonomousMissionSystem:
             "pending_reports": len(self.pending_reports),
             "autonomous_decisions": sum(len(m.get("reports", [])) for m in self.active_missions.values()),
             "system_uptime": "Operational",
+            "permissions": "granted",
             "last_activity": datetime.now().isoformat()
         }
 
