@@ -464,38 +464,47 @@ class SharinganSpirit:
         """Exécuter un objectif de mission"""
         obj_lower = objective.lower()
 
-        # Simulation d'exécution basée sur le type d'objectif
+        """
+        Exécuter les actions nécessaires pour atteindre l'objectif.
+        
+        TODO: Implémenter真正的 exécution d'outils
+        - Actuellement en SIMULATION MODE
+        - Les résultats ci-dessous sont fictifs
+        - Nécessite wrapper vers outils réels (nmap, nikto, etc.)
+        """
+        # SIMULATION MODE - résultats fictifs
         result = {
             "success": True,
             "objective": objective,
             "actions_taken": [],
             "results": [],
+            "simulation_mode": True,
             "timestamp": datetime.now().isoformat()
         }
 
         # Objectifs de scan réseau
         if any(word in obj_lower for word in ["scan", "nmap", "network"]):
             result["actions_taken"].append("Executed network scan with nmap")
-            result["results"].append("Discovered 5 open ports on target system")
-            # Simulation d'appel réel à nmap
+            result["results"].append("SIMULATION: 5 open ports discovered")
+            # TODO: Implémenter appel réel à nmap avec sandboxing
 
         # Objectifs d'analyse web
         elif any(word in obj_lower for word in ["web", "http", "url"]):
             result["actions_taken"].append("Performed web vulnerability analysis")
-            result["results"].append("Identified 3 potential security issues")
-            # Simulation d'appel à nikto/sqlmap
+            result["results"].append("SIMULATION: 3 potential security issues identified")
+            # TODO: Implémenter appel réel à nikto/sqlmap avec sandboxing
 
         # Objectifs de sécurité
         elif any(word in obj_lower for word in ["security", "protect", "defense"]):
             result["actions_taken"].append("Enhanced system security measures")
-            result["results"].append("Security posture improved by 25%")
-            # Simulation d'activation de défenses
+            result["results"].append("SIMULATION: Security posture improved by 25%")
+            # TODO: Implémenter activation réelle de défenses
 
         # Objectifs d'apprentissage
         elif any(word in obj_lower for word in ["learn", "knowledge", "study"]):
             result["actions_taken"].append("Processed new security information")
-            result["results"].append("Knowledge base expanded with 15 new entries")
-            # Simulation d'apprentissage
+            result["results"].append("SIMULATION: Knowledge base expanded with 15 new entries")
+            # TODO: Implémenter apprentissage réel via genome_memory
 
         else:
             result["actions_taken"].append("Executed general mission objective")

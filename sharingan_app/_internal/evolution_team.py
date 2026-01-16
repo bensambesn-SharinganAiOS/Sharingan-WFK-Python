@@ -131,9 +131,17 @@ Réponds en JSON avec: issues[], patterns[], recommendation, confidence_score
         return {"issues": [response], "patterns": [], "recommendation": response[:200]}
     
     def _query_surgeon(self, issues: List[str]) -> Dict:
-        """grok_code propose des modifications de code"""
+        """
+        grok_code propose des modifications de code
+        
+        WARNING: Patch généré par AI - N'APPLIQUER JAMAIS directement sans:
+        1. Validation JSON
+        2. Tests unitaires
+        3. Review humaine
+        4. Sandbox/testing avant production
+        """
         if not issues:
-            return {}
+            return {"patch": None, "success": False, "validation_status": "no_issues"}
         
         prompt = f"""
 Tu es le Chirurgien du système Sharingan. Propose des modifications de code pour ces problèmes:
@@ -150,13 +158,100 @@ Réponds en JSON avec: patches[{file, current, proposed, reason}]
 """
         
         try:
+            if not self.ai_providers:
+                return {
+                    "patch": None,
+                    "success": False,
+                    "validation_status": "SIMULATION_MODE - no providers",
+                    "warning": "AI providers not available"
+                }
+            
             response = self.ai_providers.chat_single(prompt, "grok-code-fast")
             if response.get("success"):
-                return {"patch": response["response"], "success": True}
+                patch_text = response["response"]
+                
+                # VALIDATION DU PATCH
+                validation_result = self._validate_patch(patch_text)
+                
+                if validation_result["valid"]:
+                    return {
+                        "patch": patch_text,
+                        "success": True,
+                        "validation_status": "validated",
+                        "patches_count": validation_result.get("count", 1)
+                    }
+                else:
+                    return {
+                        "patch": patch_text,
+                        "success": False,
+                        "validation_status": "invalid",
+                        "validation_errors": validation_result.get("errors", [])
+                    }
         except Exception as e:
             logger.warning(f"Surgeon query failed: {e}")
         
-        return {"patch": None, "success": False}
+        return {"patch": None, "success": False, "validation_status": "error"}
+    
+    def _validate_patch(self, patch_text: str) -> Dict:
+        """
+        Valider un patch généré par AI.
+        
+        Vérifications:
+        1. Format JSON valide
+        2. Structure attendue (file, current, proposed, reason)
+        3. Pas de patterns dangereux (rm -rf, chmod 777, etc.)
+        """
+        import re
+        
+        validation = {
+            "valid": False,
+            "errors": [],
+            "count": 0
+        }
+        
+        if not patch_text:
+            validation["errors"].append("Empty patch")
+            return validation
+        
+        # Vérifier patterns dangereux
+        dangerous_patterns = [
+            r"rm\s+-rf\s+/",
+            r"chmod\s+777",
+            r">\s*\/dev\/null",
+            r"&\s*;\s*rm",
+        ]
+        
+        for pattern in dangerous_patterns:
+            if re.search(pattern, patch_text, re.IGNORECASE):
+                validation["errors"].append(f"Dangerous pattern detected: {pattern}")
+        
+        # Essayer de parser JSON
+        try:
+            import json
+            data = json.loads(patch_text)
+            
+            if isinstance(data, dict) and "patches" in data:
+                patches = data["patches"]
+            elif isinstance(data, list):
+                patches = data
+            else:
+                validation["errors"].append("Unexpected JSON structure")
+                return validation
+            
+            validation["count"] = len(patches)
+            
+            # Vérifier structure de chaque patch
+            required_fields = ["file", "current", "proposed", "reason"]
+            for i, patch in enumerate(patches):
+                for field in required_fields:
+                    if field not in patch:
+                        validation["errors"].append(f"Patch {i}: missing field '{field}'")
+            
+        except json.JSONDecodeError as e:
+            validation["errors"].append(f"Invalid JSON: {e}")
+        
+        validation["valid"] = len(validation["errors"]) == 0
+        return validation
     
     def _query_strategist(self, task: str, observer_report: Dict) -> Dict:
         """minimax planifie l'évolution"""

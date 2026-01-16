@@ -59,18 +59,28 @@ class GenomeProposer:
         self._load_history()
     
     def _load_history(self) -> None:
+        """Charger l'historique des évolutions"""
         history_file = self.data_dir / "evolution_history.json"
         if history_file.exists():
             try:
                 with open(history_file, 'r') as f:
                     self.evolution_history = json.load(f)
-            except:
-                self.evolution_history
+            except (json.JSONDecodeError, IOError) as e:
+                self.evolution_history = []
+                logger.warning(f"Failed to load evolution history: {e}")
     
     def _save_history(self) -> None:
+        """Sauvegarder l'historique des évolutions de manière atomique"""
         history_file = self.data_dir / "evolution_history.json"
-        with open(history_file, 'w') as f:
-            json.dump(self.evolution_history, f, indent=2, default=str)
+        temp_file = self.data_dir / f"evolution_history_{id(self)}.tmp"
+        try:
+            with open(temp_file, 'w') as f:
+                json.dump(self.evolution_history, f, indent=2, default=str)
+            temp_file.replace(history_file)
+        except (IOError, OSError) as e:
+            logger.error(f"Failed to save evolution history: {e}")
+            if temp_file.exists():
+                temp_file.unlink()
     
     def analyze_system(self, consciousness_report: Dict) -> List[Proposal]:
         """

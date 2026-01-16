@@ -399,10 +399,17 @@ class APIFirstIntelligenceSystem:
         return gaps
 
     def _enhance_analysis_via_api(self, query: str, current_analysis: Dict) -> Dict:
-        """Améliorer l'analyse via API pour requêtes complexes"""
-        # Simulation - dans un vrai système, utiliserait une API
+        """
+        Améliorer l'analyse via API pour requêtes complexes.
+        
+        TODO: Implémenter真正的 appels API
+        - Actuellement en mode SIMULATION
+        - Nécessite providers API réels (OpenAI, Anthropic, etc.)
+        """
+        # SIMULATION MODE - dans un vrai système, utiliserait une API réelle
         return {
             "api_enhanced": True,
+            "simulation_mode": True,
             "additional_insights": ["Complex multi-domain query detected"],
             "suggested_approaches": ["Break down into sub-problems", "Use specialized APIs"]
         }
@@ -424,7 +431,8 @@ class APIFirstIntelligenceSystem:
 
         # Routing basé sur le domaine et la complexité
         if domain == "cybersecurity":
-            if complexity in ["expert", "complex"]:
+            # BUG FIX: Corriger la condition complexe
+            if complexity == "expert" or complexity == "complex":
                 strategy["primary_api"] = "minimax"  # Expertise sécurité avancée
                 strategy["backup_apis"] = ["tgpt", "grok_code"]
                 strategy["approach"] = "expert_analysis"
@@ -464,9 +472,12 @@ class APIFirstIntelligenceSystem:
                                     api_strategy: Dict) -> Dict[str, Any]:
         """
         Générer connaissance via APIs - cœur du système API-First
+        
+        TODO: Implémenter真正的 appels API
+        - Actuellement en mode SIMULATION
+        - Les fonctions _generate_*_knowledge sont des stubs
         """
-        # Simulation de génération de connaissance
-        # Dans un vrai système, ceci ferait des appels réels aux APIs
+        # SIMULATION MODE - dans un vrai système, ceci ferait des appels réels aux APIs
 
         knowledge = {
             "generated_content": "",
@@ -474,6 +485,7 @@ class APIFirstIntelligenceSystem:
             "synthesis_approach": api_strategy["approach"],
             "confidence_score": api_strategy["expected_quality"],
             "knowledge_type": "generated",
+            "simulation_mode": True,
             "timestamp": datetime.now().isoformat()
         }
 
