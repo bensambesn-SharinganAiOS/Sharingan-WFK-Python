@@ -467,48 +467,61 @@ class SharinganSpirit:
         """
         Exécuter les actions nécessaires pour atteindre l'objectif.
         
-        TODO: Implémenter真正的 exécution d'outils
-        - Actuellement en SIMULATION MODE
-        - Les résultats ci-dessous sont fictifs
-        - Nécessite wrapper vers outils réels (nmap, nikto, etc.)
+        NOTE: Ce module utilise des résultats simulés par défaut.
+        Pour l'intégration avec de vrais outils, utiliser:
+        - kali_wrappers.py pour nmap, gobuster, etc.
+        - tool_registry.py pour la découverte d'outils
+        - kali_implementation_manager.py pour l'installation
+        
+        L'implémentation complète des appels réels est en cours de développement.
         """
-        # SIMULATION MODE - résultats fictifs
+        
         result = {
             "success": True,
             "objective": objective,
             "actions_taken": [],
             "results": [],
             "simulation_mode": True,
-            "timestamp": datetime.now().isoformat()
+            "real_execution_available": False,
+            "timestamp": datetime.now().isoformat(),
+            "warning": "Results are simulated - real tool execution not yet integrated"
         }
 
-        # Objectifs de scan réseau
-        if any(word in obj_lower for word in ["scan", "nmap", "network"]):
-            result["actions_taken"].append("Executed network scan with nmap")
-            result["results"].append("SIMULATION: 5 open ports discovered")
-            # TODO: Implémenter appel réel à nmap avec sandboxing
+        # Tenter d'exécuter avec les outils réels si disponibles
+        try:
+            from kali_wrappers import get_kali_wrapper
+            wrapper = get_kali_wrapper()
+            if wrapper.is_available():
+                result["real_execution_available"] = True
+                result["simulation_mode"] = False
+        except ImportError:
+            pass
 
-        # Objectifs d'analyse web
-        elif any(word in obj_lower for word in ["web", "http", "url"]):
-            result["actions_taken"].append("Performed web vulnerability analysis")
-            result["results"].append("SIMULATION: 3 potential security issues identified")
-            # TODO: Implémenter appel réel à nikto/sqlmap avec sandboxing
+        # Si pas d'outils réels, générer des messages informatifs
+        if result["simulation_mode"]:
+            if any(word in obj_lower for word in ["scan", "nmap", "network"]):
+                result["actions_taken"].append("Would execute: nmap -sV -sC target")
+                result["results"].append("Tool execution requires: nmap + kali_wrappers integration")
+                result["note"] = "Install nmap and integrate via kali_wrappers.py for real results"
 
-        # Objectifs de sécurité
-        elif any(word in obj_lower for word in ["security", "protect", "defense"]):
-            result["actions_taken"].append("Enhanced system security measures")
-            result["results"].append("SIMULATION: Security posture improved by 25%")
-            # TODO: Implémenter activation réelle de défenses
+            elif any(word in obj_lower for word in ["web", "http", "url"]):
+                result["actions_taken"].append("Would execute: gobuster/dirsearch/nikto")
+                result["results"].append("Tool execution requires: gobuster + kali_wrappers integration")
+                result["note"] = "Install gobuster/nikto and integrate for real web scanning"
 
-        # Objectifs d'apprentissage
-        elif any(word in obj_lower for word in ["learn", "knowledge", "study"]):
-            result["actions_taken"].append("Processed new security information")
-            result["results"].append("SIMULATION: Knowledge base expanded with 15 new entries")
-            # TODO: Implémenter apprentissage réel via genome_memory
+            elif any(word in obj_lower for word in ["security", "protect", "defense"]):
+                result["actions_taken"].append("Would execute: security hardening tools")
+                result["results"].append("Security tools require: lynis + rkhunter integration")
+                result["note"] = "Configure real security tools for defense automation"
 
-        else:
-            result["actions_taken"].append("Executed general mission objective")
-            result["results"].append("Objective completed successfully")
+            elif any(word in obj_lower for word in ["learn", "knowledge", "study"]):
+                result["actions_taken"].append("Would update genome memory")
+                result["results"].append("Knowledge learning via genome_memory.py")
+                result["note"] = "Genome learning is available in genome_memory module"
+
+            else:
+                result["actions_taken"].append("Would execute mission objective")
+                result["results"].append("General execution - integrate specific tools")
 
         return result
 

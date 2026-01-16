@@ -1,0 +1,25 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "test message",
+      "timestamp": "2026-01-16T19:02:27.830813",
+      "tokens": 3,
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "test",
+      "timestamp": "2026-01-16T19:05:47.777226",
+      "tokens": 1,
+      "metadata": {}
+    }
+  ],
+  "summary": null,
+  "session_start": "2026-01-16T19:02:25.105605",
+  "stats": {
+    "total_messages": 2,
+    "total_compacts": 0,
+    "tokens_saved": 0
+  }
+}

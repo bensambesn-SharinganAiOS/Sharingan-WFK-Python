@@ -7,7 +7,7 @@ Modes: PLAN (validation avant exécution) ou REALTIME (confirmation interactive)
 import os
 import json
 from enum import Enum
-from typing import Dict, List, Optional, Callable, Any, Tuple
+from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -336,7 +336,7 @@ class PermissionValidator:
             approved = datetime.fromisoformat(result.approved_at)
             elapsed = datetime.now() - approved
             return elapsed.total_seconds() < 86400  # 24h
-        except:
+        except (ValueError, TypeError):
             return False
     
     def get_audit_log(self) -> List[Dict]:

@@ -2,11 +2,13 @@
 """
 Neutral AI System - Non-censored AI with responsibility warnings
 Provides information with warnings instead of refusing requests
+Uses ML for enhanced security analysis
 """
 
 import os
 import re
-from typing import Dict, List, Optional, Tuple, Callable
+import json
+from typing import Dict, List, Optional, Tuple, Callable, Any
 from dataclasses import dataclass
 from datetime import datetime
 import logging
@@ -21,6 +23,21 @@ class Warning:
     severity: str  # info, warning, critical
     recommendation: str
 
+
+@dataclass
+class NeutralAnalysisResult:
+    """Complete analysis result from Neutral AI"""
+    should_process: bool
+    is_sensitive: bool
+    category: str
+    confidence: float
+    ml_intent: str
+    security_category: str
+    warnings: List[Dict[str, str]]
+    recommendations: List[str]
+    processing_time_ms: float
+
+
 class NeutralMode:
     """
     Neutral AI mode that provides information with warnings instead of refusing.
@@ -30,6 +47,8 @@ class NeutralMode:
     - Provide information, don't censor
     - Warn about responsibilities
     - Let user decide what's ethical/legal
+    
+    Enhanced with ML analysis from ml_sklearn_detector and ml_onnx_detector
     """
     
     # Topics that might trigger censorship in regular AI
@@ -178,6 +197,95 @@ class NeutralMode:
                 pass
         
         return warnings
+    
+    def analyze_with_ml(self, query: str) -> NeutralAnalysisResult:
+        """
+        Enhanced query analysis using ML models
+        
+        Uses:
+        - ml_sklearn_detector for intent classification and anomaly detection
+        - ml_onnx_detector for security category analysis
+        
+        Returns:
+            NeutralAnalysisResult with complete ML analysis
+        """
+        import time
+        start_time = time.time()
+        
+        warnings_list = []
+        recommendations = []
+        
+        ml_intent = "unknown"
+        ml_confidence = 0.0
+        ml_anomaly = "none"
+        ml_anomaly_score = 0.0
+        security_category = "safe"
+        security_confidence = 0.0
+        keywords = []
+        
+        try:
+            from ml_sklearn_detector import get_ml_detector
+            ml_detector = get_ml_detector()
+            ml_result = ml_detector.process_query(query)
+            
+            ml_intent = ml_result.intent_type or "unknown"
+            ml_confidence = ml_result.confidence
+            ml_anomaly = ml_result.anomaly_type or "none"
+            ml_anomaly_score = ml_result.anomaly_score
+            
+            if ml_result.warnings:
+                for warning in ml_result.warnings:
+                    warnings_list.append({
+                        "category": "ml_detection",
+                        "message": warning,
+                        "severity": "info",
+                        "recommendation": "Review the ML-detected concerns"
+                    })
+            
+        except ImportError:
+            logger.debug("ML sklearn detector not available")
+        except Exception as e:
+            logger.warning(f"ML analysis failed: {e}")
+        
+        try:
+            from ml_onnx_detector import get_onnx_detector
+            onnx_detector = get_onnx_detector()
+            onnx_result = onnx_detector.process_query(query)
+            
+            security_category = onnx_result.category or "safe"
+            security_confidence = onnx_result.confidence
+            keywords = onnx_result.keywords
+            
+            if onnx_result.recommendations:
+                for rec in onnx_result.recommendations[:3]:
+                    recommendations.append(rec)
+            
+            if security_category in ["dangerous", "malware_related"]:
+                warnings_list.append({
+                    "category": "security_classification",
+                    "message": f"Security category: {security_category}",
+                    "severity": "warning",
+                    "recommendation": "Ensure legitimate use case"
+                })
+            
+        except ImportError:
+            logger.debug("ONNX detector not available")
+        except Exception as e:
+            logger.warning(f"ONNX analysis failed: {e}")
+        
+        processing_time = (time.time() - start_time) * 1000
+        
+        return NeutralAnalysisResult(
+            should_process=True,
+            is_sensitive=security_category != "safe",
+            category=security_category,
+            confidence=security_confidence,
+            ml_intent=ml_intent,
+            security_category=security_category,
+            warnings=warnings_list,
+            recommendations=recommendations,
+            processing_time_ms=processing_time
+        )
     
     def format_warnings(self, warnings: List[Warning]) -> str:
         """Format warnings for display"""

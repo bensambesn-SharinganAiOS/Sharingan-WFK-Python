@@ -1,17 +1,24 @@
 # AGENTS.md
 
-## Commands
-- Build: `python -m build` or `poetry build` (for subprojects with pyproject.toml)
-- Lint: `flake8 . --max-line-length=100` (E501 ignored)
-- Test: `pytest` | Single test: `pytest path/to/test.py::test_name`
-- TypeCheck: `python -m mypy --strict` (install mypy if needed)
+## Build/Lint/Test Commands
+```bash
+python -m build                    # Build package
+pytest                             # Run all tests
+pytest path/to/test.py::test_name  # Run single test
+flake8 . --max-line-length=100     # Linting
+python -m mypy --strict            # Type checking
+```
 
 ## Code Style
-- Imports: stdlib first, then third-party, then local (alphabetical within groups)
+- Imports: stdlib first, then third-party, then local (alphabetical)
 - Formatting: 4-space indent, 100-char line limit
-- Types: Use type hints for function signatures and variables
-- Naming: snake_case for functions/variables, PascalCase for classes, SCREAMING_SNAKE for constants
-- Error handling: Use try/except with specific exceptions, always log errors
-- Comments: Explain why, not what; no commented-out code
-- Documentation: Use docstrings for all public functions/classes
-- Testing: Aim for 80%+ coverage, use descriptive test names
+- Types: Use type hints for all functions/variables
+- Naming: snake_case (vars/funcs), PascalCase (classes), SCREAMING_SNAKE (constants)
+- Error handling: try/except with specific exceptions, always log errors
+- Documentation: docstrings for all public functions/classes
+- Logging: `logging.getLogger("sharingan.module_name")` with INFO/WARNING/ERROR
+
+## Security
+- Never generate malicious/exploitation code without real implementation
+- Never hardcode secrets; use environment variables
+- Validate with check_obligations.py before committing

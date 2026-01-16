@@ -9,12 +9,19 @@ import os
 import json
 import time
 import importlib
+import warnings
+
+# Suppress warnings BEFORE any imports
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 from pathlib import Path
 from typing import Optional, Dict, List, Any
 
-# Add _internal to path
+# Add _internal to path - use absolute import approach
 _internal_dir = Path(__file__).parent
-sys.path.insert(0, str(_internal_dir))
+if str(_internal_dir) not in sys.path:
+    sys.path.insert(0, str(_internal_dir))
 
 # Import all core modules
 from sharingan_os import SharinganOS, sharingan
@@ -28,6 +35,8 @@ from context_manager import get_context_manager
 from ai_memory_manager import get_memory_manager, get_shared_memory
 from genome_memory import get_genome_memory
 from enhanced_system_consciousness import get_enhanced_consciousness
+from action_executor import ActionExecutor, ActionType
+from vpn_tor_integration import VPNManager
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -278,10 +287,11 @@ class SharinganCore:
                 }
         
         # Vérifier les outils du projet (/tools/)
-        tools_dir = Path(__file__).parent.parent / "tools"
+        base_dir = Path(__file__).resolve().parent.parent.parent  # Go up 3 levels
+        tools_dir = base_dir / "tools"
         if tools_dir.exists():
             for item in tools_dir.iterdir():
-                if item.is_dir():
+                if item.is_dir() and not item.name.startswith('.'):
                     self.project_tools[item.name] = {
                         "name": item.name,
                         "category": "project",
@@ -289,6 +299,7 @@ class SharinganCore:
                         "source": "project",
                         "available": True
                     }
+        logger.info(f"Project tools detected: {len(self.project_tools)}")
     
     def get_all_available_tools(self) -> Dict[str, Dict]:
         """Renvoyer TOUS les outils disponibles (hôte + projet)"""
@@ -612,10 +623,6 @@ def get_core() -> SharinganCore:
     return _sharingan_core
 
 
-# Backward compatibility - expose sharingan as core
-sharingan = get_core()
-
-
 def main():
     """Main entry point"""
     import argparse
@@ -699,9 +706,38 @@ def main():
     # Tools command
     subparsers.add_parser('tools', help='List all tools')
     
+    # Shell NLP command
+    shell_parser = subparsers.add_parser('shell', help='Start Natural Language Shell')
+    shell_parser.add_argument('--demo', action='store_true', help='Run demo commands')
+    
     args = parser.parse_args()
     
     core = get_core()
+    
+    if args.command == 'shell':
+        if args.demo:
+            # Mode démo : exécuter quelques commandes et quitter
+            from nl_command_processor import get_nl_processor
+            processor = get_nl_processor()
+            demo_queries = [
+                "whois example.com",
+                "dig google.com",
+            ]
+            print("="*60)
+            print("SHARINGAN NLP SHELL - Demo Mode")
+            print("="*60)
+            for query in demo_queries:
+                print(f"\n📝 Query: {query}")
+                result = processor.execute(query)
+                print(f"   Command: {result['parsed']['command']}")
+                print(f"   Success: {result['success']}")
+            print("\n" + "="*60)
+            print("Demo complete. Run 'python3 -m sharingan_app._internal.main shell' for interactive mode")
+            print("="*60)
+        else:
+            # Mode interactif
+            start_nlp_shell()
+        return
     
     if args.command == 'ai':
         message = ' '.join(args.message) if args.message else "Hello"
@@ -959,6 +995,99 @@ def main():
     
     else:
         parser.print_help()
+
+
+def start_nlp_shell():
+    """Démarrer le shell en langage naturel Sharingan"""
+    from nl_command_processor import get_nl_processor
+    
+    processor = get_nl_processor()
+    
+    print("""
+╔═══════════════════════════════════════════════════════════════════════╗
+║     SHARINGAN OS - Natural Language Command Shell                  ║
+║                                                                   ║
+║  Interface principale pour interagir en langage naturel.           ║
+║                                                                   ║
+║  Exemples:                                                       ║
+║    - "scan les ports de example.com"                             ║
+║    - "qui est le propriétaire de google.com"                     ║
+║    - "trouve l'IP de yahoo.com"                                  ║
+║    - "affiche les headers HTTP de example.com"                   ║
+║                                                                   ║
+║  Commandes spéciales:                                            ║
+║    /explain <query>  → Expliquer sans exécuter                   ║
+║    /history          → Historique des commandes                  ║
+║    /status           → Status du système                         ║
+║    /exit             → Quitter                                   ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════════╝
+    """)
+    
+    while True:
+        try:
+            query = input("🌐_sharingan> ").strip()
+            
+            if not query:
+                continue
+            
+            if query.lower() in ["/exit", "/quit", "exit", "quit", "q"]:
+                print("\n👋 Au revoir!")
+                break
+            
+            if query.startswith("/"):
+                if query.startswith("/explain"):
+                    explanation = processor.explain(query[9:].strip())
+                    print(f"\n{explanation}\n")
+                elif query == "/history":
+                    print("\n📜 Historique:")
+                    for i, cmd in enumerate(processor.history[-10:], 1):
+                        print(f"  {i}. [{cmd.category.value}] {cmd.final_command}")
+                    print()
+                elif query == "/status":
+                    print("\n📊 Status du système:")
+                    print("   NLP Shell: Actif")
+                    print(f"   Commandes exécutées: {len(processor.history)}")
+                    print()
+                else:
+                    print(f"Commande inconnue: {query}")
+                continue
+            
+            # Exécuter la commande
+            result = processor.execute(query)
+            
+            print(f"\n📋 Commande: {result['parsed']['command']}")
+            print(f"   Cible: {result['parsed']['target']}")
+            print(f"   Risque: {result['parsed']['risk']}")
+            print(f"   Confiance: {result['parsed']['confidence']:.0%}")
+            
+            if result.get('requires_confirmation'):
+                print(f"\n⚠️  Confirmation requise pour cette commande risquée")
+                confirm = input("   Exécuter? (oui/non): ").strip().lower()
+                if confirm not in ["oui", "yes", "o", "y"]:
+                    print("   Commande annulée\n")
+                    continue
+                result = processor.execute(query, auto_confirm=True)
+            
+            if result.get('success'):
+                print(f"\n✅ Succès ({result['execution_time_ms']:.0f}ms)")
+                output = result.get('execution', {}).get('output', '')
+                for line in output.split('\n')[:15]:
+                    print(f"   {line}")
+                if len(output.split('\n')) > 15:
+                    print(f"   ... ({len(output.split(chr(10)))} lignes)")
+            else:
+                print(f"\n❌ Échec")
+                if result.get('errors'):
+                    print(f"   Erreur: {result['errors']}")
+            
+            print()
+            
+        except KeyboardInterrupt:
+            print("\n👋 Au revoir!")
+            break
+        except Exception as e:
+            print(f"\n💥 Erreur: {e}\n")
 
 
 if __name__ == "__main__":

@@ -15,11 +15,10 @@ via le système de permissions avant application.
 """
 
 import json
-import time
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 import logging
 
@@ -53,16 +52,16 @@ class PatchApplicationResult:
 class EvolutionTeam:
     """
     Équipe d'évolution avec 3 AIs spécialisés.
-    
+
     Modes:
     - BUILD (défaut): Capacités complètes, validation non-bloquante
     - PLAN: Validation avant exécution (batch)
     - REALTIME: Confirmation interactive
-    
+
     SECURITY: Intégration avec le système de permissions pour validation
     des patches AI avant toute application.
     """
-    
+
     ROLES = {
         "tgpt": {
             "name": "Observateur",
@@ -83,11 +82,11 @@ class EvolutionTeam:
             "output_type": "evolution_plan"
         }
     }
-    
+
     def __init__(self, mode: str = "build"):
         """
         Initialiser l'équipe d'évolution.
-        
+
         Args:
             mode: build (défaut), plan, ou realtime
         """
@@ -96,12 +95,12 @@ class EvolutionTeam:
         self._init_providers()
         self._init_permission_system()
         self._init_dangerous_patterns()
-    
+
     def _init_permission_system(self):
         """Initialiser le système de permissions"""
         try:
             from security.permissions import (
-                PermissionValidator, 
+                PermissionValidator,
                 ExecutionMode,
                 PermissionResult
             )
@@ -336,11 +335,11 @@ Réponds en JSON avec: {{"patches": [{{"file": "", "current": "", "proposed": ""
             validation["count"] = len(patches)
             
             # Vérifier structure
-            required_fields = ["file", "current", "proposed", "reason"]
+            required_keys = ["file", "current", "proposed", "reason"]
             for i, patch in enumerate(patches):
-                for field in required_fields:
-                    if field not in patch:
-                        validation["errors"].append(f"Patch {i}: missing '{field}'")
+                for key in required_keys:
+                    if key not in patch:
+                        validation["errors"].append(f"Patch {i}: missing '{key}'")
                         
         except json.JSONDecodeError as e:
             validation["errors"].append(f"Invalid JSON: {e}")

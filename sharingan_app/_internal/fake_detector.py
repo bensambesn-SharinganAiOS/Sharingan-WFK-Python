@@ -30,12 +30,17 @@ FAKE_PATTERNS = {
         r"As an AI language model",
         r"I apologize, but I cannot",
         r"I'm sorry, but I can't",
+        r"I am an AI",
+        r"I was trained by",
+        r"OpenAI's policy",
     ],
     "incomplete": [
         r"\.\.\.",
         r"\[?\]",
         r"etc\.?",
         r"and so on",
+        r"More to come",
+        r"To be continued",
     ],
     "shell_fake": [
         r"Command not found",
@@ -43,6 +48,7 @@ FAKE_PATTERNS = {
         r"No such file or directory",
         r"permission denied",
         r"command failed",
+        r"command not executable",
     ]
 }
 

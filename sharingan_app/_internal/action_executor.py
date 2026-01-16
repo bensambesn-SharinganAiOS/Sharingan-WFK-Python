@@ -95,94 +95,105 @@ class ActionExecutor:
         Analyze action text to determine type and parameters
         Returns: (action_type, target, parameters)
         """
-        action_lower = action_text.lower()
+        action_lower = action_text.lower().strip()
+        action_original = action_text.strip()
         
-        if "port" in action_lower or "scan" in action_lower:
-            if "nmap" in action_lower:
-                return ActionType.SCAN, self._extract_target(action_text), {
-                    "tool": "nmap",
-                    "flags": "-sV -sC -O"
-                }
-            elif "masscan" in action_lower:
-                return ActionType.SCAN, self._extract_target(action_text), {
-                    "tool": "masscan",
-                    "flags": "--rate 10000"
-                }
-            return ActionType.SCAN, self._extract_target(action_text), {
-                "tool": "nmap",
-                "flags": "-sV -sC"
-            }
+        # NMAP - chercher la cible après les flags
+        if action_lower.startswith("nmap"):
+            parts = action_original.split()
+            target = "localhost"  # défaut
+            for i, part in enumerate(parts):
+                if i == 0:
+                    continue  # skip "nmap"
+                if not part.startswith('-'):
+                    target = part
+                    break
+            params = {"tool": "nmap"}
+            if "-F" in action_original:
+                params["flags"] = "-F"
+            return ActionType.SCAN, target, params
         
-        if "informations" in action_lower or "recon" in action_lower:
-            if "whois" in action_lower:
-                return ActionType.RECON, self._extract_target(action_text), {
-                    "tool": "whois",
-                    "flags": ""
-                }
-            elif "dns" in action_lower:
-                return ActionType.RECON, self._extract_target(action_text), {
-                    "tool": "dig",
-                    "flags": "+short"
-                }
-            return ActionType.RECON, self._extract_target(action_text), {
-                "tool": "whois",
-                "flags": ""
-            }
+        # WHOIS
+        if action_lower.startswith("whois"):
+            parts = action_original.split()
+            target = parts[1] if len(parts) > 1 else "unknown"
+            return ActionType.RECON, target, {"tool": "whois"}
         
-        if "exploit" in action_lower or "vulnerability" in action_lower:
-            if "searchsploit" in action_lower or "cve" in action_lower:
-                return ActionType.EXPLOIT, self._extract_target(action_text), {
-                    "tool": "searchsploit",
-                    "flags": ""
-                }
-            return ActionType.EXPLOIT, self._extract_target(action_text), {
-                "tool": "searchsploit",
-                "flags": ""
-            }
+        # DIG
+        if action_lower.startswith("dig"):
+            parts = action_original.split()
+            target = parts[1] if len(parts) > 1 else "unknown"
+            return ActionType.RECON, target, {"tool": "dig"}
         
-        if "web" in action_lower or "directory" in action_lower or "fichier" in action_lower:
-            if "gobuster" in action_lower:
-                return ActionType.ENUMERATION, self._extract_target(action_text), {
-                    "tool": "gobuster",
-                    "mode": "dir",
-                    "wordlist": "/usr/share/wordlists/dirb/common.txt"
-                }
-            return ActionType.ENUMERATION, self._extract_target(action_text), {
-                "tool": "gobuster",
-                "mode": "dir",
-                "wordlist": "/usr/share/wordlists/dirb/common.txt"
-            }
+        # CURL
+        if action_lower.startswith("curl"):
+            parts = action_original.split()
+            # Chercher l'URL
+            for part in parts:
+                if part.startswith("http://") or part.startswith("https://"):
+                    target = part.replace("http://", "").replace("https://", "").rstrip('/')
+                    return ActionType.ANALYSIS, target, {"tool": "curl"}
+            return ActionType.ANALYSIS, "unknown", {"tool": "curl"}
         
-        if "sql" in action_lower or "base de donnees" in action_lower:
-            return ActionType.EXPLOIT, self._extract_target(action_text), {
-                "tool": "sqlmap",
-                "flags": "--batch --random-agent"
-            }
+        # SEARCHSPLOIT / EXPLOIT
+        if "searchsploit" in action_lower or action_lower.startswith("exploit "):
+            parts = action_original.split()
+            for i, part in enumerate(parts):
+                if part in ["searchsploit", "exploit"]:
+                    if i + 1 < len(parts):
+                        return ActionType.EXPLOIT, parts[i + 1], {"tool": "searchsploit"}
+            return ActionType.EXPLOIT, "general", {"tool": "searchsploit"}
         
-        if "mot de passe" in action_lower or "brute" in action_lower:
-            if "hydra" in action_lower:
-                return ActionType.EXPLOIT, self._extract_target(action_text), {
-                    "tool": "hydra",
-                    "flags": "-l root -P /usr/share/wordlists/rockyou.txt"
-                }
-            return ActionType.EXPLOIT, self._extract_target(action_text), {
-                "tool": "hydra",
-                "flags": ""
-            }
+        # GOBUSTER
+        if "gobuster" in action_lower:
+            for part in action_original.split():
+                if part.startswith("http://") or part.startswith("https://"):
+                    target = part.replace("http://", "").replace("https://", "").rstrip('/')
+                    return ActionType.ENUMERATION, target, {"tool": "gobuster"}
+            return ActionType.ENUMERATION, "unknown", {"tool": "gobuster"}
         
-        return ActionType.ANALYSIS, self._extract_target(action_text), {}
+        # Fallback par analyse du contenu
+        import re
+        hostname_match = re.search(r'([a-zA-Z0-9.-]+\.[a-z]{2,})', action_original)
+        target = hostname_match.group() if hostname_match else "unknown"
+        
+        return ActionType.ANALYSIS, target, {"original_cmd": action_original}
     
     def _extract_target(self, action_text: str) -> str:
-        """Extract target IP or hostname from action text"""
+        """
+        Extract target hostname/IP from action text
+        Handles formats like: 'nmap localhost', 'scan 192.168.1.1', 'whois example.com'
+        """
         import re
-        ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
-        hostname_pattern = r'\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}\b'
         
-        ip_match = re.search(ip_pattern, action_text)
-        if ip_match:
-            return ip_match.group()
+        # Si la commande contient directement l'outil au début, extraire l'argument suivant
+        if action_text.startswith("nmap "):
+            parts = action_text.split()
+            if len(parts) >= 2:
+                return parts[1]
+        elif action_text.startswith("whois "):
+            parts = action_text.split()
+            if len(parts) >= 2:
+                return parts[1]
+        elif action_text.startswith("dig "):
+            parts = action_text.split()
+            if len(parts) >= 2:
+                return parts[1]
+        elif action_text.startswith("searchsploit "):
+            parts = action_text.split()
+            if len(parts) >= 2:
+                return parts[1]
+        elif action_text.startswith("gobuster "):
+            parts = action_text.split()
+            for i, part in enumerate(parts):
+                if part in ["-u", "--url"]:
+                    if i + 1 < len(parts):
+                        url = parts[i + 1]
+                        return url.replace("http://", "").replace("https://", "").rstrip('/')
+            return parts[-1] if parts else "unknown"
         
-        hostname_match = re.search(hostname_pattern, action_text)
+        # Sinon chercher un hostname ou IP dans le texte
+        hostname_match = re.search(r'([a-zA-Z0-9.-]+\.[a-z]{2,}|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', action_text)
         if hostname_match:
             return hostname_match.group()
         
@@ -266,8 +277,19 @@ class ActionExecutor:
         return self._run_command(cmd, "enumeration", target)
     
     def _execute_analysis(self, target: str, params: Dict) -> Dict[str, Any]:
-        """Execute general analysis"""
-        cmd = f"echo 'Analysis of {target}: No specific tool matched'"
+        """Execute general analysis - delegate to appropriate tool or run directly"""
+        original_cmd = params.get("original_cmd", "")
+        tool = params.get("tool", "")
+        
+        # Si on a une commande originale, l'exécuter directement
+        if original_cmd:
+            return self._run_command(original_cmd, "analysis", target)
+        
+        # Fallback par outil
+        if tool == "curl":
+            return self._run_command(f"curl -sI https://{target}", "analysis", target)
+        
+        cmd = f"echo 'Analysis of {target}'"
         return self._run_command(cmd, "analysis", target)
     
     def _run_command(self, cmd: str, action_type: str, target: str) -> Dict[str, Any]:

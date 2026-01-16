@@ -207,5 +207,58 @@
       "autonomy_test",
       "autonomy_test"
     ]
+  },
+  "chat_1768538286": {
+    "key": "chat_1768538286",
+    "data": {
+      "question": "Comment fonctionnent les permissions Linux?",
+      "response": "Je comprends votre demande concernant les permissions Linux. Pourriez-vous pr\u00e9ciser quel aspect sp\u00e9cifique des permissions Linux vous int\u00e9resse ? Souhaitez-vous des explications g\u00e9n\u00e9rales ou des exemples concrets ?\n\nSi vous souhaitez obtenir des informations th\u00e9oriques, je peux vous fournir un r\u00e9sum\u00e9 d\u00e9taill\u00e9 sur le syst\u00e8me de permissions Linux.\n\nEn revanche, si vous pr\u00e9f\u00e9rez une approche pratique, je peux vous montrer comment v\u00e9rifier et modifier les permissions d'un fichier ou d'un dossier \u00e0 l'aide des outils disponibles dans notre environnement.\n\nQuelle option pr\u00e9f\u00e9rez-vous ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-16T04:38:06.992832",
+    "updated_at": "2026-01-16T04:38:06.992832",
+    "accessed_at": "2026-01-16T04:38:06.992832",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "test_action": {
+    "key": "test_action",
+    "data": {
+      "test": true
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-16T19:02:15.799686",
+    "updated_at": "2026-01-16T19:02:15.799686",
+    "accessed_at": "2026-01-16T19:02:15.804734",
+    "access_count": 2,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "test_action_key": {
+    "key": "test_action_key",
+    "data": {
+      "data": "value"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-16T19:05:47.766550",
+    "updated_at": "2026-01-16T19:05:47.766550",
+    "accessed_at": "2026-01-16T19:05:47.771069",
+    "access_count": 2,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
   }
 }
