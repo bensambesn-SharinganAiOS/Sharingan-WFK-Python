@@ -3,17 +3,19 @@
 SHARINGAN API-FIRST INTELLIGENCE SYSTEM
 Système d'intelligence basé sur les APIs - Génération dynamique de connaissances
 Architecture sans stockage massif, exploitation maximale des APIs
+
+TODO: Prototype en développement
+- Améliorer le routing API intelligent
+- Ajouter plus de providers (OpenAI, Anthropic)
+- Implémenter cache intelligent
+- Optimiser la génération de connaissances
 """
 
-import sys
-import json
-import time
 import hashlib
-import threading
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Callable, Tuple
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 
 logging.basicConfig(level=logging.INFO)

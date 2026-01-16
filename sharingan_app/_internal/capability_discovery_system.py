@@ -2,18 +2,21 @@
 """
 SHARINGAN CAPABILITY DISCOVERY & ENHANCEMENT SYSTEM
 Système de découverte automatique des capacités et amélioration autonome
+
+TODO: Prototype en développement
+- Compléter les tests de capacités manquants
+- Implémenter l'amélioration autonome
+- Ajouter l'intégration avec genome_proposer
 """
 
 import sys
-import os
 import subprocess
 import json
 import time
-import threading
 from pathlib import Path
 from typing import Dict, List, Any, Optional, Callable, Tuple
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 
 logging.basicConfig(level=logging.INFO)

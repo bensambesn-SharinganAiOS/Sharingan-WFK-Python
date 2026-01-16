@@ -7,94 +7,96 @@ SHARINGAN CAPABILITY ASSESSMENT - Version Simplifiée
 import sys
 import os
 from pathlib import Path
+from typing import Dict, List, Any
 
-def assess_sharingan_capabilities():
+
+def assess_sharingan_capabilities() -> Dict[str, Any]:
     """Évaluer les capacités actuelles de Sharingan"""
-    print("🧠 SHARINGAN CAPABILITY ASSESSMENT")
+    print("SHARINGAN CAPABILITY ASSESSMENT")
     print("=" * 50)
 
     base_dir = Path(__file__).parent / "sharingan_app" / "_internal"
     sys.path.insert(0, str(base_dir))
 
     capabilities_status = {
-        "✅ FONCTIONNEL": [],
-        "⚠️ PARTIEL": [],
-        "❌ LIMITÉ": [],
-        "🚫 MANQUANT": []
+        "FONCTIONNEL": [],
+        "PARTIEL": [],
+        "LIMITE": [],
+        "MANQUANT": []
     }
 
-    print("\n🔍 ÉVALUATION DES CAPACITÉS\n")
+    print("\n--- EVALUATION DES CAPACITES ---\n")
 
     # === CONSCIENCE ===
-    print("🧬 CONSCIENCE & MÉMOIRE:")
+    print("CONSCIENCE & MEMOIRE:")
     try:
         from sharingan_soul import get_sharingan_soul
         soul = get_sharingan_soul()
         status = soul.get_soul_status()
         if status['emotional_state']['happiness'] > 0:
-            capabilities_status["✅ FONCTIONNEL"].append("Âme émotionnelle (Sharingan Soul)")
-        print("  ✅ Âme émotionnelle active")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Système émotionnel")
-        print("  ❌ Système émotionnel limité")
+            capabilities_status["FONCTIONNEL"].append("Ame emotionnelle (Sharingan Soul)")
+        print("  [OK] Ame emotionnelle active")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Systeme emotionnel")
+        print(f"  [LIMITE] Systeme emotionnel: {e}")
 
     try:
         from sharingan_spirit import get_sharingan_spirit
         spirit = get_sharingan_spirit()
         reasoning = spirit.reason_and_decide("Test de raisonnement")
         if reasoning['final_decision']:
-            capabilities_status["✅ FONCTIONNEL"].append("Esprit raisonneur (Sharingan Spirit)")
-        print("  ✅ Esprit raisonneur opérationnel")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Système de raisonnement")
-        print("  ❌ Système de raisonnement limité")
+            capabilities_status["FONCTIONNEL"].append("Esprit raisonneur (Sharingan Spirit)")
+        print("  [OK] Esprit raisonneur operationnel")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Systeme de raisonnement")
+        print(f"  [LIMITE] Systeme de raisonnement: {e}")
 
     try:
         from genome_memory import get_genome_memory
         genome = get_genome_memory()
         if len(genome.genes) > 0:
-            capabilities_status["✅ FONCTIONNEL"].append("Mémoire ADN (Genome Memory)")
-        print(f"  ✅ Mémoire ADN: {len(genome.genes)} gènes")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Mémoire ADN")
-        print("  ❌ Mémoire ADN limitée")
+            capabilities_status["FONCTIONNEL"].append("Memoire ADN (Genome Memory)")
+        print(f"  [OK] Memoire ADN: {len(genome.genes)} genes")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Memoire ADN")
+        print(f"  [LIMITE] Memoire ADN: {e}")
 
     # === IA ===
-    print("\n🤖 INTELLIGENCE ARTIFICIELLE:")
+    print("\nINTELLIGENCE ARTIFICIELLE:")
     try:
         from api_first_intelligence import get_api_first_intelligence
         api_intel = get_api_first_intelligence()
         result = api_intel.process_intelligent_query("Test IA")
         if result['knowledge_generated']['generated_content']:
-            capabilities_status["✅ FONCTIONNEL"].append("Intelligence API-First")
-        print("  ✅ Intelligence API-First opérationnelle")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Intelligence API-First")
-        print("  ❌ Intelligence API-First limitée")
+            capabilities_status["FONCTIONNEL"].append("Intelligence API-First")
+        print("  [OK] Intelligence API-First operationnelle")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Intelligence API-First")
+        print(f"  [LIMITE] Intelligence API-First: {e}")
 
     # === SÉCURITÉ ===
-    print("\n🔒 SÉCURITÉ:")
+    print("\nSECURITE:")
     try:
         from psychic_locks_system import get_psychic_locks_system
         locks = get_psychic_locks_system()
         if locks.get_system_status()['psychic_locks']['total_locks'] > 0:
-            capabilities_status["✅ FONCTIONNEL"].append("Verrous psychiques")
-        print(f"  ✅ Verrous psychiques: {locks.get_system_status()['psychic_locks']['total_locks']} actifs")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Verrous psychiques")
-        print("  ❌ Verrous psychiques limités")
+            capabilities_status["FONCTIONNEL"].append("Verrous psychiques")
+        print(f"  [OK] Verrous psychiques: {locks.get_system_status()['psychic_locks']['total_locks']} actifs")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Verrous psychiques")
+        print(f"  [LIMITE] Verrous psychiques: {e}")
 
     try:
         from fake_detector import validate_readiness
         if validate_readiness()['ready']:
-            capabilities_status["✅ FONCTIONNEL"].append("Détection de fake")
-        print("  ✅ Détection de fake opérationnelle")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Détection de fake")
-        print("  ❌ Détection de fake limitée")
+            capabilities_status["FONCTIONNEL"].append("Detection de fake")
+        print("  [OK] Detection de fake operationnelle")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Detection de fake")
+        print(f"  [LIMITE] Detection de fake: {e}")
 
     # === OUTILS ===
-    print("\n🛠️ OUTILS CYBERSÉCURITÉ:")
+    print("\nOUTILS CYBERSECURITE:")
     tools_tested = {
         "nmap": "which nmap",
         "nikto": "which nikto",
@@ -107,158 +109,166 @@ def assess_sharingan_capabilities():
         try:
             result = os.system(f"{cmd} > /dev/null 2>&1")
             if result == 0:
-                capabilities_status["✅ FONCTIONNEL"].append(f"Outil {tool}")
-                print(f"  ✅ {tool} disponible")
+                capabilities_status["FONCTIONNEL"].append(f"Outil {tool}")
+                print(f"  [OK] {tool} disponible")
             else:
-                capabilities_status["🚫 MANQUANT"].append(f"Outil {tool}")
-                print(f"  🚫 {tool} manquant")
-        except:
-            capabilities_status["🚫 MANQUANT"].append(f"Outil {tool}")
-            print(f"  🚫 {tool} manquant")
+                capabilities_status["MANQUANT"].append(f"Outil {tool}")
+                print(f"  [MANQUANT] {tool}")
+        except Exception:
+            capabilities_status["MANQUANT"].append(f"Outil {tool}")
+            print(f"  [MANQUANT] {tool}")
 
     # === AUTONOMIE ===
-    print("\n🎯 AUTONOMIE:")
+    print("\nAUTONOMIE:")
     try:
         from autonomous_mission_system import get_autonomous_mission_system
         mission_sys = get_autonomous_mission_system()
         status = mission_sys.get_system_status()
-        if status['active_missions'] >= 0:  # Système fonctionne
-            capabilities_status["✅ FONCTIONNEL"].append("Système de missions autonomes")
-        print("  ✅ Système de missions autonomes opérationnel")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Système de missions autonomes")
-        print("  ❌ Système de missions autonomes limité")
+        if status['active_missions'] >= 0:
+            capabilities_status["FONCTIONNEL"].append("Systeme de missions autonomes")
+        print("  [OK] Systeme de missions autonomes operationnel")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Systeme de missions autonomes")
+        print(f"  [LIMITE] Systeme de missions autonomes: {e}")
 
     # === RÉSEAU & INTERNET ===
-    print("\n🌐 RÉSEAU & INTERNET:")
+    print("\nRESEAU & INTERNET:")
     try:
         import subprocess
-        result = subprocess.run(["curl", "-s", "--max-time", "3", "https://httpbin.org/ip"],
-                              capture_output=True, text=True)
+        result = subprocess.run(
+            ["curl", "-s", "--max-time", "3", "https://httpbin.org/ip"],
+            capture_output=True,
+            text=True
+        )
         if result.returncode == 0:
-            capabilities_status["✅ FONCTIONNEL"].append("Accès internet")
-            print("  ✅ Accès internet fonctionnel")
+            capabilities_status["FONCTIONNEL"].append("Acces internet")
+            print("  [OK] Acces internet fonctionnel")
         else:
-            capabilities_status["❌ LIMITÉ"].append("Accès internet")
-            print("  ❌ Accès internet limité")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Accès internet")
-        print("  ❌ Accès internet limité")
+            capabilities_status["LIMITE"].append("Acces internet")
+            print("  [LIMITE] Acces internet")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Acces internet")
+        print(f"  [LIMITE] Acces internet: {e}")
 
     # === SYSTÈME ===
-    print("\n💻 INTÉGRATION SYSTÈME:")
+    print("\nINTEGRATION SYSTEME:")
     try:
-        # Test accès fichiers
         home_file = Path.home() / ".bashrc"
         if home_file.exists():
             with open(home_file, 'r') as f:
                 content = f.read(100)
             if content:
-                capabilities_status["✅ FONCTIONNEL"].append("Accès système de fichiers")
-                print("  ✅ Accès système de fichiers fonctionnel")
-    except:
-        capabilities_status["❌ LIMITÉ"].append("Accès système de fichiers")
-        print("  ❌ Accès système de fichiers limité")
+                capabilities_status["FONCTIONNEL"].append("Acces systeme de fichiers")
+                print("  [OK] Acces systeme de fichiers fonctionnel")
+    except Exception as e:
+        capabilities_status["LIMITE"].append("Acces systeme de fichiers")
+        print(f"  [LIMITE] Acces systeme de fichiers: {e}")
 
     # === CALCUL DES SCORES ===
-    total_capabilities = sum(len(capabilities) for capabilities in capabilities_status.values())
-    functional_count = len(capabilities_status["✅ FONCTIONNEL"])
+    total_capabilities = sum(len(caps) for caps in capabilities_status.values())
+    functional_count = len(capabilities_status["FONCTIONNEL"])
     autonomy_score = functional_count / total_capabilities if total_capabilities > 0 else 0
 
-    print("
-📊 RÉSULTATS DE L'ÉVALUATION"    print(f"• Total des capacités évaluées: {total_capabilities}")
-    print(".1f"    print(f"• Score d'autonomie estimé: {autonomy_score:.1f}")
+    print("\n--- RESULTATS DE L'EVALUATION ---")
+    print(f"Total des capacites evaluees: {total_capabilities}")
+    print(f"Score d'autonomie estime: {autonomy_score:.1%}")
 
-    print("
-📋 RÉPARTITION PAR STATUT:"    for status, capabilities in capabilities_status.items():
-        if capabilities:
+    print("\n--- REPARTITION PAR STATUT ---")
+    for status, caps in capabilities_status.items():
+        if caps:
             print(f"\n{status}:")
-            for cap in capabilities:
-                print(f"  • {cap}")
+            for cap in caps:
+                print(f"  - {cap}")
 
     # === PROPOSITIONS D'AMÉLIORATION ===
-    print("
-🛠️ PROPOSITIONS D'AMÉLIORATION POUR AUTONOMIE TOTALE"    print("-" * 50)
+    print("\n--- PROPOSITIONS D'AMELIORATION POUR AUTONOMIE TOTALE ---")
+    print("-" * 50)
 
     improvements = []
 
-    if "Accès internet" in capabilities_status["❌ LIMITÉ"] or "Accès internet" in capabilities_status["🚫 MANQUANT"]:
+    if "Acces internet" in capabilities_status["LIMITE"] or \
+       "Acces internet" in capabilities_status["MANQUANT"]:
         improvements.append({
-            "priorité": "CRITIQUE",
-            "capacité": "Accès internet sécurisé",
-            "solution": "Implémenter proxy sécurisé et navigation contrôlée",
-            "complexité": "MOYENNE",
+            "priorite": "CRITIQUE",
+            "capacite": "Acces internet securise",
+            "solution": "Implementer proxy securise et navigation controlee",
+            "complexite": "MOYENNE",
             "temps": "2-3 jours"
         })
 
-    if any("Outil" in cap for cap in capabilities_status["🚫 MANQUANT"]):
+    if any("Outil" in cap for cap in capabilities_status["MANQUANT"]):
         improvements.append({
-            "priorité": "HAUTE",
-            "capacité": "Installation automatique d'outils",
-            "solution": "Système de déploiement automatique des outils Kali",
-            "complexité": "FAIBLE",
+            "priorite": "HAUTE",
+            "capacite": "Installation automatique d'outils",
+            "solution": "Systeme de deploiement automatique des outils Kali",
+            "complexite": "FAIBLE",
             "temps": "1-2 jours"
         })
 
-    if "Accès système de fichiers" in capabilities_status["❌ LIMITÉ"]:
+    if "Acces systeme de fichiers" in capabilities_status["LIMITE"]:
         improvements.append({
-            "priorité": "HAUTE",
-            "capacité": "Permissions système étendues",
-            "solution": "Système de permissions graduées avec sandboxing",
-            "complexité": "ÉLEVÉE",
+            "priorite": "HAUTE",
+            "capacite": "Permissions systeme etendues",
+            "solution": "Systeme de permissions graduees avec sandboxing",
+            "complexite": "ELEVEE",
             "temps": "1-2 semaines"
         })
 
-    # Exécution de code arbitraire (très risqué mais pour autonomie)
     improvements.append({
-        "priorité": "CRITIQUE",
-        "capacité": "Exécution de code contrôlée",
-        "solution": "Containers et environnements isolés pour exécution sécurisée",
-        "complexité": "EXPERT",
+        "priorite": "CRITIQUE",
+        "capacite": "Execution de code controlee",
+        "solution": "Containers et environnements isoles pour execution securisee",
+        "complexite": "EXPERT",
         "temps": "3-4 semaines"
     })
 
-    # API externes et services cloud
     improvements.append({
-        "priorité": "MOYENNE",
-        "capacité": "Intégration services externes",
-        "solution": "APIs pour bases de données, services cloud, recherche web",
-        "complexité": "MOYENNE",
+        "priorite": "MOYENNE",
+        "capacite": "Integration services externes",
+        "solution": "APIs pour bases de donnees, services cloud, recherche web",
+        "complexite": "MOYENNE",
         "temps": "1 semaine"
     })
 
     for i, improvement in enumerate(improvements, 1):
-        print(f"\n{i}. 🎯 {improvement['capacité']} ({improvement['priorité']})")
+        print(f"\n{i}. {improvement['capacite']} ({improvement['priorite']})")
         print(f"   Solution: {improvement['solution']}")
-        print(f"   Complexité: {improvement['complexité']}")
-        print(f"   Temps estimé: {improvement['temps']}")
+        print(f"   Complexite: {improvement['complexite']}")
+        print(f"   Temps estime: {improvement['temps']}")
 
-    print("
-🎯 OBJECTIF: AUTONOMIE TOTALE DE SHARINGAN"    print("-" * 50)
-    print("Une fois ces améliorations implémentées, Sharingan pourra:")
-    print("• ✅ Accéder à internet et aux ressources web")
-    print("• ✅ Installer et utiliser automatiquement tous les outils")
-    print("• ✅ Manipuler le système de fichiers de l'hôte")
-    print("• ✅ Exécuter du code de manière sécurisée")
-    print("• ✅ Intégrer des APIs et services externes")
-    print("• ✅ Opérer de manière complètement autonome")
-    print("• ✅ Effectuer n'importe quelle tâche cybersécurité")
-    print()
-    print("Sharingan deviendra alors un système d'IA autonome capable")
-    print("d'accomplir n'importe quelle mission de cybersécurité sans")
-    print("intervention humaine, à travers internet et le système hôte.")
+    print("\n--- OBJECTIF: AUTONOMIE TOTALE DE SHARINGAN ---")
+    print("-" * 50)
+    print("Une fois ces ameliorations implementees, Sharingan pourra:")
+    print("- Acceder a internet et aux ressources web")
+    print("- Installer et utiliser automatiquement tous les outils")
+    print("- Manipuler le systeme de fichiers de l'hote")
+    print("- Executer du code de maniere securisee")
+    print("- Integrer des APIs et services externes")
+    print("- Operer de maniere completement autonome")
+    print("- Effectuer n'importe quelle mission cybersecurite")
 
-    return {
+    result = {
         "capabilities_status": capabilities_status,
         "autonomy_score": autonomy_score,
-        "improvements_needed": improvements
+        "improvements_needed": improvements,
+        "total_capabilities": total_capabilities,
+        "functional_count": functional_count
     }
 
-if __name__ == "__main__":
+    return result
+
+
+def run_assessment() -> Dict[str, Any]:
+    """Point d'entrée principal"""
     results = assess_sharingan_capabilities()
 
-    print("
-🎊 ÉVALUATION TERMINÉE !"    print(f"Score d'autonomie actuel: {results['autonomy_score']:.1%}")
-    print(f"Améliorations nécessaires: {len(results['improvements_needed'])}")
-    print()
-    print("Prochaine étape: Implémenter les améliorations pour atteindre 100% d'autonomie!")
+    print("\n--- EVALUATION TERMINEE ---")
+    print(f"Score d'autonomie actuel: {results['autonomy_score']:.1%}")
+    print(f"Ameliorations necessaires: {len(results['improvements_needed'])}")
+    print("\nProchaine etape: Implementer les ameliorations pour atteindre 100% d'autonomie!")
+
+    return results
+
+
+if __name__ == "__main__":
+    run_assessment()
