@@ -1,4 +1,88 @@
 {
+  "nmap": {
+    "name": "nmap",
+    "category": "enumeration",
+    "description": "Network scanner and port mapper",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "nmap",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "netcat": {
+    "name": "netcat",
+    "category": "utility",
+    "description": "Network utility for reading/writing TCP/UDP",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "netcat-openbsd",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "nc": {
+    "name": "nc",
+    "category": "utility",
+    "description": "Netcat alias",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "netcat-openbsd",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "wfuzz": {
+    "name": "wfuzz",
+    "category": "enumeration",
+    "description": "Web application fuzzer",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "wfuzz",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "dirb": {
+    "name": "dirb",
+    "category": "enumeration",
+    "description": "Web directory scanner",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "dirb",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "hydra": {
+    "name": "hydra",
+    "category": "password",
+    "description": "Parallelized login cracker",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "hydra",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
+  "john": {
+    "name": "john",
+    "category": "password",
+    "description": "John the Ripper - password cracker",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "john",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768539873
+  },
   "dnsrecon": {
     "name": "dnsrecon",
     "category": "enumeration",
@@ -22,9 +106,9 @@
       "python3",
       "python3-dnspython"
     ],
-    "installed": false,
+    "installed": true,
     "version": null,
-    "last_check": null
+    "last_check": 1768539873
   },
   "dnsenum": {
     "name": "dnsenum",
@@ -126,9 +210,9 @@
       "python3",
       "python3-pip"
     ],
-    "installed": false,
+    "installed": true,
     "version": null,
-    "last_check": null
+    "last_check": 1768539873
   },
   "Meterpreter": {
     "name": "Meterpreter",
