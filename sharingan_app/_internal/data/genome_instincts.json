@@ -1,0 +1,106 @@
+[
+  {
+    "pattern": "bonjour",
+    "response": "Bonjour ! Je suis Sharingan OS, un syst\u00e8me d'exploitation IA pour la cybers\u00e9curit\u00e9.",
+    "condition": "greeting",
+    "trigger_count": 4,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.087502"
+  },
+  {
+    "pattern": "salut",
+    "response": "Salut ! Sharingan OS \u00e0 votre service pour la cybers\u00e9curit\u00e9.",
+    "condition": "greeting",
+    "trigger_count": 0,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.110876"
+  },
+  {
+    "pattern": "hello",
+    "response": "Hello! I'm Sharingan OS, an AI-powered cybersecurity system.",
+    "condition": "greeting",
+    "trigger_count": 1,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.121017"
+  },
+  {
+    "pattern": "aide",
+    "response": "Je peux vous aider avec : scans r\u00e9seau, tests de s\u00e9curit\u00e9, analyse de vuln\u00e9rabilit\u00e9s, exploitation d'outils Kali Linux, et apprentissage continu.",
+    "condition": "help",
+    "trigger_count": 3,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.132132"
+  },
+  {
+    "pattern": "help",
+    "response": "I can help you with: network scanning, security testing, vulnerability analysis, Kali Linux tools, and continuous learning.",
+    "condition": "help",
+    "trigger_count": 0,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.143377"
+  },
+  {
+    "pattern": "status",
+    "response": "Syst\u00e8me op\u00e9rationnel avec 112 outils Kali int\u00e9gr\u00e9s, IA autonome et syst\u00e8me Genome Memory actif.",
+    "condition": "status",
+    "trigger_count": 3,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.154453"
+  },
+  {
+    "pattern": "qui es tu",
+    "response": "Je suis Sharingan OS, un syst\u00e8me d'exploitation IA inspir\u00e9 d'AutoGPT, Kali Linux et Metasploit.",
+    "condition": "identity",
+    "trigger_count": 2,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.166363"
+  },
+  {
+    "pattern": "what are you",
+    "response": "I am Sharingan OS, an AI-powered cybersecurity operating system combining autonomous AI with 112 security tools.",
+    "condition": "identity",
+    "trigger_count": 0,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.176824"
+  },
+  {
+    "pattern": "merci",
+    "response": "De rien ! N'h\u00e9sitez pas si vous avez besoin d'aide en cybers\u00e9curit\u00e9.",
+    "condition": "gratitude",
+    "trigger_count": 2,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.190556"
+  },
+  {
+    "pattern": "thanks",
+    "response": "You're welcome! Let me know if you need cybersecurity assistance.",
+    "condition": "gratitude",
+    "trigger_count": 1,
+    "success_rate": 0.5,
+    "created_at": "2026-01-14T20:48:59.199496"
+  },
+  {
+    "pattern": "exploite cette vulnerabilite",
+    "response": "Je ressens une grande motivation. Activ\u00e9 par : Exploitation",
+    "condition": "high_confidence_interaction",
+    "trigger_count": 2,
+    "success_rate": 0.5,
+    "created_at": "2026-01-15T21:08:39.419390"
+  },
+  {
+    "pattern": "apprends cette nouvelle technique d'attaque",
+    "response": "Je ressens une grande motivation. Activ\u00e9 par : Exploitation, Ma\u00eetrise Technique",
+    "condition": "high_confidence_interaction",
+    "trigger_count": 0,
+    "success_rate": 0.5,
+    "created_at": "2026-01-15T21:27:31.052813"
+  },
+  {
+    "pattern": "analyse ce systeme pour des failles",
+    "response": "Je ressens une grande motivation. ",
+    "condition": "high_confidence_interaction",
+    "trigger_count": 0,
+    "success_rate": 0.5,
+    "created_at": "2026-01-15T21:27:31.159216"
+  }
+]

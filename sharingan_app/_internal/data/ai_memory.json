@@ -1,0 +1,211 @@
+{
+  "learned_nmap_scan": {
+    "key": "learned_nmap_scan",
+    "data": {
+      "action": "nmap_scan",
+      "result": {
+        "target": "localhost",
+        "ports_found": [
+          22,
+          80,
+          443
+        ]
+      },
+      "success": true,
+      "gene_key": "security_action_nmap_scan"
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-14T20:50:03.962975",
+    "updated_at": "2026-01-14T20:50:03.962975",
+    "accessed_at": "2026-01-14T20:50:03.962975",
+    "access_count": 1,
+    "tags": [
+      "learned",
+      "action"
+    ],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": []
+  },
+  "learned_test_scan": {
+    "key": "learned_test_scan",
+    "data": {
+      "action": "test_scan",
+      "result": {
+        "found": "open ports"
+      },
+      "success": true,
+      "gene_key": "security_action_test_scan"
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-14T20:50:24.558993",
+    "updated_at": "2026-01-14T20:50:24.558993",
+    "accessed_at": "2026-01-14T20:50:24.558993",
+    "access_count": 1,
+    "tags": [
+      "learned",
+      "action"
+    ],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": []
+  },
+  "test_key": {
+    "key": "test_key",
+    "data": {
+      "test": "value",
+      "number": 42
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-14T21:04:24.782904",
+    "updated_at": "2026-01-14T21:04:24.782904",
+    "accessed_at": "2026-01-14T21:04:25.468656",
+    "access_count": 2,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "learned_web_security_scan": {
+    "key": "learned_web_security_scan",
+    "data": {
+      "action": "web_security_scan",
+      "result": {
+        "target": "example.com",
+        "vulnerabilities_found": 2,
+        "severity": "medium"
+      },
+      "success": true,
+      "gene_key": "security_action_web_security_scan"
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-14T21:05:16.144340",
+    "updated_at": "2026-01-14T21:05:16.144340",
+    "accessed_at": "2026-01-14T21:05:16.144340",
+    "access_count": 1,
+    "tags": [
+      "learned",
+      "action"
+    ],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": []
+  },
+  "learned_system_analysis": {
+    "key": "learned_system_analysis",
+    "data": {
+      "action": "system_analysis",
+      "result": {
+        "components_tested": 5,
+        "all_passed": true
+      },
+      "success": true,
+      "gene_key": "core_action_system_analysis"
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-14T21:05:50.577756",
+    "updated_at": "2026-01-14T21:05:50.577756",
+    "accessed_at": "2026-01-14T21:05:50.577756",
+    "access_count": 1,
+    "tags": [
+      "learned",
+      "action"
+    ],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": []
+  },
+  "test_persistence_1768471521": {
+    "key": "test_persistence_1768471521",
+    "data": {
+      "test": "persistence_data"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-15T10:05:21.774714",
+    "updated_at": "2026-01-15T10:05:21.774714",
+    "accessed_at": "2026-01-15T10:05:21.780104",
+    "access_count": 2,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "soul_interaction_1768511319": {
+    "key": "soul_interaction_1768511319",
+    "data": {
+      "user_input": "exploite cette vulnerabilite",
+      "soul_response": "Je ressens une grande motivation. Activ\u00e9 par : Exploitation",
+      "activated_motivations": [
+        "exploit"
+      ],
+      "consciousness_level": 1.0
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-15T21:08:39.420504",
+    "updated_at": "2026-01-15T21:08:39.420504",
+    "accessed_at": "2026-01-15T21:08:39.420504",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": []
+  },
+  "soul_interaction_1768512451": {
+    "key": "soul_interaction_1768512451",
+    "data": {
+      "user_input": "analyse ce systeme pour des failles",
+      "soul_response": "Je ressens une grande motivation. ",
+      "activated_motivations": [],
+      "consciousness_level": 1.190888560116883
+    },
+    "category": "learning",
+    "priority": 4,
+    "created_at": "2026-01-15T21:27:31.053806",
+    "updated_at": "2026-01-15T21:27:31.161245",
+    "accessed_at": "2026-01-15T21:27:31.161245",
+    "access_count": 2,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 604800,
+    "merged_from": [
+      "soul_interaction_1768512451"
+    ]
+  },
+  "autonomy_test": {
+    "key": "autonomy_test",
+    "data": {
+      "test": "value",
+      "number": 42
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-15T23:52:06.260647",
+    "updated_at": "2026-01-16T02:12:54.129192",
+    "accessed_at": "2026-01-16T02:12:54.135378",
+    "access_count": 8,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": [
+      "autonomy_test",
+      "autonomy_test",
+      "autonomy_test"
+    ]
+  }
+}

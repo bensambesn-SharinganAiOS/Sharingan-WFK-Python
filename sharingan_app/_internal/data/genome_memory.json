@@ -1,0 +1,335 @@
+{
+  "core_system_capabilities": {
+    "key": "core_system_capabilities",
+    "data": {
+      "ai_providers": [
+        "tgpt",
+        "MiniMax",
+        "GLM-4",
+        "OpenRouter"
+      ],
+      "tools_count": 112,
+      "kali_categories": [
+        "network",
+        "web",
+        "password",
+        "wireless",
+        "forensic",
+        "social"
+      ],
+      "memory_systems": [
+        "genome",
+        "ai_memory",
+        "context",
+        "vector"
+      ],
+      "autonomy_level": "high"
+    },
+    "category": "core",
+    "priority": 100,
+    "created_at": "2026-01-14T20:48:58.937268",
+    "updated_at": "2026-01-14T20:48:59.221754",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "system",
+      "capabilities",
+      "ai",
+      "tools"
+    ],
+    "source": "system_init"
+  },
+  "core_sharingan_identity": {
+    "key": "core_sharingan_identity",
+    "data": {
+      "name": "Sharingan OS",
+      "purpose": "AI-powered cybersecurity operating system",
+      "inspiration": [
+        "AutoGPT",
+        "Kali Linux",
+        "Metasploit"
+      ],
+      "author": "Ben Sambe",
+      "version": "3.0.0"
+    },
+    "category": "core",
+    "priority": 100,
+    "created_at": "2026-01-14T20:48:58.938360",
+    "updated_at": "2026-01-14T20:48:59.223341",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "identity",
+      "purpose",
+      "version"
+    ],
+    "source": "system_init"
+  },
+  "security_security_defaults": {
+    "key": "security_security_defaults",
+    "data": {
+      "common_passwords": [
+        "admin",
+        "password",
+        "123456",
+        "root",
+        "user"
+      ],
+      "default_credentials": [
+        "admin:admin",
+        "root:root",
+        "user:password"
+      ],
+      "dangerous_ports": [
+        21,
+        22,
+        23,
+        25,
+        53,
+        80,
+        110,
+        143,
+        443,
+        993,
+        995
+      ],
+      "common_vulnerabilities": [
+        "SQL injection",
+        "XSS",
+        "CSRF",
+        "buffer overflow"
+      ]
+    },
+    "category": "security",
+    "priority": 95,
+    "created_at": "2026-01-14T20:48:58.939555",
+    "updated_at": "2026-01-14T20:48:59.244251",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "passwords",
+      "credentials",
+      "ports",
+      "vulnerabilities"
+    ],
+    "source": "security_init"
+  },
+  "security_network_basics": {
+    "key": "security_network_basics",
+    "data": {
+      "port_ranges": {
+        "well_known": "0-1023",
+        "registered": "1024-49151",
+        "dynamic": "49152-65535"
+      },
+      "common_services": {
+        "22": "SSH",
+        "80": "HTTP",
+        "443": "HTTPS",
+        "53": "DNS",
+        "25": "SMTP",
+        "110": "POP3",
+        "143": "IMAP",
+        "993": "IMAPS"
+      }
+    },
+    "category": "security",
+    "priority": 95,
+    "created_at": "2026-01-14T20:48:58.969187",
+    "updated_at": "2026-01-14T20:48:58.969187",
+    "success_rate": 0.0,
+    "usage_count": 0,
+    "mutations": 1,
+    "tags": [
+      "network",
+      "ports",
+      "services"
+    ],
+    "source": "network_init"
+  },
+  "performance_memory_optimization": {
+    "key": "performance_memory_optimization",
+    "data": {
+      "context_max_tokens": 100000,
+      "auto_compact_threshold": 0.9,
+      "memory_cleanup_interval": 3600,
+      "priority_levels": [
+        "CRITICAL",
+        "HIGH",
+        "MEDIUM",
+        "LOW",
+        "TEMPORARY"
+      ]
+    },
+    "category": "performance",
+    "priority": 90,
+    "created_at": "2026-01-14T20:48:59.023843",
+    "updated_at": "2026-01-14T20:48:59.023843",
+    "success_rate": 0.0,
+    "usage_count": 0,
+    "mutations": 1,
+    "tags": [
+      "memory",
+      "optimization",
+      "context"
+    ],
+    "source": "performance_init"
+  },
+  "feature_tool_integration": {
+    "key": "feature_tool_integration",
+    "data": {
+      "nmap_scanning": true,
+      "sqlmap_testing": true,
+      "hashcat_cracking": true,
+      "metasploit_exploitation": true,
+      "volatility_forensics": true
+    },
+    "category": "feature",
+    "priority": 70,
+    "created_at": "2026-01-14T20:48:59.042883",
+    "updated_at": "2026-01-14T20:48:59.042883",
+    "success_rate": 0.0,
+    "usage_count": 0,
+    "mutations": 1,
+    "tags": [
+      "tools",
+      "integration",
+      "kali"
+    ],
+    "source": "tools_init"
+  },
+  "feature_ai_autonomy": {
+    "key": "feature_ai_autonomy",
+    "data": {
+      "independent_responses": true,
+      "fake_detection": true,
+      "context_management": true,
+      "learning_system": true,
+      "multi_agent_support": true
+    },
+    "category": "feature",
+    "priority": 70,
+    "created_at": "2026-01-14T20:48:59.065108",
+    "updated_at": "2026-01-14T20:48:59.065108",
+    "success_rate": 0.0,
+    "usage_count": 0,
+    "mutations": 1,
+    "tags": [
+      "ai",
+      "autonomy",
+      "learning"
+    ],
+    "source": "ai_init"
+  },
+  "security_action_nmap_scan": {
+    "key": "security_action_nmap_scan",
+    "data": {
+      "action": "nmap_scan",
+      "result": {
+        "target": "localhost",
+        "ports_found": [
+          22,
+          80,
+          443
+        ]
+      },
+      "success": true,
+      "timestamp": "2026-01-14T20:50:03.956296",
+      "category": "security"
+    },
+    "category": "security",
+    "priority": 95,
+    "created_at": "2026-01-14T20:50:03.956352",
+    "updated_at": "2026-01-14T20:50:03.964795",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "learned",
+      "action",
+      "security"
+    ],
+    "source": "system"
+  },
+  "security_action_test_scan": {
+    "key": "security_action_test_scan",
+    "data": {
+      "action": "test_scan",
+      "result": {
+        "found": "open ports"
+      },
+      "success": true,
+      "timestamp": "2026-01-14T20:50:24.547143",
+      "category": "security"
+    },
+    "category": "security",
+    "priority": 95,
+    "created_at": "2026-01-14T20:50:24.547225",
+    "updated_at": "2026-01-14T20:50:24.565546",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "learned",
+      "action",
+      "security"
+    ],
+    "source": "system"
+  },
+  "security_action_web_security_scan": {
+    "key": "security_action_web_security_scan",
+    "data": {
+      "action": "web_security_scan",
+      "result": {
+        "target": "example.com",
+        "vulnerabilities_found": 2,
+        "severity": "medium"
+      },
+      "success": true,
+      "timestamp": "2026-01-14T21:05:16.140343",
+      "category": "security"
+    },
+    "category": "security",
+    "priority": 95,
+    "created_at": "2026-01-14T21:05:16.140406",
+    "updated_at": "2026-01-14T21:05:16.148037",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "learned",
+      "action",
+      "security"
+    ],
+    "source": "system"
+  },
+  "core_action_system_analysis": {
+    "key": "core_action_system_analysis",
+    "data": {
+      "action": "system_analysis",
+      "result": {
+        "components_tested": 5,
+        "all_passed": true
+      },
+      "success": true,
+      "timestamp": "2026-01-14T21:05:50.574247",
+      "category": "core"
+    },
+    "category": "core",
+    "priority": 100,
+    "created_at": "2026-01-14T21:05:50.574364",
+    "updated_at": "2026-01-14T21:05:50.586501",
+    "success_rate": 0.05,
+    "usage_count": 1,
+    "mutations": 1,
+    "tags": [
+      "learned",
+      "action",
+      "core"
+    ],
+    "source": "system"
+  }
+}

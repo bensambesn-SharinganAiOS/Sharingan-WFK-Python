@@ -1,0 +1,82 @@
+============================================================
+🔥 SHARINGAN OS - KALI SEQUENTIAL DOWNLOADER
+============================================================
+📥 Téléchargement un par un en arrière-plan
+============================================================
+📋 17 repositories à traiter
+\n🔄 Traitement: nmap
+----------------------------------------
+📥 Clonage nmap...
+✅ nmap cloné (75.7 MB en 32.2s)
+\n🔄 Traitement: masscan
+----------------------------------------
+📥 Clonage masscan...
+✅ masscan cloné (2.8 MB en 3.1s)
+\n🔄 Traitement: netdiscover
+----------------------------------------
+📥 Clonage netdiscover...
+✅ netdiscover cloné (2.2 MB en 2.1s)
+\n🔄 Traitement: nikto
+----------------------------------------
+📥 Clonage nikto...
+✅ nikto cloné (2.7 MB en 2.8s)
+\n🔄 Traitement: dirsearch
+----------------------------------------
+📥 Clonage dirsearch...
+✅ dirsearch cloné (0.8 MB en 3.0s)
+\n🔄 Traitement: gobuster
+----------------------------------------
+📥 Clonage gobuster...
+✅ gobuster cloné (1.2 MB en 4.4s)
+\n🔄 Traitement: ffuf
+----------------------------------------
+📥 Clonage ffuf...
+✅ ffuf cloné (0.8 MB en 1.6s)
+\n🔄 Traitement: hashcat
+----------------------------------------
+📥 Clonage hashcat...
+✅ hashcat cloné (95.3 MB en 26.1s)
+\n🔄 Traitement: john
+----------------------------------------
+📥 Clonage john...
+✅ john cloné (152.1 MB en 67.9s)
+\n🔄 Traitement: hydra
+----------------------------------------
+📥 Clonage hydra...
+✅ hydra cloné (3.5 MB en 4.7s)
+\n🔄 Traitement: sqlmap
+----------------------------------------
+📥 Clonage sqlmap...
+✅ sqlmap cloné (17.2 MB en 9.7s)
+\n🔄 Traitement: searchsploit
+----------------------------------------
+📥 Clonage searchsploit...
+✅ searchsploit cloné (0.0 MB en 1.6s)
+\n🔄 Traitement: aircrack-ng
+----------------------------------------
+📥 Clonage aircrack-ng...
+✅ aircrack-ng cloné (26.1 MB en 10.6s)
+\n🔄 Traitement: binwalk
+----------------------------------------
+📥 Clonage binwalk...
+✅ binwalk cloné (13.7 MB en 9.8s)
+\n🔄 Traitement: volatility
+----------------------------------------
+📥 Clonage volatility...
+✅ volatility cloné (10.5 MB en 3.7s)
+\n🔄 Traitement: theharvester
+----------------------------------------
+📥 Clonage theharvester...
+✅ theharvester cloné (3.6 MB en 6.1s)
+\n🔄 Traitement: dnsrecon
+----------------------------------------
+📥 Clonage dnsrecon...
+✅ dnsrecon cloné (2.3 MB en 2.9s)
+\n============================================================
+📊 RÉSULTATS FINAUX
+============================================================
+✅ Réussis: 17
+❌ Échoués: 0
+⏭️  Ignorés: 0
+📁 Répertoire: /root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/kali_repos
+============================================================

@@ -1,0 +1,261 @@
+{
+  "dnsrecon": {
+    "name": "dnsrecon",
+    "category": "enumeration",
+    "description": "DNS enumeration tool",
+    "installation_method": "pip",
+    "repository_url": null,
+    "package_name": "dnsrecon",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431180.4961212
+  },
+  "fierce": {
+    "name": "fierce",
+    "category": "enumeration",
+    "description": "DNS reconnaissance tool",
+    "installation_method": "git",
+    "repository_url": "https://github.com/mschwager/fierce.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-dnspython"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "dnsenum": {
+    "name": "dnsenum",
+    "category": "enumeration",
+    "description": "DNS enumeration tool",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "dnsenum",
+    "dependencies": [],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "theHarvester": {
+    "name": "theHarvester",
+    "category": "enumeration",
+    "description": "Email, domain and IP harvesting tool",
+    "installation_method": "git",
+    "repository_url": "https://github.com/laramies/theHarvester.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-requests"
+    ],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431180.6599324
+  },
+  "tcpdump": {
+    "name": "tcpdump",
+    "category": "monitoring",
+    "description": "Network packet analyzer",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "tcpdump",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431180.7822905
+  },
+  "ettercap": {
+    "name": "ettercap",
+    "category": "monitoring",
+    "description": "Network sniffer/interceptor",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "ettercap-graphical",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431180.9207788
+  },
+  "driftnet": {
+    "name": "driftnet",
+    "category": "monitoring",
+    "description": "Network image sniffer",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "driftnet",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431181.0643356
+  },
+  "wireshark": {
+    "name": "wireshark",
+    "category": "monitoring",
+    "description": "Network protocol analyzer",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "wireshark",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431181.1916008
+  },
+  "Covenant": {
+    "name": "Covenant",
+    "category": "post-exploit",
+    "description": "C2 framework (.NET)",
+    "installation_method": "git",
+    "repository_url": "https://github.com/cobbr/Covenant.git",
+    "package_name": null,
+    "dependencies": [
+      "dotnet-sdk-6.0"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "Empire": {
+    "name": "Empire",
+    "category": "post-exploit",
+    "description": "Post-exploitation framework",
+    "installation_method": "git",
+    "repository_url": "https://github.com/EmpireProject/Empire.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-pip"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "Meterpreter": {
+    "name": "Meterpreter",
+    "category": "post-exploit",
+    "description": "Metasploit payload",
+    "installation_method": "metasploit",
+    "repository_url": null,
+    "package_name": "metasploit-framework",
+    "dependencies": [],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "faraday": {
+    "name": "faraday",
+    "category": "reporting",
+    "description": "Collaborative penetration testing tool",
+    "installation_method": "git",
+    "repository_url": "https://github.com/infobyte/faraday.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-pip",
+      "postgresql"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "pipal": {
+    "name": "pipal",
+    "category": "reporting",
+    "description": "Password analysis tool",
+    "installation_method": "git",
+    "repository_url": "https://github.com/digininja/pipal.git",
+    "package_name": null,
+    "dependencies": [
+      "ruby"
+    ],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431181.2108958
+  },
+  "Dradis": {
+    "name": "Dradis",
+    "category": "reporting",
+    "description": "Collaboration and reporting framework",
+    "installation_method": "git",
+    "repository_url": "https://github.com/dradis/dradis-ce.git",
+    "package_name": null,
+    "dependencies": [
+      "ruby",
+      "bundler",
+      "nodejs",
+      "postgresql"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "king-phisher": {
+    "name": "king-phisher",
+    "category": "social-engineering",
+    "description": "Phishing campaign toolkit",
+    "installation_method": "git",
+    "repository_url": "https://github.com/rsmusllp/king-phisher.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-gi"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "Social-Engineer Toolkit": {
+    "name": "Social-Engineer Toolkit",
+    "category": "social-engineering",
+    "description": "Social engineering toolkit",
+    "installation_method": "git",
+    "repository_url": "https://github.com/trustedsec/social-engineer-toolkit.git",
+    "package_name": null,
+    "dependencies": [
+      "python3",
+      "python3-pip"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "OpenVAS": {
+    "name": "OpenVAS",
+    "category": "vulnerability",
+    "description": "Open Vulnerability Assessment System",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "openvas",
+    "dependencies": [
+      "postgresql",
+      "redis-server"
+    ],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  },
+  "radare2": {
+    "name": "radare2",
+    "category": "reverse-engineering",
+    "description": "Reverse engineering framework",
+    "installation_method": "apt",
+    "repository_url": null,
+    "package_name": "radare2",
+    "dependencies": [],
+    "installed": true,
+    "version": null,
+    "last_check": 1768431181.5326378
+  },
+  "Ghidra": {
+    "name": "Ghidra",
+    "category": "reverse-engineering",
+    "description": "Software reverse engineering suite",
+    "installation_method": "manual",
+    "repository_url": "https://github.com/NationalSecurityAgency/ghidra/releases",
+    "package_name": null,
+    "dependencies": [],
+    "installed": false,
+    "version": null,
+    "last_check": null
+  }
+}

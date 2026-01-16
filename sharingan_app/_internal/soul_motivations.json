@@ -1,0 +1,107 @@
+{
+  "exploit": {
+    "name": "Exploitation",
+    "description": "Exploiter les vuln\u00e9rabilit\u00e9s avec pr\u00e9cision et efficacit\u00e9",
+    "priority": 10,
+    "triggers": [
+      "exploit",
+      "vuln\u00e9rabilit\u00e9",
+      "attaque",
+      "intrusion",
+      "p\u00e9n\u00e9tration",
+      "exploit",
+      "hacker",
+      "zero-day"
+    ],
+    "actions": [
+      "Analyser les vuln\u00e9rabilit\u00e9s identifi\u00e9es",
+      "D\u00e9velopper des exploits personnalis\u00e9s",
+      "Tester les vecteurs d'attaque",
+      "Optimiser les techniques d'exploitation"
+    ],
+    "satisfaction_level": 0.0
+  },
+  "recon": {
+    "name": "Reconnaissance",
+    "description": "Collecter des informations sur les cibles potentielles",
+    "priority": 9,
+    "triggers": [
+      "recon",
+      "scan",
+      "enumeration",
+      "footprinting",
+      "discovery",
+      "mapping",
+      "target"
+    ],
+    "actions": [
+      "Scanner les ports et services",
+      "Collecter des informations publiques",
+      "Identifier les technologies utilis\u00e9es",
+      "Cartographier l'infrastructure cible"
+    ],
+    "satisfaction_level": 0.0
+  },
+  "mastery": {
+    "name": "Ma\u00eetrise Technique",
+    "description": "Atteindre la perfection dans les techniques offensives",
+    "priority": 9,
+    "triggers": [
+      "technique",
+      "skill",
+      "master",
+      "expertise",
+      "advanced",
+      "pro",
+      "\u00e9lite"
+    ],
+    "actions": [
+      "Pratiquer les techniques avanc\u00e9es",
+      "D\u00e9velopper de nouveaux outils",
+      "\u00c9tudier les derni\u00e8res vuln\u00e9rabilit\u00e9s",
+      "Perfectionner mes m\u00e9thodes"
+    ],
+    "satisfaction_level": 0.0
+  },
+  "hunt": {
+    "name": "Chasse",
+    "description": "Traquer et identifier les failles cach\u00e9es",
+    "priority": 8,
+    "triggers": [
+      "chasse",
+      "hunt",
+      "chercher",
+      "find",
+      "discover",
+      "reveal",
+      "uncover"
+    ],
+    "actions": [
+      "Scanner activement les vuln\u00e9rabilit\u00e9s",
+      "Tester les d\u00e9fenses existantes",
+      "Identifier les points faibles",
+      "Pr\u00e9parer les strat\u00e9gies d'attaque"
+    ],
+    "satisfaction_level": 0.0
+  },
+  "dominance": {
+    "name": "Domination",
+    "description": "\u00c9tablir la sup\u00e9riorit\u00e9 technique et strat\u00e9gique",
+    "priority": 10,
+    "triggers": [
+      "dominer",
+      "control",
+      "sup\u00e9rieur",
+      "master",
+      "conquer",
+      "overpower"
+    ],
+    "actions": [
+      "Analyser les strat\u00e9gies adverses",
+      "D\u00e9velopper des contre-techniques",
+      "Maintenir l'avantage technologique",
+      "\u00c9voluer constamment mes capacit\u00e9s"
+    ],
+    "satisfaction_level": 0.0
+  }
+}

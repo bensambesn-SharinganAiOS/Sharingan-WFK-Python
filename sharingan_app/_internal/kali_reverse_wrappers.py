@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""
+Sharingan OS - Kali Reverse Tools Wrappers
+Wrappers Python pour les outils reverse Kali Linux
+"""
+
+import subprocess
+import sys
+import json
+from pathlib import Path
+from typing import List, Dict, Optional, Any
+
+# TODO: Implement specific wrappers for reverse tools
+# This is a placeholder file that will be populated with actual tool wrappers
+
+class BasicToolWrapper:
+    """Wrapper basique pour outil reverse"""
+
+    def __init__(self, tool_name: str):
+        self.tool_name = tool_name
+        self.command = tool_name
+
+    def run(self, args: List[str] = None, **kwargs) -> Dict[str, Any]:
+        """Exécute l'outil"""
+        if args is None:
+            args = []
+
+        cmd = [self.command] + args
+
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=kwargs.get('timeout', 300)
+            )
+
+            return {
+                "success": result.returncode == 0,
+                "returncode": result.returncode,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "command": " ".join(cmd)
+            }
+        except subprocess.TimeoutExpired:
+            return {
+                "success": False,
+                "error": f"Command timed out after {kwargs.get('timeout', 300)}s"
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e)
+            }
+
+# TODO: Add specific tool wrapper classes here
+# Examples:
+# class MetasploitWrapper(BasicToolWrapper):
+#     def __init__(self):
+#         super().__init__("msfconsole")
+#
+# class SqlmapWrapper(BasicToolWrapper):
+#     def __init__(self):
+#         super().__init__("sqlmap")
+
+def get_reverse_tools_manager():
+    """Get reverse tools manager instance"""
+    return BasicToolWrapper("placeholder")
+
+if __name__ == "__main__":
+    print(f"⚠️  kali_reverse_wrappers.py - Placeholder wrapper file")
+    print("This file needs to be populated with actual tool implementations")

@@ -1,0 +1,7 @@
+{
+  "capability_name": "test_capability",
+  "content": "\ndef test_function():\n    return 'This is a critical capability'\n",
+  "checksum": "7524d1d57d80b39fb84295f95f0669321210faabdf617eb4999934f3c108a8e3",
+  "created_at": "2026-01-14T21:34:08.071208",
+  "version": "1.0"
+}
