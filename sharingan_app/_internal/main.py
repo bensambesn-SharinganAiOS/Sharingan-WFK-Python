@@ -76,6 +76,12 @@ class SharinganCore:
             logger.warning(f"Kali Tool Manager failed: {e}")
             self.kali_manager = None
 
+        # === AUTO-DÉTECTION DES OUTILS SUR L'HÔTE ===
+        self.host_tools = {}  # Outils détectés sur l'hôte
+        self.project_tools = {}  # Outils du projet
+        self._detect_all_tools()
+        logger.info(f"Tool auto-detection: {len(self.host_tools)} from host, {len(self.project_tools)} from project")
+
         # Cloud Integration System
         try:
             cloud_module = importlib.import_module('cloud_integration_manager')
@@ -216,6 +222,104 @@ class SharinganCore:
         # Status
         self.initialized = True
         logger.info("Sharingan Core FULLY initialized successfully")
+    
+    # =========================================================================
+    # AUTO-DÉTECTION DES OUTILS (PORTABLE)
+    # =========================================================================
+    
+    def _detect_all_tools(self):
+        """Détecter automatiquement tous les outils disponibles sur l'hôte"""
+        import subprocess
+        
+        self.host_tools = {}
+        self.project_tools = {}
+        
+        # Outils à vérifier sur l'hôte
+        HOST_TOOLS_TO_CHECK = [
+            ("nmap", "enumeration", "apt"),
+            ("masscan", "enumeration", "apt"),
+            ("netcat", "utility", "apt"),
+            ("nc", "utility", "apt"),
+            ("netdiscover", "enumeration", "apt"),
+            ("gobuster", "enumeration", "apt"),
+            ("ffuf", "enumeration", "apt"),
+            ("wfuzz", "enumeration", "apt"),
+            ("dirb", "enumeration", "apt"),
+            ("nikto", "vulnerability", "apt"),
+            ("sqlmap", "vulnerability", "apt"),
+            ("hydra", "password", "apt"),
+            ("john", "password", "apt"),
+            ("hashcat", "password", "apt"),
+            ("tcpdump", "monitoring", "apt"),
+            ("wireshark", "monitoring", "apt"),
+            ("tshark", "monitoring", "apt"),
+            ("ettercap", "monitoring", "apt"),
+            ("aircrack-ng", "wireless", "apt"),
+            ("wifite", "wireless", "apt"),
+            ("binwalk", "forensics", "apt"),
+            ("volatility", "forensics", "apt"),
+            ("exiftool", "forensics", "apt"),
+            ("foremost", "forensics", "apt"),
+        ]
+        
+        # Vérifier chaque outil sur l'hôte
+        for tool_name, category, method in HOST_TOOLS_TO_CHECK:
+            result = subprocess.run(
+                ['which', tool_name],
+                capture_output=True, text=True, timeout=5
+            )
+            if result.returncode == 0:
+                self.host_tools[tool_name] = {
+                    "name": tool_name,
+                    "category": category,
+                    "method": method,
+                    "source": "host",
+                    "available": True
+                }
+        
+        # Vérifier les outils du projet (/tools/)
+        tools_dir = Path(__file__).parent.parent / "tools"
+        if tools_dir.exists():
+            for item in tools_dir.iterdir():
+                if item.is_dir():
+                    self.project_tools[item.name] = {
+                        "name": item.name,
+                        "category": "project",
+                        "method": "git",
+                        "source": "project",
+                        "available": True
+                    }
+    
+    def get_all_available_tools(self) -> Dict[str, Dict]:
+        """Renvoyer TOUS les outils disponibles (hôte + projet)"""
+        return {**self.host_tools, **self.project_tools}
+    
+    def get_tools_by_category(self) -> Dict[str, List[str]]:
+        """Renvoyer les outils par catégorie"""
+        tools = self.get_all_available_tools()
+        by_cat = {}
+        for tool_name, info in tools.items():
+            cat = info["category"]
+            if cat not in by_cat:
+                by_cat[cat] = []
+            by_cat[cat].append(tool_name)
+        return by_cat
+    
+    def get_tool_status(self, tool_name: str) -> Dict:
+        """Vérifier si un outil est disponible"""
+        if tool_name in self.host_tools:
+            return self.host_tools[tool_name]
+        if tool_name in self.project_tools:
+            return self.project_tools[tool_name]
+        return {"name": tool_name, "available": False, "source": "unknown"}
+    
+    def count_available_tools(self) -> Dict[str, int]:
+        """Compter les outils disponibles"""
+        return {
+            "host": len(self.host_tools),
+            "project": len(self.project_tools),
+            "total": len(self.host_tools) + len(self.project_tools)
+        }
     
     # =========================================================================
     # AI METHODS
