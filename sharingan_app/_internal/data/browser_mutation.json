@@ -1,0 +1,236 @@
+{
+  "mutation_id": "browser_automation_20260117",
+  "type": "capability_addition",
+  "category": "web_automation",
+  "information": {
+    "name": "Browser Web Navigation",
+    "description": "Capacit\u00e9 compl\u00e8te de navigation web automatis\u00e9e",
+    "version": "1.0.0",
+    "created_at": "2026-01-17T03:11:33.022987",
+    "learning_source": "manual_integration_testing"
+  },
+  "capabilities": {
+    "navigation": {
+      "description": "Navigation vers n'importe quelle URL",
+      "methods": [
+        "Page.navigate",
+        "navigate()"
+      ],
+      "examples": [
+        "https://google.com",
+        "https://bbc.com/afrique",
+        "https://github.com"
+      ]
+    },
+    "search": {
+      "description": "Recherche sur le web",
+      "methods": [
+        "fill search field + Enter",
+        "Google search"
+      ],
+      "examples": [
+        "S\u00e9n\u00e9gal actualit\u00e9",
+        "GitHub OAuth"
+      ]
+    },
+    "content_reading": {
+      "description": "Lecture et extraction de contenu",
+      "methods": [
+        "document.title",
+        "document.body.innerText",
+        "querySelectorAll('p')"
+      ],
+      "examples": [
+        "Extraction d'articles BBC",
+        "Titres de r\u00e9sultats Google"
+      ]
+    },
+    "scrolling": {
+      "description": "D\u00e9filement dans les pages",
+      "methods": [
+        "window.scrollBy(0, pixels)",
+        "scrollTo()"
+      ],
+      "examples": [
+        "Scroll 400px",
+        "Scroll to bottom"
+      ]
+    },
+    "clicking": {
+      "description": "Clic sur les \u00e9l\u00e9ments",
+      "methods": [
+        "element.click()",
+        "JavaScript click"
+      ],
+      "examples": [
+        "Clic sur boutons Google",
+        "Clic sur liens d'articles"
+      ]
+    },
+    "form_filling": {
+      "description": "Remplissage de formulaires",
+      "methods": [
+        "input.value = 'text'",
+        "send_keys()"
+      ],
+      "examples": [
+        "Champs de recherche",
+        "Formulaires d'upload"
+      ]
+    },
+    "screenshot": {
+      "description": "Captures d'\u00e9cran",
+      "methods": [
+        "driver.save_screenshot()"
+      ],
+      "examples": [
+        "Screenshot de l'\u00e9tat de la page"
+      ]
+    },
+    "tab_management": {
+      "description": "Gestion des onglets",
+      "methods": [
+        "window.open()",
+        "switch_to.window()"
+      ],
+      "examples": [
+        "Nouvel onglet BBC",
+        "Retour onglet Google"
+      ]
+    },
+    "file_upload": {
+      "description": "Upload de fichiers",
+      "methods": [
+        "element.send_keys('/path/file')"
+      ],
+      "note": "Requiert Selenium (pas CDP seul)",
+      "examples": [
+        "Upload vers tmpfiles.org",
+        "Upload vers catbox.moe"
+      ]
+    },
+    "javascript_execution": {
+      "description": "Ex\u00e9cution de JavaScript personnalis\u00e9",
+      "methods": [
+        "Runtime.evaluate",
+        "execute_js()"
+      ],
+      "examples": [
+        "Clic via JS",
+        "Extraction de donn\u00e9es",
+        "Scroll JS"
+      ]
+    }
+  },
+  "technologies_used": {
+    "selenium": {
+      "role": "Contr\u00f4le principal du navigateur",
+      "strengths": [
+        "Upload de fichiers",
+        "Formulaires",
+        "Screenshots",
+        "\u00c9l\u00e9ments dynamiques"
+      ],
+      "limitations": [
+        "Session li\u00e9e au processus"
+      ]
+    },
+    "chrome_devtools_protocol": {
+      "role": "Communication directe avec Chrome",
+      "strengths": [
+        "Session ind\u00e9pendante",
+        "Contr\u00f4le pr\u00e9cis",
+        "WebSocket"
+      ],
+      "limitations": [
+        "Impossible d'uploader des fichiers locaux"
+      ]
+    }
+  },
+  "test_results": {
+    "navigation": "\u2705 PASSED",
+    "search": "\u2705 PASSED",
+    "reading": "\u2705 PASSED",
+    "scrolling": "\u2705 PASSED",
+    "clicking": "\u2705 PASSED",
+    "form_filling": "\u2705 PASSED",
+    "screenshot": "\u2705 PASSED",
+    "tab_management": "\u2705 PASSED",
+    "file_upload": "\u2705 PASSED",
+    "javascript": "\u2705 PASSED"
+  },
+  "limitations_learned": {
+    "cannot_do": [
+      "R\u00e9soudre les CAPTCHA automatiquement",
+      "Connexion OAuth automatique (2FA)",
+      "Upload via CDP seul (besoin Selenium)",
+      "Drag & drop pr\u00e9cis",
+      "Contr\u00f4le avanc\u00e9 vid\u00e9o/audio",
+      "Acc\u00e8s Shadow DOM direct",
+      "Installation d'extensions"
+    ],
+    "workarounds": [
+      "Utiliser Selenium pour les uploads",
+      "Navigation manuelle pour CAPTCHA",
+      "CDP pour navigation + Selenium pour upload"
+    ]
+  },
+  "files_involved": [
+    "/root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/browser_controller_complete.py",
+    "/root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/browser_tool_integration.py",
+    "/root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/cdp_control.py",
+    "/root/Projets/Sharingan-WFK-Python/WEB_NAVIGATION_DOCUMENTATION.md",
+    "/root/Projets/Sharingan-WFK-Python/BROWSER_CAPABILITIES.md"
+  ],
+  "successful_tests": [
+    {
+      "test": "Navigation vers Google",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    },
+    {
+      "test": "Recherche S\u00e9n\u00e9gal actualit\u00e9",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    },
+    {
+      "test": "Lecture articles BBC Afrique",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    },
+    {
+      "test": "Scroll et navigation",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    },
+    {
+      "test": "Upload vers tmpfiles.org",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    },
+    {
+      "test": "Multiples onglets",
+      "result": "\u2705",
+      "date": "2026-01-17"
+    }
+  ],
+  "metrics": {
+    "test_count": 10,
+    "success_rate": "100%",
+    "features_implemented": 10,
+    "limitations_identified": 7,
+    "documentation_pages": 2
+  },
+  "evolution": {
+    "is_evolution": true,
+    "evolution_type": "capability_addition",
+    "previous_version": "0.0.0",
+    "new_version": "1.0.0",
+    "confidence": 0.95,
+    "impact": "high",
+    "user_approved": true
+  },
+  "status": "active",
+  "validated_at": "2026-01-17T03:11:33.023071",
+  "validated_by": "user_feedback"
+}

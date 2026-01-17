@@ -36,7 +36,8 @@ class ToolRegistry:
                 "wireless": {"count": 0, "description": "Wireless"},
                 "audit": {"count": 0, "description": "Security audit"},
                 "ai": {"count": 0, "description": "AI"},
-                "system": {"count": 0, "description": "System"}
+                "system": {"count": 0, "description": "System"},
+                "browser": {"count": 0, "description": "Browser automation"}
             }
         }
         
@@ -117,7 +118,15 @@ class ToolRegistry:
             "capabilities": ["monitoring", "ids"],
             "source": "internal"
         }
-        
+
+        tools["browser_controller"] = {
+            "name": "browser_controller",
+            "category": "browser",
+            "path": str(base / "browser_controller.py"),
+            "capabilities": ["browser_automation", "firefox_control", "form_filling"],
+            "source": "internal"
+        }
+
         return tools
     
     def _guess_category(self, name: str) -> str:
@@ -129,6 +138,7 @@ class ToolRegistry:
         if n in ["binwalk", "volatility", "exiftool", "foremost", "scapy"]: return "forensics"
         if n in ["aircrack", "wifite", "bettercap"]: return "wireless"
         if n in ["lynis", "rkhunter"]: return "audit"
+        if n in ["browser", "browser_controller"]: return "browser"
         return "network"
     
     def rescan(self):

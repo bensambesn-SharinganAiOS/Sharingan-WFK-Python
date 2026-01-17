@@ -426,8 +426,22 @@ TOOLS = [
         name="selenium",
         description="Automation de navigateur",
         category="Browser",
-        required_for=["browser_selenium"],
+        required_for=["browser_selenium", "browser_launch", "browser_navigate"],
         pip_package="selenium"
+    ),
+    Tool(
+        name="webdriver-manager",
+        description="Gestion automatique des WebDrivers",
+        category="Browser",
+        required_for=["browser_launch", "browser_navigate"],
+        pip_package="webdriver-manager"
+    ),
+    Tool(
+        name="geckodriver",
+        description="Firefox WebDriver pour Selenium",
+        category="Browser",
+        required_for=["browser_launch", "browser_navigate"],
+        apt_package="firefox-geckodriver"
     ),
     Tool(
         name="playwright",

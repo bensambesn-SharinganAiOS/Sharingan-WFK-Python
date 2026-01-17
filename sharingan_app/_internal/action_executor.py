@@ -23,6 +23,7 @@ class ActionType(Enum):
     ANALYSIS = "analysis"
     REPORT = "report"
     CLEANUP = "cleanup"
+    BROWSER = "browser"
 
 
 @dataclass
@@ -44,6 +45,9 @@ class ActionExecutor:
     def __init__(self):
         self.execution_history: List[ExecutedAction] = []
         self.kali_tools = self._initialize_kali_tools()
+        # Navigateur partagé entre les actions
+        self._browser_controller = None
+        self._browser_launched = False
         
     def _initialize_kali_tools(self) -> Dict[str, Dict]:
         """Initialize available Kali tools"""
@@ -146,11 +150,83 @@ class ActionExecutor:
         
         # GOBUSTER
         if "gobuster" in action_lower:
+            target = "unknown"
             for part in action_original.split():
                 if part.startswith("http://") or part.startswith("https://"):
                     target = part.replace("http://", "").replace("https://", "").rstrip('/')
-                    return ActionType.ENUMERATION, target, {"tool": "gobuster"}
-            return ActionType.ENUMERATION, "unknown", {"tool": "gobuster"}
+                    break
+            return ActionType.ENUMERATION, target, {"tool": "gobuster"}
+        
+        # ========== NAVIGATEUR - Commandes en langage naturel ==========
+        browser_navigation_keywords = ["va sur", "navigue vers", "ouvre", "aller à", "ouvre la page"]
+        browser_search_keywords = ["cherche", "recherche sur google", "cherche sur le web"]
+        browser_read_keywords = ["lis", "lit la page", "lis l'article", "affiche le contenu"]
+        browser_scroll_keywords = ["scroll", "défile", "descends", "monte"]
+        browser_click_keywords = ["clic", "clique sur", "click sur"]
+        browser_screenshot_keywords = ["capture", "screenshot", "prends une photo"]
+        browser_tab_keywords = ["nouvel onglet", "nouveau onglet", "ouvre un nouvel onglet"]
+        browser_upload_keywords = ["upload", "télécharge un fichier", "envoie un fichier"]
+        browser_js_keywords = ["execute js", "exécute javascript", "javascript"]
+        
+        import re
+        
+        # Vérifier chaque catégorie de commande navigateur
+        if any(kw in action_lower for kw in browser_navigation_keywords):
+            url_match = re.search(r'https?://[^\s]+', action_original)
+            url = url_match.group() if url_match else ""
+            if url:
+                return ActionType.BROWSER, url, {"browser_action": "navigate", "url": url}
+            sites = {
+                "google": "https://google.com", "youtube": "https://youtube.com",
+                "github": "https://github.com", "bbc": "https://www.bbc.com/afrique",
+                "facebook": "https://facebook.com", "twitter": "https://twitter.com"
+            }
+            for site, site_url in sites.items():
+                if site in action_lower:
+                    return ActionType.BROWSER, site, {"browser_action": "navigate", "url": site_url}
+            return ActionType.BROWSER, "google.com", {"browser_action": "navigate", "url": "https://google.com"}
+        
+        if any(kw in action_lower for kw in browser_search_keywords):
+            query = action_original
+            for kw in ["cherche", "recherche", "sur google", "sur le web"]:
+                query = query.replace(kw, "").strip()
+            return ActionType.BROWSER, "search", {"browser_action": "search", "query": query}
+        
+        if any(kw in action_lower for kw in browser_read_keywords):
+            url_match = re.search(r'https?://[^\s]+', action_original)
+            url = url_match.group() if url_match else ""
+            if url:
+                return ActionType.BROWSER, url, {"browser_action": "read", "url": url}
+            return ActionType.BROWSER, "current", {"browser_action": "read"}
+        
+        if any(kw in action_lower for kw in browser_scroll_keywords):
+            pixels = 400
+            if "haut" in action_lower or "monte" in action_lower:
+                pixels = -400
+            return ActionType.BROWSER, "page", {"browser_action": "scroll", "pixels": pixels}
+        
+        if any(kw in action_lower for kw in browser_click_keywords):
+            return ActionType.BROWSER, "element", {"browser_action": "click"}
+        
+        if any(kw in action_lower for kw in browser_screenshot_keywords):
+            path = "/tmp/sharingan_screenshot.png"
+            return ActionType.BROWSER, "screenshot", {"browser_action": "screenshot", "path": path}
+        
+        if any(kw in action_lower for kw in browser_tab_keywords):
+            url_match = re.search(r'https?://[^\s]+', action_original)
+            url = url_match.group() if url_match else "about:blank"
+            return ActionType.BROWSER, url, {"browser_action": "new_tab", "url": url}
+        
+        if any(kw in action_lower for kw in browser_upload_keywords):
+            file_match = re.search(r'/[^\s]+', action_original)
+            file_path = file_match.group() if file_match else "/tmp/test_image.jpg"
+            return ActionType.BROWSER, "upload", {"browser_action": "upload", "file_path": file_path}
+        
+        if any(kw in action_lower for kw in browser_js_keywords):
+            js_code = action_original
+            for kw in ["execute", "exécute", "javascript", "js"]:
+                js_code = js_code.replace(kw, "").strip()
+            return ActionType.BROWSER, "js", {"browser_action": "execute_js", "script": js_code}
         
         # Fallback par analyse du contenu
         import re
@@ -217,6 +293,8 @@ class ActionExecutor:
             return self._execute_exploit(target, params)
         elif action_type == ActionType.ENUMERATION:
             return self._execute_enumeration(target, params)
+        elif action_type == ActionType.BROWSER:
+            return self._execute_browser(target, params)
         else:
             return self._execute_analysis(target, params)
     
@@ -275,6 +353,127 @@ class ActionExecutor:
             cmd = f"whois {target}"
         
         return self._run_command(cmd, "enumeration", target)
+    
+    def _execute_browser(self, target: str, params: Dict) -> Dict[str, Any]:
+        """Execute browser automation action - USES SHARED CDP BROWSER"""
+        browser_action = params.get("browser_action", "navigate")
+        
+        try:
+            from sharingans_browser_shared import get_browser, ensure_browser_connected
+            
+            async def execute_browser_action():
+                browser = get_browser()
+                connected = await ensure_browser_connected(timeout=10.0)
+                
+                if not connected:
+                    return {"status": "error", "message": "Failed to connect to shared browser on port 9999"}
+                
+                br = browser.br  # Utiliser br (propriété de BrowserAPI)
+                result = {}
+                
+                if browser_action == "navigate":
+                    url = params.get("url", "https://google.com")
+                    success = await br.navigate(url)
+                    result = {
+                        "status": "success" if success else "error",
+                        "action": "navigate",
+                        "url": url,
+                        "current_url": await br.get_url(),
+                        "title": await br.get_title()
+                    }
+                
+                elif browser_action == "search":
+                    query = params.get("query", "")
+                    await br.navigate("https://www.google.com")
+                    await asyncio.sleep(1)
+                    typed = await br.type_text(query, "input[name='q']")
+                    if typed:
+                        await br.press_key("Enter")
+                    await asyncio.sleep(2)
+                    result = {
+                        "status": "success",
+                        "action": "search",
+                        "query": query,
+                        "url": await br.get_url(),
+                        "title": await br.get_title()
+                    }
+                
+                elif browser_action == "read":
+                    url = params.get("url", "")
+                    if url:
+                        await br.navigate(url)
+                        await asyncio.sleep(3)
+                    text = await br.get_text("article", max_length=2000)
+                    result = {
+                        "status": "success",
+                        "action": "read",
+                        "title": await br.get_title(),
+                        "text": text,
+                        "url": await br.get_url()
+                    }
+                
+                elif browser_action == "scroll":
+                    pixels = params.get("pixels", 400)
+                    await br.scroll(0, pixels, times=3, delay=0.5)
+                    result = {
+                        "status": "success",
+                        "action": "scroll",
+                        "pixels": pixels * 3,
+                        "url": await br.get_url()
+                    }
+                
+                elif browser_action == "click":
+                    selector = params.get("selector", "button, a")
+                    success = await br.click(selector)
+                    await asyncio.sleep(1)
+                    result = {
+                        "status": "success" if success else "error",
+                        "action": "click",
+                        "url": await br.get_url()
+                    }
+                
+                elif browser_action == "screenshot":
+                    path = params.get("path", "/tmp/sharingan_screenshot.png")
+                    success = await br.get_screenshot(path)
+                    result = {
+                        "status": "success" if success else "error",
+                        "action": "screenshot",
+                        "path": path,
+                        "url": await br.get_url()
+                    }
+                
+                elif browser_action == "new_tab":
+                    url = params.get("url", "about:blank")
+                    await br.execute_js(f"window.open('{url}', '_blank')")
+                    await asyncio.sleep(2)
+                    result = {
+                        "status": "success",
+                        "action": "new_tab",
+                        "url": url,
+                        "current_url": await br.get_url()
+                    }
+                
+                elif browser_action == "execute_js":
+                    script = params.get("script", "return document.title")
+                    js_result = await br.execute_js(script)
+                    result = {
+                        "status": "success",
+                        "action": "execute_js",
+                        "result": js_result,
+                        "url": await br.get_url()
+                    }
+                
+                else:
+                    result = {"status": "error", "message": f"Unknown browser action: {browser_action}"}
+                
+                return result
+            
+            return asyncio.run(execute_browser_action())
+            
+        except ImportError:
+            return {"status": "error", "message": "sharingans_browser_shared module not found"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
     
     def _execute_analysis(self, target: str, params: Dict) -> Dict[str, Any]:
         """Execute general analysis - delegate to appropriate tool or run directly"""

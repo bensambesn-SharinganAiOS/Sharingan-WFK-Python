@@ -43,6 +43,7 @@ class SharinganOS:
         self.base_dir = Path(__file__).parent
         self.data_dir = self.base_dir / "data"
         self.data_dir.mkdir(exist_ok=True)
+        self.browser_ctrl = None
 
         # Initialize tool registry
         self.tool_registry = {
@@ -61,7 +62,9 @@ class SharinganOS:
             "memory": ["ai_memory_store", "ai_memory_retrieve"],
             "akatsuki": ["akatsuki_status", "akatsuki_deploy", "akatsuki_execute"],
             "godmod": ["godmod_analyze", "godmod_query"],
-            "browser": ["browser_navigate", "browser_screenshot", "browser_execute_js"]
+            "browser": ["browser_launch", "browser_navigate", "browser_click", "browser_fill",
+                       "browser_get_source", "browser_screenshot", "browser_new_tab",
+                       "browser_switch_tab", "browser_close", "browser_execute_js"]
         }
 
     # =========================================================================
@@ -773,70 +776,132 @@ Réponse:"""
     # BROWSER AUTOMATION
     # =========================================================================
 
-    def browser_navigate(self, url: str, browser: str = "firefox") -> str:
-        """Navigate browser to URL"""
-        cmd = [browser, url]
-        subprocess.run(cmd, capture_output=True, text=True)
-        return f"Opened {url} in {browser}"
-
-    def browser_screenshot(self, output: str = "/tmp/screenshot.png") -> str:
-        """Take screenshot"""
-        cmd = ["scrot", output]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        return output if result.returncode == 0 else "Failed"
-
-    def browser_execute_js(self, script: str) -> str:
-        """Execute JavaScript in browser"""
-        return f"JavaScript execution: {script}"
-
-    def browser_selenium(self, url: str, action: str = "get", timeout: int = 30) -> Dict:
-        """Browser automation with Selenium"""
+    def browser_launch(self, url: Optional[str] = None, browser: str = "auto", 
+                       headless: bool = False) -> Dict:
+        """
+        Launch browser (Firefox or Chrome). 
+        'auto' mode tries Chrome first, then Firefox.
+        """
         try:
-            from selenium import webdriver
-            from selenium.webdriver.common.by import By  # noqa: F401
-            from selenium.webdriver.support.ui import WebDriverWait  # noqa: F401
-            from selenium.webdriver.support import expected_conditions as EC  # noqa: F401
-
-            driver = webdriver.Chrome()
-            if action == "get":
-                driver.get(url)
-            elif action == "screenshot":
-                driver.get(url)
-                driver.save_screenshot("/tmp/selenium_screenshot.png")
-            elif action == "source":
-                driver.get(url)
-                return {"source": driver.page_source}
-
-            driver.quit()
-            return {"status": "success", "action": action}
+            from browser_controller import get_browser_controller
+            
+            if browser == "auto":
+                browser = "chrome"
+            
+            self.browser_ctrl = get_browser_controller(browser=browser, headless=headless)
+            result = self.browser_ctrl.launch_browser(url)
+            return result
+            
         except ImportError:
-            return {"error": "selenium not installed"}
-        except Exception as e:
-            return {"error": str(e)}
+            return {"status": "error", "message": "browser_controller module not found"}
 
-    def browser_headless(self, url: str, output: str = "/tmp/headless.pdf") -> str:
-        """Headless browser with wkhtmltopdf"""
-        cmd = ["wkhtmltopdf", url, output]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        return output if result.returncode == 0 else f"Failed: {result.stderr}"
+    def browser_navigate(self, url: str) -> Dict:
+        """Navigate to URL in opened browser"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched. Use browser_launch() first."}
+        return self.browser_ctrl.navigate(url)
 
-    def browser_curl(self, url: str, method: str = "GET",
-                     headers: Optional[Dict] = None,
-                     data: Optional[str] = None) -> Dict:
-        """HTTP request with curl"""
-        cmd = ["curl", "-X", method, "-s", "-w", "\n%{http_code}"]
-        if headers:
-            for k, v in headers.items():
-                cmd.extend(["-H", f"{k}: {v}"])
-        if data:
-            cmd.extend(["-d", data])
-        cmd.append(url)
+    def browser_click(self, selector: str, by: str = "css") -> Dict:
+        """Click on element"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.click_element(selector, by=by)
 
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        return {
-            "output": result.stdout,
-            "code": result.returncode
-        }
+    def browser_fill(self, selector: str, value: str, by: str = "css") -> Dict:
+        """Fill form field"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.fill_form(selector, value, by=by)
+
+    def browser_get_source(self) -> Dict:
+        """Get page HTML source"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.get_page_source()
+
+    def browser_new_tab(self, url: Optional[str] = None) -> Dict:
+        """Open new tab"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.new_tab(url)
+
+    def browser_switch_tab(self, index: int) -> Dict:
+        """Switch to tab by index"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.switch_to_tab(index)
+
+    def browser_close(self) -> Dict:
+        """Close browser"""
+        if self.browser_ctrl is None:
+            return {"status": "warning", "message": "Browser already closed"}
+        result = self.browser_ctrl.close_browser()
+        self.browser_ctrl = None
+        return result
+
+    def browser_screenshot(self, output: str = "/tmp/sharingan_browser.png") -> Dict:
+        """Take screenshot of current page"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.take_screenshot(output)
+
+    def browser_execute_js(self, script: str) -> Dict:
+        """Execute JavaScript"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.execute_js(script)
+
+    def browser_get_info(self) -> Dict:
+        """Get current page info"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.get_page_info()
+
+    def browser_scroll(self, pixels: int = 500, direction: str = "down") -> Dict:
+        """Scroll page (direction: down/up, top/bottom)"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        
+        if direction == "down":
+            return self.browser_scroll_down(pixels)
+        elif direction == "up":
+            return self.browser_scroll_up(pixels)
+        elif direction == "top":
+            return self.browser_scroll_to_top()
+        elif direction == "bottom":
+            return self.browser_scroll_to_bottom()
+        else:
+            return self.browser_scroll_down(abs(pixels))
+
+    def browser_scroll_down(self, pixels: int = 500) -> Dict:
+        """Scroll down by pixels"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_execute_js(f"window.scrollBy(0, {pixels}); return window.scrollY;")
+
+    def browser_scroll_up(self, pixels: int = 500) -> Dict:
+        """Scroll up by pixels"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_execute_js(f"window.scrollBy(0, -{pixels}); return window.scrollY;")
+
+    def browser_scroll_to_top(self) -> Dict:
+        """Scroll to top of page"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_execute_js("window.scrollTo(0, 0); return 'scrolled to top'")
+
+    def browser_scroll_to_bottom(self) -> Dict:
+        """Scroll to bottom of page"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_execute_js("window.scrollTo(0, document.body.scrollHeight); return 'scrolled to bottom'")
+
+    def browser_get_element(self, selector: str, by: str = "css") -> Dict:
+        """Find and return element info by selector"""
+        if self.browser_ctrl is None:
+            return {"status": "error", "message": "Browser not launched"}
+        return self.browser_ctrl.get_element_by_selector(selector, by)
 
     # =========================================================================
     # FILE OPERATIONS

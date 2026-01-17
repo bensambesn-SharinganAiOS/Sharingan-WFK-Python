@@ -1,0 +1,47 @@
+{
+  "tools": {
+    "browser_controller_complete": {
+      "name": "browser_controller_complete",
+      "category": "browser",
+      "path": "/root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/browser_controller_complete.py",
+      "capabilities": [
+        "navigation",
+        "search",
+        "content_reading",
+        "scrolling",
+        "clicking",
+        "form_filling",
+        "screenshot",
+        "tab_management",
+        "file_upload",
+        "javascript_execution"
+      ],
+      "source": "internal",
+      "version": "1.0.0",
+      "description": "Contr\u00f4leur navigateur complet avec Selenium et CDP",
+      "technologies": [
+        "selenium",
+        "chrome_devtools_protocol"
+      ],
+      "documented": true,
+      "documentation": [
+        "WEB_NAVIGATION_DOCUMENTATION.md",
+        "BROWSER_CAPABILITIES.md"
+      ]
+    },
+    "browser_tool_integration": {
+      "name": "browser_tool_integration",
+      "category": "browser",
+      "path": "/root/Projets/Sharingan-WFK-Python/sharingan_app/_internal/browser_tool_integration.py",
+      "capabilities": [
+        "browser_integration",
+        "tool_registration",
+        "capability_mapping"
+      ],
+      "source": "internal",
+      "version": "1.0.0",
+      "description": "Int\u00e9gration des capacit\u00e9s navigateur dans Sharingan OS"
+    }
+  },
+  "categories": {}
+}

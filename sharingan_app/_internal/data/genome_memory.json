@@ -331,5 +331,132 @@
       "core"
     ],
     "source": "system"
-  }
+  },
+  "capabilities": {
+    "browser_automation": {
+      "version": "1.0.0",
+      "acquired_at": "2026-01-17T03:11:58.426955",
+      "source": "manual_integration_testing",
+      "capabilities": {
+        "navigation": {
+          "status": "active",
+          "methods": [
+            "Page.navigate",
+            "navigate()"
+          ]
+        },
+        "search": {
+          "status": "active",
+          "methods": [
+            "fill + Enter",
+            "Google search"
+          ]
+        },
+        "content_reading": {
+          "status": "active",
+          "methods": [
+            "document.title",
+            "innerText",
+            "querySelector"
+          ]
+        },
+        "scrolling": {
+          "status": "active",
+          "methods": [
+            "scrollBy(0, pixels)"
+          ]
+        },
+        "clicking": {
+          "status": "active",
+          "methods": [
+            "element.click()"
+          ]
+        },
+        "form_filling": {
+          "status": "active",
+          "methods": [
+            "input.value",
+            "send_keys()"
+          ]
+        },
+        "screenshot": {
+          "status": "active",
+          "methods": [
+            "save_screenshot()"
+          ]
+        },
+        "tab_management": {
+          "status": "active",
+          "methods": [
+            "window.open()",
+            "switch_to.window()"
+          ]
+        },
+        "file_upload": {
+          "status": "active",
+          "methods": [
+            "send_keys('/path/file')"
+          ],
+          "note": "Requires Selenium"
+        },
+        "javascript_execution": {
+          "status": "active",
+          "methods": [
+            "Runtime.evaluate",
+            "execute_js()"
+          ]
+        }
+      },
+      "technologies": {
+        "selenium": {
+          "use": "Main browser control, file upload, screenshots",
+          "strength": "Complete control",
+          "weakness": "Session tied to process"
+        },
+        "chrome_devtools_protocol": {
+          "use": "Navigation, reading, scrolling via WebSocket",
+          "strength": "Independent session",
+          "weakness": "Cannot upload local files"
+        }
+      },
+      "test_results": {
+        "navigation": "PASSED",
+        "search": "PASSED",
+        "reading": "PASSED",
+        "scrolling": "PASSED",
+        "clicking": "PASSED",
+        "form_filling": "PASSED",
+        "screenshot": "PASSED",
+        "tab_management": "PASSED",
+        "file_upload": "PASSED",
+        "javascript": "PASSED"
+      },
+      "limitations": [
+        "CAPTCHA (cannot solve automatically)",
+        "OAuth with 2FA (manual required)",
+        "Local file upload via CDP only",
+        "Precise drag & drop",
+        "Advanced video/audio control",
+        "Shadow DOM access",
+        "Chrome extensions"
+      ],
+      "documentation": [
+        "WEB_NAVIGATION_DOCUMENTATION.md",
+        "BROWSER_CAPABILITIES.md"
+      ],
+      "status": "active"
+    }
+  },
+  "evolution_history": [
+    {
+      "date": "2026-01-17T03:11:58.427051",
+      "event": "browser_automation_capability_added",
+      "description": "Ajout de la capacit\u00e9 compl\u00e8te de navigation web automatis\u00e9e",
+      "version": "1.0.0",
+      "features": 10,
+      "test_count": 10,
+      "success_rate": "100%",
+      "impact": "high"
+    }
+  ]
 }
