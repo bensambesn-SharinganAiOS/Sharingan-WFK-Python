@@ -485,6 +485,13 @@ TOOLS = [
         required_for=["system_screenshot"],
         apt_package="maim"
     ),
+    Tool(
+        name="mss",
+        description="Bibliothèque Python pure pour capture d'écran (cross-platform)",
+        category="System",
+        required_for=["system_screenshot_python"],
+        pip_package="mss"
+    ),
 
     # Outils Audio/Video
     Tool(
