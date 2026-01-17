@@ -37,8 +37,11 @@ class PythonScreenshot:
         if not self.mss_available:
             return False
         try:
+            import mss.tools
             with self.mss.mss() as sct:
-                sct.shot(output=str(output), mon=-1)
+                monitor = sct.monitors[1]
+                img = sct.grab(monitor)
+                mss.tools.to_png(img.rgb, img.size, output=str(output))
             return output.exists()
         except Exception as e:
             logger.error(f"MSS capture failed: {e}")
@@ -49,9 +52,11 @@ class PythonScreenshot:
         if not self.mss_available:
             return False
         try:
-            monitor = {"left": x, "top": y, "width": width, "height": height}
+            import mss.tools
             with self.mss.mss() as sct:
-                sct.grab(monitor).save(str(output))
+                monitor = {"left": x, "top": y, "width": width, "height": height}
+                img = sct.grab(monitor)
+                mss.tools.to_png(img.rgb, img.size, output=str(output))
             return output.exists()
         except Exception as e:
             logger.error(f"MSS area capture failed: {e}")
