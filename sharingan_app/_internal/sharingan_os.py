@@ -64,7 +64,10 @@ class SharinganOS:
             "godmod": ["godmod_analyze", "godmod_query"],
             "browser": ["browser_launch", "browser_navigate", "browser_click", "browser_fill",
                        "browser_get_source", "browser_screenshot", "browser_new_tab",
-                       "browser_switch_tab", "browser_close", "browser_execute_js"]
+                       "browser_switch_tab", "browser_close", "browser_execute_js"],
+            "system_screenshot": ["screenshot_desktop", "screenshot_window", "screenshot_process",
+                                  "screenshot_area", "screenshot_all_displays", "list_windows",
+                                  "list_processes_with_windows", "screenshot_history"]
         }
 
     # =========================================================================
@@ -856,6 +859,77 @@ Réponse:"""
         if self.browser_ctrl is None:
             return {"status": "error", "message": "Browser not launched"}
         return self.browser_ctrl.get_page_info()
+
+    # =========================================================================
+    # SYSTEM SCREENSHOT
+    # =========================================================================
+
+    def get_screenshot_system(self):
+        """Initialize and return system screenshot handler"""
+        if not hasattr(self, "_screenshot_system"):
+            try:
+                from system_screenshot import SystemScreenshot
+                self._screenshot_system = SystemScreenshot()
+            except ImportError:
+                self._screenshot_system = None
+        return self._screenshot_system
+
+    def screenshot_desktop(self, output: str = "/tmp/sharingan/desktop.png") -> Dict:
+        """Capture the entire desktop"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return {"status": "error", "message": "system_screenshot module not available"}
+        return ss.capture_desktop(output)
+
+    def screenshot_window(self, window_id: str, output: Optional[str] = None) -> Dict:
+        """Capture a specific window by ID"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return {"status": "error", "message": "system_screenshot module not available"}
+        return ss.capture_window(window_id, output)
+
+    def screenshot_process(self, process_name: str, output: Optional[str] = None) -> Dict:
+        """Capture a window by process name (e.g., 'firefox', 'chrome')"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return {"status": "error", "message": "system_screenshot module not available"}
+        return ss.capture_process(process_name, output)
+
+    def screenshot_area(self, x: int, y: int, width: int, height: int,
+                        output: Optional[str] = None) -> Dict:
+        """Capture a rectangular area (x, y, width, height)"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return {"status": "error", "message": "system_screenshot module not available"}
+        return ss.capture_area(x, y, width, height, output)
+
+    def screenshot_all_displays(self, output: str = "/tmp/sharingan/multidisplay.png") -> Dict:
+        """Capture all displays (multi-monitor setup)"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return {"status": "error", "message": "system_screenshot module not available"}
+        return ss.capture_all_displays(output)
+
+    def list_windows(self) -> List[Dict]:
+        """List all visible windows"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return []
+        return ss.list_windows()
+
+    def list_processes_with_windows(self) -> List[Dict]:
+        """List all processes with visible windows"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return []
+        return ss.list_processes_with_windows()
+
+    def screenshot_history(self, limit: int = 20) -> List[Dict]:
+        """Get screenshot history"""
+        ss = self.get_screenshot_system()
+        if ss is None:
+            return []
+        return ss.get_screenshot_history(limit)
 
     def browser_scroll(self, pixels: int = 500, direction: str = "down") -> Dict:
         """Scroll page (direction: down/up, top/bottom)"""

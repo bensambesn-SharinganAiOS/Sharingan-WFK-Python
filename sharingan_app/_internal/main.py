@@ -706,6 +706,27 @@ def main():
     # Tools command
     subparsers.add_parser('tools', help='List all tools')
     
+    # Screenshot command
+    ss_parser = subparsers.add_parser('screenshot', help='System screenshot commands')
+    ss_sub = ss_parser.add_subparsers(dest='ss_action')
+    ss_sub.add_parser('desktop', help='Capture desktop')
+    ss_sub.add_parser('windows', help='List visible windows')
+    ss_sub.add_parser('processes', help='List processes with windows')
+    ss_parser_desktop = ss_sub.add_parser('desktop', help='Capture entire desktop')
+    ss_parser_desktop.add_argument('--output', '-o', default='/tmp/sharingan/desktop.png', help='Output path')
+    ss_parser_window = ss_sub.add_parser('window', help='Capture specific window')
+    ss_parser_window.add_argument('window_id', help='Window ID')
+    ss_parser_window.add_argument('--output', '-o', help='Output path')
+    ss_parser_process = ss_sub.add_parser('process', help='Capture window by process name')
+    ss_parser_process.add_argument('process_name', help='Process name (e.g., firefox, chrome)')
+    ss_parser_process.add_argument('--output', '-o', help='Output path')
+    ss_parser_area = ss_sub.add_parser('area', help='Capture rectangular area')
+    ss_parser_area.add_argument('x', type=int, help='X coordinate')
+    ss_parser_area.add_argument('y', type=int, help='Y coordinate')
+    ss_parser_area.add_argument('width', type=int, help='Width')
+    ss_parser_area.add_argument('height', type=int, help='Height')
+    ss_parser_area.add_argument('--output', '-o', help='Output path')
+    
     # Shell NLP command
     shell_parser = subparsers.add_parser('shell', help='Start Natural Language Shell')
     shell_parser.add_argument('--demo', action='store_true', help='Run demo commands')
@@ -845,6 +866,55 @@ def main():
         tools = core.get_all_tools()
         for name, desc in tools.items():
             print(f"  {name}: {desc[:80]}...")
+    
+    elif args.command == 'screenshot':
+        ss_action = getattr(args, 'ss_action', None)
+        if ss_action == 'desktop':
+            result = core.screenshot_desktop(getattr(args, 'output', '/tmp/sharingan/desktop.png'))
+            print(json.dumps(result, indent=2, default=str))
+        elif ss_action == 'window':
+            window_id = getattr(args, 'window_id', None)
+            if window_id:
+                result = core.screenshot_window(window_id, getattr(args, 'output', None))
+                print(json.dumps(result, indent=2, default=str))
+            else:
+                print("Error: window_id required")
+        elif ss_action == 'process':
+            process_name = getattr(args, 'process_name', None)
+            if process_name:
+                result = core.screenshot_process(process_name, getattr(args, 'output', None))
+                print(json.dumps(result, indent=2, default=str))
+            else:
+                print("Error: process_name required")
+        elif ss_action == 'area':
+            x = getattr(args, 'x', None)
+            if x is not None:
+                result = core.screenshot_area(x, getattr(args, 'y'), getattr(args, 'width'), getattr(args, 'height'), getattr(args, 'output', None))
+                print(json.dumps(result, indent=2, default=str))
+            else:
+                print("Error: x, y, width, height required")
+        elif ss_action == 'windows':
+            windows = core.list_windows()
+            print("="*60)
+            print(" VISIBLE WINDOWS")
+            print("="*60)
+            for w in windows:
+                print(f"  {w['id']}: {w['name']}")
+        elif ss_action == 'processes':
+            processes = core.list_processes_with_windows()
+            print("="*60)
+            print(" PROCESSUS AVEC FENÊTRES")
+            print("="*60)
+            for p in processes:
+                print(f"  {p['process_name']} (PID: {p['process_id']}): {p['window_name']}")
+        else:
+            print("Available screenshot commands:")
+            print("  screenshot desktop [--output PATH]")
+            print("  screenshot window <window_id> [--output PATH]")
+            print("  screenshot process <name> [--output PATH]")
+            print("  screenshot area <x> <y> <width> <height> [--output PATH]")
+            print("  screenshot windows")
+            print("  screenshot processes")
     
     elif args.command == 'consciousness':
         consciousness = get_enhanced_consciousness()

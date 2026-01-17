@@ -464,6 +464,27 @@ TOOLS = [
         required_for=["mitmproxy_script"],
         pip_package="mitmproxy"
     ),
+    Tool(
+        name="xdotool",
+        description="Outil d'automatisation X11 (list windows, get properties)",
+        category="System",
+        required_for=["system_screenshot", "list_windows"],
+        apt_package="xdotool"
+    ),
+    Tool(
+        name="scrot",
+        description="Outil de capture d'écran (fallback pour maim)",
+        category="System",
+        required_for=["system_screenshot"],
+        apt_package="scrot"
+    ),
+    Tool(
+        name="maim",
+        description="Capture d'écran avancée (recommandé)",
+        category="System",
+        required_for=["system_screenshot"],
+        apt_package="maim"
+    ),
 
     # Outils Audio/Video
     Tool(
