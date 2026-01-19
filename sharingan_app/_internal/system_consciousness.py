@@ -90,7 +90,11 @@ class SystemConsciousness:
         # Connect memory FIRST (priority)
         if connect_memory:
             self._connect_memory()
-        
+
+        # Learning system disabled temporarily
+        # from learning_system import LearningSystem
+        # self.learning_system = LearningSystem(self.memory_manager, self.tool_registry)
+
         # Connect clarifier
         self._connect_clarifier()
         

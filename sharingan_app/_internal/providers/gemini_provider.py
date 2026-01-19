@@ -24,7 +24,7 @@ class GeminiProvider:
             "AIzaSyAQ5Jq6doHAt3untxi3zD95n_TBoZft7wQ",  # adamabenousmanesambe@gmail.com
             "AIzaSyA2vUDIH8m80nxYCOq15qOE5L61mJABPkU",  # bensambe.sn@gmail.com
             "AIzaSyAtMBJMWn2saI2Yo7ljPyJOMEq0eaVFY8E",  # bensambe.org@gmail.com
-            "AIzaSyBLJmwuYDFay2kbRx3xwWz1i3pSXR11LWg"   # madamesambe@gmail.com
+            "AIzaSyBLJmwuYDFay2kbRx3xwWz1i3pSXR11LWg"   # madamesambe@gmail.com - clé fournie
         ]
         self.current_key_index = 0
         self.model = "gemini-flash-latest"

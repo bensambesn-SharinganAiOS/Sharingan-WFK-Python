@@ -40,18 +40,54 @@ class AIResponse:
 
 class OpenCodeProvider:
     """
-    Provider OpenCode pour Sharingan OS.
-    
+    Provider OpenCode pour Sharingan OS - Alternative à Google Gemini.
+
     Caractéristiques:
+    - Rotation automatique sur 5 modèles gratuits
+    - Comportement similaire à Gemini (rotation clés, fallback)
     - Détection automatique de fakes (via fake_detector)
     - Extraction d'actions (create, modify, delete, execute, read, search)
     - Orchestration d'actions multiples
     - Validation avant exécution
     - Journalisation de toutes les opérations
     """
-    
+
     def __init__(self):
-        self.fake_detector = None
+        # Liste dynamique des modèles gratuits OpenCode
+        self.free_models = self._get_available_free_models()
+        self.current_model_index = 0
+
+        # Essayer de charger le fake_detector
+        try:
+            from fake_detector import FakeDetector
+            self.fake_detector = FakeDetector()
+        except ImportError:
+            logger.warning("FakeDetector not available, fake detection disabled")
+            self.fake_detector = None
+
+    def _get_available_free_models(self) -> List[str]:
+        """Récupère les modèles gratuits disponibles depuis opencode-cli"""
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["opencode-cli", "models"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                lines = result.stdout.strip().split('\n')
+                free_models = [line.split()[0] for line in lines if line.startswith("opencode/")]
+                # Classer par priorité : gpt-5-nano first, etc.
+                priority = ["opencode/gpt-5-nano", "opencode/glm-4.7-free", "opencode/grok-code", "opencode/minimax-m2.1-free", "opencode/big-pickle"]
+                sorted_models = sorted(free_models, key=lambda x: priority.index(x) if x in priority else 999)
+                return sorted_models[:5]  # Top 5
+            else:
+                logger.warning("Failed to get models from opencode-cli")
+                return ["opencode/glm-4.7-free", "opencode/gpt-5-nano", "opencode/grok-code", "opencode/minimax-m2.1-free", "opencode/big-pickle"]
+        except Exception as e:
+            logger.error(f"Error getting models: {e}")
+            return ["opencode/glm-4.7-free", "opencode/gpt-5-nano", "opencode/grok-code", "opencode/minimax-m2.1-free", "opencode/big-pickle"]
         self.action_history: List[Dict] = []
         
         # Essayer de charger le fake_detector
@@ -63,10 +99,46 @@ class OpenCodeProvider:
             logger.warning("FakeDetector not available, fake detection disabled")
             self.fake_detector = None
 
+    def _get_next_model(self) -> str:
+        """Rotation des modèles comme les clés Gemini"""
+        model = self.free_models[self.current_model_index]
+        self.current_model_index = (self.current_model_index + 1) % len(self.free_models)
+        return model
+
     def is_available(self) -> bool:
         """Check if the OpenCode provider is available"""
         # Always return True, let the chat method handle failures
         return True
+
+    def generate_response(self, prompt: str, max_retries: int = 5) -> Optional[str]:
+        """Génère une réponse comme Gemini, rotation jusqu'à succès"""
+        for attempt in range(max_retries):
+            model = self.free_models[attempt % len(self.free_models)]
+            logger.info(f"OpenCode attempt {attempt + 1}/{max_retries} with model {model}")
+
+            try:
+                import subprocess
+                cmd = ["opencode-cli", "run", prompt, "--model", model]
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,  # Réduit timeout
+                    env={**os.environ, "NO_COLOR": "1"}
+                )
+                if result.returncode == 0 and result.stdout.strip():
+                    response_text = result.stdout.strip()
+                    logger.info(f"OpenCode {model} succeeded")
+                    return response_text
+                else:
+                    logger.warning(f"OpenCode {model} failed")
+            except subprocess.TimeoutExpired:
+                logger.warning(f"OpenCode {model} timeout")
+            except Exception as e:
+                logger.error(f"OpenCode {model} error: {e}")
+
+        logger.error("All OpenCode attempts failed")
+        return None
 
     def chat(self, message: str, context: Optional[List[Dict]] = None, 
              mode: str = "auto", **kwargs) -> Dict:
@@ -328,18 +400,21 @@ You help with cybersecurity, coding, and system administration tasks."""
 
     def _call_opencode_free(self, prompt: str, **kwargs) -> Dict:
         """Appelle les modèles OpenCode gratuits (sans clé API)"""
+        model = kwargs.get("model", "opencode/glm-4.7-free")
         try:
             # Utilise les modèles gratuits via OpenRouter ou autre service gratuit
             import requests
 
             # Essayer OpenRouter avec les modèles gratuits d'OpenCode
             openrouter_url = "https://openrouter.ai/api/v1/chat/completions"
+            api_key = os.getenv("OPENROUTER_API_KEY", "")
             headers = {
-                "Authorization": "Bearer " + os.getenv("OPENROUTER_API_KEY", ""),
                 "Content-Type": "application/json",
                 "HTTP-Referer": "https://opencode.ai",
                 "X-Title": "Sharingan OS"
             }
+            if api_key:
+                headers["Authorization"] = f"Bearer {api_key}"
 
             payload = {
                 "model": "microsoft/wizardlm-2-8x22b",  # Modèle gratuit disponible
@@ -370,32 +445,99 @@ You help with cybersecurity, coding, and system administration tasks."""
                         "provider": "opencode-free",
                         "model": "wizardlm-2-8x22b"
                     }
-
-            # Si OpenRouter échoue, utiliser un service alternatif gratuit
-            return self._call_opencode_fallback(prompt, **kwargs)
+            else:
+                logger.error(f"OpenRouter API failed: {response.status_code}")
+                # Exception OpenCode : utiliser CLI comme le host
+                return self._call_opencode_cli_fallback(prompt, model)
 
         except Exception as e:
             logger.error(f"OpenCode free models failed: {e}")
-            return self._call_opencode_fallback(prompt, **kwargs)
+            return self._call_opencode_cli_fallback(prompt, model)
+
+    def _call_opencode_cli_fallback(self, prompt: str, model: str) -> Dict:
+        """Exception OpenCode : utiliser CLI comme le host, sans clé"""
+        try:
+            import subprocess
+            cmd = ["opencode-cli", "run", prompt, "--model", model]
+            logger.info(f"OpenCode CLI exception: {' '.join(cmd)}")
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=60,  # Plus long pour CLI
+                env={**os.environ, "NO_COLOR": "1"}
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                response_text = result.stdout.strip()
+                logger.info("OpenCode CLI exception successful")
+                return {
+                    "success": True,
+                    "text": response_text,
+                    "provider": "opencode-cli-exception",
+                    "model": model
+                }
+            else:
+                return {
+                    "success": False,
+                    "text": "OpenCode CLI exception failed",
+                    "provider": "opencode-cli-exception",
+                    "model": "none"
+                }
+        except Exception as e:
+            logger.error(f"OpenCode CLI exception error: {e}")
+            return {
+                "success": False,
+                "text": "OpenCode indisponible",
+                "provider": "opencode-error",
+                "model": "none"
+            }
 
     def _call_opencode_fallback(self, prompt: str, **kwargs) -> Dict:
-        """Fallback final pour OpenCode - simulation simple"""
-        logger.warning("Using OpenCode fallback simulation")
+        """Fallback final pour OpenCode - utilise opencode-cli réel"""
+        try:
+            model = kwargs.get("model", "opencode/glm-4.7-free")
+            import subprocess
 
-        # Simulation d'une réponse basique
-        if "qui es-tu" in prompt.lower() or "présente" in prompt.lower():
-            response_text = "Je suis OpenCode, un assistant IA intégré au système Sharingan OS pour aider avec les tâches de cybersécurité et de programmation."
-        elif "outil" in prompt.lower():
-            response_text = "Sharingan OS dispose de 84 outils de cybersécurité, incluant nmap, wireshark, sqlmap, metasploit, et des outils d'analyse forensics."
-        else:
-            response_text = "OpenCode est opérationnel et prêt à assister avec les tâches de cybersécurité dans l'environnement Sharingan OS."
+            # Commande opencode-cli
+            cmd = ["opencode-cli", "run", prompt, "--model", model]
 
-        return {
-            "success": True,
-            "text": response_text,
-            "provider": "opencode-fallback",
-            "model": "simulation"
-        }
+            logger.info(f"OpenCode CLI fallback: {' '.join(cmd)}")
+
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=30,  # Réduit le timeout
+                env={**os.environ, "NO_COLOR": "1"}
+            )
+
+            if result.returncode == 0 and result.stdout.strip():
+                response_text = result.stdout.strip()
+                logger.info("OpenCode CLI fallback successful")
+                return {
+                    "success": True,
+                    "text": response_text,
+                    "provider": "opencode-cli",
+                    "model": model
+                }
+            else:
+                error_msg = result.stderr or "Unknown error"
+                logger.error(f"OpenCode CLI fallback failed: {error_msg}")
+                return {
+                    "success": False,
+                    "text": "OpenCode CLI indisponible",
+                    "provider": "opencode-error",
+                    "model": "none"
+                }
+
+        except Exception as e:
+            logger.error(f"OpenCode CLI fallback error: {e}")
+            return {
+                "success": False,
+                "text": "OpenCode CLI indisponible",
+                "provider": "opencode-error",
+                "model": "none"
+            }
     
     def _call_opencode_with_actions(self, prompt: str, **kwargs) -> Dict:
         """Appelle OpenCode avec mode actions activé"""

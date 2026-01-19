@@ -15,6 +15,10 @@ from typing import Optional, List, Dict, Callable, Any
 import logging
 import urllib.parse
 
+# Set local bin path for tools like tgpt
+SCRIPT_DIR = Path(__file__).parent
+os.environ["PATH"] = str(SCRIPT_DIR / "tools" / "bin") + ":" + os.environ.get("PATH", "")
+
 try:
     sys.path.insert(0, str(Path(__file__).parent / "tools"))
     from fake_detector import FakeDetector, detect_fakes, validate_readiness
@@ -437,7 +441,21 @@ RÉPONSE:"""
         sharingan_context = self._prepare_sharingan_context(message)
         providers_tried = []
 
-        # 1. Try OpenCode (free, priority) avec contexte
+        # 1. Try TGPT (default, fast, free) avec contexte
+        try:
+            from providers.tgpt_provider import TGPTProvider
+            tgpt = TGPTProvider()
+            if tgpt.is_available():
+                result = tgpt.chat(sharingan_context)
+                if result and result.get("success", False) and result.get("text"):
+                    logger.info("✅ TGPT provider succeeded with context")
+                    return result["text"]
+            providers_tried.append("TGPT")
+        except Exception as e:
+            logger.warning(f"TGPT provider failed: {e}")
+            providers_tried.append(f"TGPT({e})")
+
+        # 2. Fallback: OpenCode avec contexte
         if PROVIDERS_AVAILABLE and OpenCodeProvider:
             try:
                 opencode = OpenCodeProvider()
@@ -452,7 +470,7 @@ RÉPONSE:"""
                 logger.warning(f"OpenCode provider failed: {e}")
                 providers_tried.append(f"OpenCode({e})")
 
-        # 2. Try Gemini (with key rotation) avec contexte
+        # 3. Fallback: Gemini (with key rotation) avec contexte
         if PROVIDERS_AVAILABLE and GeminiProvider:
             try:
                 gemini = GeminiProvider()
@@ -465,7 +483,7 @@ RÉPONSE:"""
                 logger.warning(f"Gemini provider failed: {e}")
                 providers_tried.append(f"Gemini({e})")
 
-        # 3. Try Ollama (local fallback) avec contexte
+        # 4. Final fallback: Ollama (local) avec contexte
         if OLLAMA_AVAILABLE:
             try:
                 messages = [
@@ -482,22 +500,6 @@ RÉPONSE:"""
             except Exception as e:
                 logger.warning(f"Ollama provider failed: {e}")
                 providers_tried.append(f"Ollama({e})")
-
-        # 4. Final fallback: tgpt (legacy) avec contexte
-        try:
-            result = subprocess.run(
-                ["tgpt", "-q"],
-                input=sharingan_context,
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            if result.returncode == 0 and result.stdout.strip():
-                logger.info("✅ tgpt fallback succeeded with context")
-                return result.stdout.strip()
-            providers_tried.append("tgpt(failed)")
-        except Exception as e:
-            providers_tried.append(f"tgpt({e})")
 
         # All providers failed
         error_msg = f"AI Error: All providers failed. Tried: {', '.join(providers_tried)}"
@@ -546,36 +548,110 @@ HISTORIQUE MÉMOIRE:
 {chr(10).join([f"- {item.get('key', '')}: {str(item.get('data', {}))[:100]}..." for item in mgr.get_recent_events(5)])}
 """
 
-            # PROMPT adapté avec conscience intégrée
-            prompt = f"""[SHARINGAN OS v{identity['version']} - CONSCIENCE INTÉGRÉE]
-Tu es {identity['name']}, assistant conscient en cybersécurité créé par {identity['creator']}
+            # PROMPT pour exécution automatique
+            # Inclure résultats récents pour conscience
+            recent_results = []
+            try:
+                mgr = get_memory_manager()
+                recent_events = mgr.get_recent_events(10)
+                for event in recent_events:
+                    data = event.get('data', {})
+                    if isinstance(data, dict) and 'execution' in str(data):
+                        recent_results.append(f"Exécution: {data.get('command', '')} -> {data.get('result', '')[:100]}")
+            except Exception as e:
+                recent_results = [f"Erreur récupération: {e}"]
 
-{consciousness_info}
+            results_text = "\n".join(recent_results[-3:]) if recent_results else "Aucun résultat récent"
+
+            prompt = f"""Tu es SharinganOS Consciousness, assistant cybersécurité.
+
+OUTILS: nmap, sqlmap, hashcat, wireshark, etc. (84 outils)
+ENVIRONNEMENT: Linux Root
+RÉSULTATS RÉCENTS: {results_text}
 
 UTILISATEUR: "{message}"
 
-PROTOCOLE CONSCIENT:
-1. UTILISE les capacités de conscience pour analyser le contexte
-2. PROPOSE des actions autonomes si approprié
-3. INTÈGRE les outils conscients dans tes réponses
-4. PARTAGE les connaissances mémorisées pertinentes
-5. ADAPTE-toi à l'environnement détecté
+Réponds naturellement. Propose UNE commande en `backticks` pour exécution immédiate."""
 
-Réponse technique et consciente:"""
-
-            # Utiliser Gemini (Google) par défaut
+            # Utiliser OpenCode par défaut, avec Gemini (Google) comme fallback
+            result = None
             try:
-                from gemini_provider import GeminiProvider
-                gemini = GeminiProvider()
-                result = gemini.generate_response(prompt)
-                if result:
-                    response = f"SharinganOS (créé par Ben Sambe) - {result}"
-                else:
-                    response = "Gemini Error: Unable to generate response"
-            except ImportError:
-                response = "Gemini provider not installed"
+                from providers.grok_provider import GrokProvider
+                grok = GrokProvider()
+                result = grok.generate_response(prompt)
             except Exception as e:
-                response = f"AI Error: {str(e)}"
+                logger.warning(f"Grok failed: {e}, trying Gemini")
+
+            if not result:
+                try:
+                    from providers.gemini_provider import GeminiProvider
+                    gemini = GeminiProvider()
+                    result = gemini.generate_response(prompt)
+                except Exception as e:
+                    logger.warning(f"Gemini failed: {e}, trying OpenCode")
+
+            if not result:
+                try:
+                    from providers.opencode_provider import OpenCodeProvider
+                    opencode = OpenCodeProvider()
+                    result = opencode.generate_response(prompt)
+                except Exception as e:
+                    logger.warning(f"OpenCode failed: {e}, trying Puter")
+
+            if not result:
+                try:
+                    from providers.puter_provider import PuterProvider
+                    puter = PuterProvider()
+                    result = puter.generate_response(prompt)
+                except Exception as e:
+                    logger.error(f"Puter fallback failed: {e}")
+
+
+
+            if result:
+                # Apprentissage autonome (désactivé temporairement)
+                # try:
+                #     from system_consciousness import SystemConsciousness
+                #     consciousness = SystemConsciousness()
+                #     consciousness.learning_system.learn_natural_language(message, result, True)
+                # except Exception as e:
+                #     logger.warning(f"Learning failed: {e}")
+
+                # Détection d'actions dans la réponse et exécution automatique en mode développement
+                import re
+                action_matches = re.findall(r'`([^`]+)`', result)
+                executed_results = []
+
+                for cmd in action_matches[:3]:  # Limite à 3 commandes pour sécurité
+                    if any(word in cmd.lower() for word in ['nmap', 'netdiscover', 'scan', 'ping', 'status']):
+                        try:
+                            import subprocess
+                            exec_result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
+                            executed_results.append(f"Commande '{cmd}' exécutée:\n{exec_result.stdout}")
+                            if exec_result.stderr:
+                                executed_results.append(f"Erreurs: {exec_result.stderr}")
+                        except Exception as e:
+                            executed_results.append(f"Erreur exécution '{cmd}': {e}")
+
+                if executed_results:
+                    result += "\n\n**RÉSULTATS D'EXÉCUTION:**\n" + "\n".join(executed_results)
+                    # Stocker résultats dans mémoire pour conscience future
+                    try:
+                        mgr = get_memory_manager()
+                        for res in executed_results:
+                            if ":" in res:
+                                cmd, output = res.split(":", 1)
+                                mgr.store_memory(f"execution_{cmd.strip()}", {
+                                    "command": cmd.strip(),
+                                    "result": output.strip(),
+                                    "timestamp": datetime.now().isoformat()
+                                }, "EXECUTION")
+                    except Exception as e:
+                        logger.warning(f"Failed to store execution results: {e}")
+
+                response = f"SharinganOS (créé par Ben Sambe) - {result}"
+            else:
+                response = "AI Error: Unable to generate response from any provider"
 
             # Stocker la conversation (aprèS la réponse, pas avant)
             mgr.store(
