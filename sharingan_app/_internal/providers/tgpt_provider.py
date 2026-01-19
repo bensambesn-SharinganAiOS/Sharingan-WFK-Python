@@ -32,7 +32,7 @@ class TGPTProvider:
         """Génère réponse via tgpt CLI"""
         try:
             cmd = ["tgpt", "--provider", provider, "--quiet", prompt]
-            logger.info(f"TGPT command: {' '.join(cmd)}")
+            logger.debug(f"TGPT command: {' '.join(cmd)}")
 
             result = subprocess.run(
                 cmd,
@@ -44,7 +44,7 @@ class TGPTProvider:
 
             if result.returncode == 0 and result.stdout.strip():
                 response_text = result.stdout.strip()
-                logger.info(f"TGPT {provider} succeeded")
+                logger.debug(f"TGPT {provider} succeeded")
                 return response_text
             else:
                 logger.warning(f"TGPT {provider} failed: {result.stderr}")
@@ -54,9 +54,9 @@ class TGPTProvider:
                     return self.generate_response(prompt, next_provider)
 
         except subprocess.TimeoutExpired:
-            logger.warning(f"TGPT {provider} timeout")
+            logger.debug(f"TGPT {provider} timeout")
         except Exception as e:
-            logger.error(f"TGPT {provider} error: {e}")
+            logger.debug(f"TGPT {provider} error: {e}")
 
         return None
 

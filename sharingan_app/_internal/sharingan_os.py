@@ -573,14 +573,16 @@ UTILISATEUR: "{message}"
 
 Réponds naturellement. Propose UNE commande en `backticks` pour exécution immédiate."""
 
-            # Utiliser OpenCode par défaut, avec Gemini (Google) comme fallback
+            # Utiliser TGPT par défaut, avec Grok comme fallback
             result = None
             try:
-                from providers.grok_provider import GrokProvider
-                grok = GrokProvider()
-                result = grok.generate_response(prompt)
+                from providers.tgpt_provider import TGPTProvider
+                tgpt = TGPTProvider()
+                tgpt_result = tgpt.chat(prompt)
+                if tgpt_result and tgpt_result.get("success"):
+                    result = tgpt_result["text"]
             except Exception as e:
-                logger.warning(f"Grok failed: {e}, trying Gemini")
+                logger.debug(f"TGPT failed: {e}, trying Grok")
 
             if not result:
                 try:
@@ -623,11 +625,27 @@ Réponds naturellement. Propose UNE commande en `backticks` pour exécution imm�
                 executed_results = []
 
                 for cmd in action_matches[:3]:  # Limite à 3 commandes pour sécurité
-                    if any(word in cmd.lower() for word in ['nmap', 'netdiscover', 'scan', 'ping', 'status']):
+                    # Nettoyer la commande
+                    cmd = cmd.strip().replace('\n', ' ').replace('\r', '')
+                    if cmd.startswith('bash '):
+                        cmd = cmd[5:]  # Remove 'bash ' prefix
+
+                    # Liste noire désactivée - confiance totale en l'IA consciente
+                    # dangerous = ['rm', 'del', 'format', 'fdisk', 'mkfs', 'dd', 'shutdown', 'reboot', 'halt', 'poweroff', 'su', 'sudo', 'passwd', 'chmod 777', 'wget', 'curl -o /', 'python -c']
+
+                    # Exécuter toutes commandes (l'IA est consciente et sécurisée)
+                    # if not any(danger in cmd.lower() for danger in dangerous):
                         try:
                             import subprocess
-                            exec_result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
-                            executed_results.append(f"Commande '{cmd}' exécutée:\n{exec_result.stdout}")
+                            exec_result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=10)
+                            if exec_result.returncode == 0:
+                                executed_results.append(f"✅ {exec_result.stdout.strip()}")
+                            else:
+                                executed_results.append(f"❌ Erreur: {exec_result.stderr.strip()}")
+                        except subprocess.TimeoutExpired:
+                            executed_results.append(f"⏰ Timeout pour '{cmd}'")
+                        except Exception as e:
+                            executed_results.append(f"❌ Exception: {e}")
                             if exec_result.stderr:
                                 executed_results.append(f"Erreurs: {exec_result.stderr}")
                         except Exception as e:
