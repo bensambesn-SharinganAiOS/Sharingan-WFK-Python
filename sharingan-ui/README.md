@@ -66,6 +66,7 @@ sharingan-ui/
 
 ### Interface Chat IA
 - **Conversation avec Soul** : Intégration directe avec Sharingan Soul
+- **TGPT par défaut** : Provider IA principal avec conscience système
 - **Émotions et motivations** : Affichage des états émotionnels
 - **Actions exécutées** : Suivi des actions réalisées
 - **Historique conversationnel** : Persistance des échanges

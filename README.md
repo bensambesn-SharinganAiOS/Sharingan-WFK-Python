@@ -13,13 +13,17 @@
 
 #### APIs IA (Chaîne de Fallback)
 ```
-1. OpenCode (gratuit - priorité)
+1. TGPT (défaut - sky/phind/pollinations/kimi/isou)
+   ├── Accès gratuit à 5+ providers IA via CLI
+   ├── Rotation automatique, conscience système, actions
+
+2. OpenCode (fallback - modèles gratuits)
    ├── GLM-4.7-free, MiniMax-2.1-free, GPT-5-nano, Big-Pickle
 
-2. Gemini (Google - 4 clés avec rotation)
+3. Gemini (Google - 4 clés avec rotation)
    └── Rotation automatique en cas de quota
 
-3. Ollama (local - hors-connexion uniquement)
+4. Ollama (local - hors-connexion uniquement)
    └── gemma3:1b pour utilisation hors-ligne
 ```
 
@@ -27,7 +31,7 @@
 - **Réseau** : nmap, wireshark, tcpdump, netcat, masscan
 - **Web** : gobuster, dirb, nikto, sqlmap, hydra, burpsuite
 - **Système** : Volatility, binwalk, foremost, chkrootkit
-- **IA** : tgpt, ollama, Gemini, OpenCode
+- **IA** : tgpt (défaut), ollama, Gemini, OpenCode
 
 ### Fonctionnalités Clés
 
@@ -57,6 +61,9 @@ python3 --version
 
 # Outils système
 sudo apt update && sudo apt install nmap git curl python3-pip
+
+# TGPT (IA par défaut - gratuit)
+curl -sSL https://github.com/aandrew-me/tgpt/releases/latest/download/tgpt-linux-amd64 -o /usr/local/bin/tgpt && chmod +x /usr/local/bin/tgpt
 
 # OpenCode CLI (interfaces utilisateur)
 curl -fsSL https://opencode.ai/install | bash
@@ -138,8 +145,12 @@ sharingan_app/
 │   ├── tool_registry.py    # Gestion des outils
 │   └── ai_fallback_config.py   # Configuration APIs
 ├── providers/          # APIs IA
+│   ├── tgpt_provider.py      # TGPT (défaut)
 │   ├── gemini_provider.py
-│   └── opencode_provider.py
+│   ├── opencode_provider.py
+│   ├── grok_provider.py
+│   ├── puter_provider.py
+│   └── g4f_provider.py
 └── utils/              # Utilitaires
     ├── github_backup.py
     └── configure_ai.py
