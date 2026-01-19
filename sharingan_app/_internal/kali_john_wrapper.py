@@ -72,11 +72,12 @@ def list_wordlists() -> List[str]:
 
 def get_default_wordlist() -> str:
     """Get default wordlist path"""
-    defaults = [
-        '/usr/share/john/password.lst',
-        '/usr/share/wordlists/rockyou.txt',
-        '/usr/share/wordlists/common.txt',
-    ]
+    # Chemins par défaut (peuvent être configurés via environnement)
+    john_wordlist = os.environ.get('JOHN_DEFAULT_WORDLIST1', '/usr/share/john/password.lst')
+    rockyou_wordlist = os.environ.get('JOHN_DEFAULT_WORDLIST2', '/usr/share/wordlists/rockyou.txt')
+    common_wordlist = os.environ.get('JOHN_DEFAULT_WORDLIST3', '/usr/share/wordlists/common.txt')
+
+    defaults = [john_wordlist, rockyou_wordlist, common_wordlist]
     for w in defaults:
         if os.path.exists(w):
             return w

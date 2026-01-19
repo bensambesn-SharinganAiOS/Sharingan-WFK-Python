@@ -1,0 +1,67 @@
+# AI ENSEMBLE CONFIGURATION
+# Configuration pour combiner toutes les APIs IA gratuites
+
+ensemble:
+  enabled: true
+  default_mode: "ensemble"  # "ensemble", "individual", "auto"
+
+  # Routing intelligent selon le type de tâche
+  routing:
+    code_generation: ["grok_fast", "opencode_zen", "glm4"]
+    code_review: ["grok_fast", "opencode_zen", "tgpt"]
+    creative_writing: ["minimax", "glm4", "tgpt"]
+    logic_reasoning: ["grok_fast", "glm4", "tgpt"]
+    analysis: ["glm4", "grok_fast", "tgpt"]
+    optimization: ["opencode_zen", "grok_fast", "glm4"]
+    general_chat: ["glm4", "tgpt", "minimax"]
+
+  # Gestion des quotas par API
+  quotas:
+    ocr_space: 25000  # req/mois
+    tgpt: -1         # illimité
+    grok_fast: 100   # req/jour (estimation)
+    minimax: 50      # req/jour (estimation)
+    glm4: 100        # req/jour (estimation)
+    opencode_zen: 100 # req/jour (estimation)
+
+  # Paramètres de performance
+  performance:
+    parallel_calls: true
+    timeout_per_api: 15  # secondes
+    max_providers: 3
+    cache_enabled: true
+    cache_ttl: 3600  # 1 heure
+
+  # Validation et qualité
+  validation:
+    cross_validation: true
+    consensus_threshold: 0.6
+    quality_filter: true
+    error_retry: true
+
+# Providers individuels (pour compatibilité)
+providers:
+  tgpt:
+    enabled: true
+    priority: 80
+    specialties: ["general", "backup", "chat"]
+
+  grok_fast:
+    enabled: true
+    priority: 95
+    specialties: ["code", "logic", "reasoning"]
+
+  minimax:
+    enabled: true
+    priority: 90
+    specialties: ["creative", "writing", "design"]
+
+  glm4:
+    enabled: true
+    priority: 85
+    specialties: ["general", "analysis", "chat"]
+
+  opencode_zen:
+    enabled: true
+    priority: 88
+    specialties: ["code", "optimization", "debugging"]

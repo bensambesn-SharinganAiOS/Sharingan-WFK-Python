@@ -483,7 +483,7 @@ class SharedMemory:
             self.agents[agent_name]["last_seen"] = datetime.now().isoformat()
         
         self.manager.store(
-            f"task:{hashlib.md5(f'{agent_name}:{task}'.encode()).hexdigest()}",
+            f"task:{hashlib.sha256(f'{agent_name}:{task}'.encode()).hexdigest()}",
             {"agent": agent_name, "task": task, "result": result},
             category="action",
             priority="MEDIUM",

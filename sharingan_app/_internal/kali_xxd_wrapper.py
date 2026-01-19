@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 xxd Wrapper for Sharingan OS
 Real hex dump and conversion tool integration

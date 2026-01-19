@@ -37,6 +37,7 @@ from genome_memory import get_genome_memory
 from enhanced_system_consciousness import get_enhanced_consciousness
 from action_executor import ActionExecutor, ActionType
 from vpn_tor_integration import VPNManager
+from integrated_capabilities import get_integrated_capabilities
 
 import logging
 logging.basicConfig(level=logging.INFO)

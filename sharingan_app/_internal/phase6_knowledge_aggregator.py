@@ -63,7 +63,7 @@ class APICacheManager:
         self.cache_duration = 3600
 
     def get_cache_key(self, source: KnowledgeSource, query: str) -> str:
-        return f"{source.value}_{hashlib.md5(query.encode()).hexdigest()}"
+        return f"{source.value}_{hashlib.sha256(query.encode()).hexdigest()}"
 
     def get(self, source: KnowledgeSource, query: str) -> Optional[Dict]:
         try:

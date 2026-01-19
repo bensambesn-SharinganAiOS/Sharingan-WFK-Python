@@ -8,6 +8,8 @@ Auteur: Ben Sambe
 import sys
 import json
 import logging
+import time
+import subprocess
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from pathlib import Path
@@ -20,10 +22,6 @@ sys.path.insert(0, str(parent_dir))
 try:
     from fake_detector import FakeDetector, validate_readiness
     from check_obligations import check_obligations
-    from opencode_provider import OpenCodeProvider
-    from action_orchestrator import ActionOrchestrator
-    from nlp_rag_system import NLPRAGSystem
-    from hybrid_manager import HybridAIManager
 except ImportError as e:
     print(f"Import error: {e}")
     sys.exit(1)
@@ -43,7 +41,11 @@ class ActionRequest:
     pattern: Optional[str] = None
     metadata: Optional[Dict] = None
     priority: int = 1
-    dependencies: List[str] = []
+    dependencies: List[str] = None
+
+    def __post_init__(self):
+        if self.dependencies is None:
+            self.dependencies = []
 
 
 @dataclass
@@ -54,8 +56,12 @@ class ActionResult:
     target: str
     output: Optional[str] = None
     error: Optional[str] = None
-    timestamp: str
-    duration_ms: float
+    timestamp: Optional[str] = None
+    duration_ms: Optional[float] = None
+    stderr: Optional[str] = None
+    returncode: Optional[int] = None
+    content: Optional[str] = None
+    matches: Optional[List[str]] = None
 
 
 class ActionOrchestrator:
@@ -198,34 +204,7 @@ class ActionOrchestrator:
                 target=action.target,
                 error=str(e)
             )
-    
-    def _execute_create(self, action: ActionRequest) -> ActionResult:
-        """Exécute une action de création"""
-        path = action.target
-        content = action.content or ""
-        
-        try:
-            # Créer le répertoire parent
-            file_path = Path(path)
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Écrire le fichier
-            file_path.write_text(content)
-            
-            return ActionResult(
-                success=True,
-                action_type="create",
-                target=path,
-                output=f"Created file: {path}"
-            )
-            
-        except Exception as e:
-            return ActionResult(
-                success=False,
-                action_type="create",
-                target=path,
-                error=str(e)
-    
+
     def _execute_delete(self, action: ActionRequest) -> ActionResult:
         """Exécute une action de suppression"""
         path = action.target
@@ -256,10 +235,11 @@ class ActionOrchestrator:
         except Exception as e:
             return ActionResult(
                 success=False,
-                action_type="delete",
+                action_type="file",
                 target=path,
                 error=str(e)
-    
+            )
+
     def _execute_modify(self, action: ActionRequest) -> ActionResult:
         """Exécute une action de modification"""
         path = action.target
@@ -300,15 +280,23 @@ class ActionOrchestrator:
                 action_type="modify",
                 target=path,
                 error=str(e)
+            )
     
     def _execute_command(self, action: ActionRequest) -> ActionResult:
         """Exécute une commande shell"""
         command = action.command
-        
+
+        if not command:
+            return ActionResult(
+                success=False,
+                action_type="command",
+                target="",
+                error="No command provided"
+            )
+
         try:
             result = subprocess.run(
-                command,
-                shell=True,
+                command.split(),  # SECURITY: Split command to avoid shell injection
                 capture_output=True,
                 text=True,
                 timeout=30
@@ -326,9 +314,10 @@ class ActionOrchestrator:
         except Exception as e:
             return ActionResult(
                 success=False,
-                action_type="execute",
+                action_type="command",
                 target=command,
                 error=str(e)
+            )
     
     def _execute_read(self, action: ActionRequest) -> ActionResult:
         """Lit un fichier"""
@@ -358,6 +347,7 @@ class ActionOrchestrator:
                 action_type="read",
                 target=path,
                 error=str(e)
+            )
     
     def _execute_search(self, action: ActionRequest) -> ActionResult:
         """Recherche dans un fichier"""
@@ -397,6 +387,7 @@ class ActionOrchestrator:
                 action_type="search",
                 target=path,
                 error=str(e)
+            )
     
     def get_status(self) -> Dict:
         """Obtenir le statut de l'orchestrateur"""

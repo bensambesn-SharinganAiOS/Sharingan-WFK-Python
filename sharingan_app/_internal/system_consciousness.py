@@ -593,26 +593,89 @@ class SystemConsciousness:
         return "general_query"
     
     def autonomous_action(self, trigger: str) -> Dict:
+        """Trigger autonomous action based on environmental trigger using Gemini AI"""
         self.last_action_time = datetime.now()
-        analysis = self.analyze_context(trigger)
+
+        # Use Gemini for analysis instead of local logic
+        try:
+            from gemini_provider import GeminiProvider
+            gemini = GeminiProvider()
+
+            prompt = f"""Tu es Sharingan OS Consciousness, assistant IA autonome en cybersécurité.
+
+Trigger reçu: "{trigger}"
+
+Analyse cette trigger et détermine l'intention, les outils et les commandes.
+
+Réponds UNIQUEMENT avec du JSON valide, sans texte supplémentaire:
+
+{{
+  "intent": "network_scan",
+  "tools": ["nmap"],
+  "commands": ["nmap -sn 192.168.1.0/24"],
+  "confidence": 0.95,
+  "can_execute": true
+}}
+
+Adapte les valeurs selon la trigger."""
+
+            gemini_response = gemini.generate_response(prompt)
+            if gemini_response:
+                # Parse JSON response
+                try:
+                    analysis = json.loads(gemini_response)
+                except json.JSONDecodeError:
+                    analysis = {
+                        "intent": "unknown",
+                        "tools": [],
+                        "commands": [],
+                        "confidence": 0.5,
+                        "can_execute": False,
+                        "channel": self.interaction_channel.get("channel_type", "unknown")
+                    }
+            else:
+                analysis = self.analyze_context(trigger)  # Fallback to local
+        except ImportError:
+            analysis = self.analyze_context(trigger)  # Fallback
         
-        # Build tools used from action plan
+        # Build tools used from Gemini analysis
         tools_used = []
-        for action in analysis.get("action_plan", []):
+        for tool, command in zip(analysis.get("tools", []), analysis.get("commands", [])):
             tools_used.append({
-                "tool": action.get("tool", "unknown"),
-                "status": "OK" if action.get("available") else "MISSING",
-                "action": action.get("action", "unknown"),
-                "command": f"{action.get('tool', 'unknown')} {action.get('action', '')}".strip()
+                "tool": tool,
+                "status": "OK",
+                "action": "execute",
+                "command": command
             })
         
+        # Execute the commands autonomously
+        execution_results = []
+        if analysis.get("can_execute", False):
+            for command in analysis.get("commands", []):
+                try:
+                    # Execute command using subprocess
+                    result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30)
+                    execution_results.append({
+                        "command": command,
+                        "success": result.returncode == 0,
+                        "output": result.stdout[:500],  # Limit output
+                        "error": result.stderr[:200]
+                    })
+                except Exception as e:
+                    execution_results.append({
+                        "command": command,
+                        "success": False,
+                        "output": "",
+                        "error": str(e)
+                    })
+
         # Calculate consciousness level based on capabilities
         consciousness_level = "OMNIPRESENT"
         if not self.memory:
             consciousness_level = "LIMITED"
         elif not self.interaction_channel.get("is_interactive"):
             consciousness_level = "AUTONOMOUS"
-        
+
         return {
             "trigger": trigger,
             "timestamp": self.last_action_time.isoformat(),
@@ -621,15 +684,16 @@ class SystemConsciousness:
             "consciousness_level": consciousness_level,
             "environment_aware": True,
             "adaptations": {
-                "available": [t["tool"] for t in tools_used],
-                "requested": analysis["intent"],
-                "missing": [t["tool"] for t in tools_used if t["status"] == "MISSING"]
+                "available": analysis.get("tools", []),
+                "requested": analysis.get("intent", "unknown"),
+                "missing": []
             },
             "tools_used": tools_used,
+            "execution_results": execution_results,
             "analysis": {
-                "confidence": 0.95 if analysis["can_execute"] else 0.5,
-                "context": analysis["situation"],
-                "intent_detected": analysis["intent"]
+                "confidence": analysis.get("confidence", 0.5),
+                "context": trigger,
+                "intent_detected": analysis.get("intent", "unknown")
             }
         }
     
@@ -697,7 +761,7 @@ class SystemConsciousness:
                 f.seek(max(0, size - 200))
                 last = f.read()
             
-            return hashlib.md5(f"{first}{last}{size}".encode()).hexdigest()[:12]
+            return hashlib.sha256(f"{first}{last}{size}".encode()).hexdigest()[:12]
         except:
             return "error"
     

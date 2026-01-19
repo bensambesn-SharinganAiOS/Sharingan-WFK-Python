@@ -6,7 +6,7 @@ Real brute force login tool integration
 import subprocess
 import re
 import os
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 import logging
 
 logger = logging.getLogger("sharingan.hydra")
@@ -54,7 +54,7 @@ def get_protocol_help(protocol: str) -> str:
         return f"Error: {e}"
 
 def quick_check(target: str, protocol: str, login: str, password: str,
-                port: int = None, timeout: int = 30) -> HydraResult:
+                port: Optional[int] = None, timeout: int = 30) -> HydraResult:
     cmd = ['hydra', '-l', login, '-p', password, '-f', '-t', '1', target, protocol]
     if port:
         cmd.extend(['-s', str(port)])
@@ -67,19 +67,44 @@ def quick_check(target: str, protocol: str, login: str, password: str,
     except Exception as e:
         return HydraResult(success=False, command=' '.join(cmd), error=str(e))
 
-def brute_force(target: str, protocol: str, userlist: str = None, passwordlist: str = None,
-                port: int = None, threads: int = 4, timeout: int = 60) -> HydraResult:
+def brute_force(target: str, protocol: str, userlist: Optional[str] = None, passwordlist: Optional[str] = None,
+                port: Optional[int] = None, threads: int = 4, timeout: int = 60) -> HydraResult:
+    # Validation des inputs pour sécurité
+    if not target or not protocol:
+        return HydraResult(success=False, command="", error="Target and protocol required")
+
+    # Utilisation de chemins sécurisés depuis environnement
+    default_userlist = os.environ.get('HYDRA_DEFAULT_USERLIST', '/usr/share/wordlists/metasploit/unix_users.txt')
+    default_passwordlist = os.environ.get('HYDRA_DEFAULT_PASSWORDLIST', '/usr/share/wordlists/rockyou.txt')
+
     cmd = ['hydra', '-t', str(threads), '-f']
-    if userlist:
-        cmd.extend(['-L', userlist])
+
+    # Gestion sécurisée des listes d'utilisateurs
+    if userlist and userlist.strip():
+        # Validation du chemin utilisateur
+        if os.path.isfile(userlist) and os.access(userlist, os.R_OK):
+            cmd.extend(['-L', userlist])
+        else:
+            return HydraResult(success=False, command="", error=f"Invalid userlist: {userlist}")
     else:
-        cmd.extend(['-l', 'admin'])
-    if passwordlist:
-        cmd.extend(['-P', passwordlist])
+        cmd.extend(['-l', os.environ.get('HYDRA_DEFAULT_USER', 'admin')])
+
+    # Gestion sécurisée des listes de mots de passe
+    if passwordlist and passwordlist.strip():
+        # Validation du chemin mot de passe
+        if os.path.isfile(passwordlist) and os.access(passwordlist, os.R_OK):
+            cmd.extend(['-P', passwordlist])
+        else:
+            return HydraResult(success=False, command="", error=f"Invalid passwordlist: {passwordlist}")
     else:
-        cmd.extend(['-P', '/usr/share/wordlists/rockyou.txt'])
-    if port:
+        if os.path.isfile(default_passwordlist) and os.access(default_passwordlist, os.R_OK):
+            cmd.extend(['-P', default_passwordlist])
+        else:
+            return HydraResult(success=False, command="", error="Default password list not accessible")
+
+    if port is not None:
         cmd.extend(['-s', str(port)])
+
     cmd.append(target)
     cmd.append(protocol)
     
@@ -96,8 +121,8 @@ def brute_force(target: str, protocol: str, userlist: str = None, passwordlist: 
     except Exception as e:
         return HydraResult(success=False, command=' '.join(cmd), error=str(e))
 
-def test_default_creds(target: str, protocol: str, port: int = None,
-                       common_creds: List[tuple] = None) -> HydraResult:
+def test_default_creds(target: str, protocol: str, port: Optional[int] = None,
+                       common_creds: Optional[List[Tuple[str, str]]] = None) -> HydraResult:
     if common_creds is None:
         common_creds = [
             ('admin', 'admin'), ('admin', 'password'),
@@ -108,7 +133,7 @@ def test_default_creds(target: str, protocol: str, port: int = None,
     
     found_creds = []
     for login, password in common_creds:
-        result = quick_check(target, protocol, login, password, port, timeout=10)
+        result = quick_check(target, protocol, login, password, port if port is not None else None, timeout=10)
         if result.found > 0:
             found_creds.append((login, password))
     

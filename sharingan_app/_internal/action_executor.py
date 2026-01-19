@@ -7,6 +7,10 @@ Maps autonomous intentions to concrete actions using available tools
 import logging
 import subprocess
 import json
+import shlex
+import tempfile
+import asyncio
+import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
@@ -209,7 +213,7 @@ class ActionExecutor:
             return ActionType.BROWSER, "element", {"browser_action": "click"}
         
         if any(kw in action_lower for kw in browser_screenshot_keywords):
-            path = "/tmp/sharingan_screenshot.png"
+            path = str(Path(tempfile.gettempdir()) / "sharingan_screenshot.png")
             return ActionType.BROWSER, "screenshot", {"browser_action": "screenshot", "path": path}
         
         if any(kw in action_lower for kw in browser_tab_keywords):
@@ -219,7 +223,7 @@ class ActionExecutor:
         
         if any(kw in action_lower for kw in browser_upload_keywords):
             file_match = re.search(r'/[^\s]+', action_original)
-            file_path = file_match.group() if file_match else "/tmp/test_image.jpg"
+            file_path = file_match.group() if file_match else str(Path(tempfile.gettempdir()) / "test_image.jpg")
             return ActionType.BROWSER, "upload", {"browser_action": "upload", "file_path": file_path}
         
         if any(kw in action_lower for kw in browser_js_keywords):
@@ -433,7 +437,7 @@ class ActionExecutor:
                     }
                 
                 elif browser_action == "screenshot":
-                    path = params.get("path", "/tmp/sharingan_screenshot.png")
+                    path = params.get("path", str(Path(tempfile.gettempdir()) / "sharingan_screenshot.png"))
                     success = await br.get_screenshot(path)
                     result = {
                         "status": "success" if success else "error",
@@ -494,9 +498,14 @@ class ActionExecutor:
     def _run_command(self, cmd: str, action_type: str, target: str) -> Dict[str, Any]:
         """Run a command and return results"""
         try:
+            # Validate command to prevent injection
+            allowed_commands = ['nmap', 'nikto', 'dirb', 'gobuster', 'sqlmap', 'curl', 'wget', 'python3', 'pip']
+            cmd_parts = shlex.split(cmd)
+            if cmd_parts and cmd_parts[0] not in allowed_commands:
+                raise ValueError(f"Command not allowed: {cmd_parts[0]}")
+
             result = subprocess.run(
-                cmd,
-                shell=True,
+                cmd_parts,
                 capture_output=True,
                 text=True,
                 timeout=60

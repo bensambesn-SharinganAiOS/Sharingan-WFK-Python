@@ -1,0 +1,188 @@
+# Configuration centralisée pour le système de navigation
+# Fichier: browser_config.yaml
+
+navigation:
+  # === PARAMÈTRES CDP (Chrome DevTools Protocol) ===
+  cdp_port: 9999
+  cdp_timeout: 10
+  cdp_retry_attempts: 3
+  cdp_page_load_timeout: 30
+
+  # === PARAMÈTRES XDOTOOL (Simulation physique) ===
+  xdotool_timeout: 5
+  xdotool_retry_attempts: 2
+  xdotool_scroll_step: 300
+  xdotool_typing_delay: 0.1
+
+  # === PARAMÈTRES GÉNÉRAUX ===
+  page_load_timeout: 30
+  scroll_step: 300
+  typing_delay: 0.1
+  element_wait_timeout: 5
+
+  # === DÉTECTION D'INTERRUPTION UTILISATEUR ===
+  interruption_check_interval: 0.5
+  mouse_move_threshold: 50
+  keyboard_activity_timeout: 2.0
+  window_focus_check_interval: 1.0
+
+  # === NOTIFICATIONS ===
+  enable_notifications: true
+  notification_timeout: 10
+  notification_prefix: "🔥 SHARINGAN"
+
+  # === CAPACITÉS PAR DÉFAUT ===
+  default_capabilities:
+    enable_images: true
+    enable_javascript: true
+    ignore_ssl_errors: true
+    disable_web_security: false
+
+  # === SÉLECTEURS COURANTS ===
+  selectors:
+    google_search_input: "input[name='q']"
+    google_search_button: "input[value='Recherche Google']"
+    youtube_search_input: "input#search"
+    youtube_comments_section: "ytd-comments#comments"
+    facebook_feed: "[data-pagelet='FeedUnit_0']"
+    generic_button: "button"
+    generic_link: "a"
+    generic_input: "input"
+    generic_textarea: "textarea"
+
+  # === MAPPINGS DE TOUCHES ===
+  key_mappings:
+    enter: "Return"
+    tab: "Tab"
+    escape: "Escape"
+    space: "space"
+    backspace: "BackSpace"
+    delete: "Delete"
+    home: "Home"
+    end: "End"
+    page_up: "Page_Up"
+    page_down: "Page_Down"
+
+  # === TIMEOUTS PAR OPÉRATION ===
+  operation_timeouts:
+    navigate: 30
+    search: 20
+    scroll: 5
+    click: 10
+    type: 15
+    read: 10
+    screenshot: 5
+
+  # === LOGGING ===
+  logging:
+    level: "INFO"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: "logs/browser_control.log"
+
+  # === SÉCURITÉ ===
+  security:
+    max_url_length: 2048
+    allowed_schemes: ["http", "https", "ftp", "file"]
+    block_javascript_urls: true
+    sanitize_inputs: true
+
+  # === PERFORMANCE ===
+  performance:
+    connection_pool_size: 10
+    max_keepalive_connections: 5
+    keepalive_timeout: 30
+    enable_connection_reuse: true
+
+# === CONFIGURATIONS SPÉCIFIQUES PAR NAVIGATEUR ===
+
+browsers:
+  chrome:
+    user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    window_size: "1920,1080"
+    headless: false
+    args:
+      - "--no-sandbox"
+      - "--disable-dev-shm-usage"
+      - "--disable-gpu"
+      - "--disable-extensions"
+      - "--disable-background-networking"
+      - "--no-first-run"
+      - "--disable-default-apps"
+      - "--disable-sync"
+      - "--metrics-recording-only"
+
+  firefox:
+    user_agent: "Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0"
+    window_size: "1920,1080"
+    headless: false
+
+# === CONFIGURATIONS PAR SITE ===
+
+sites:
+  google:
+    search_url: "https://www.google.com/search?q={query}"
+    selectors:
+      search_input: "input[name='q']"
+      results_container: "#search"
+      result_links: "h3 a"
+
+  youtube:
+    base_url: "https://www.youtube.com"
+    selectors:
+      search_input: "input#search"
+      video_links: "a#video-title"
+      comments_section: "ytd-comments#comments"
+      comment_input: "div#placeholder-area"
+
+  facebook:
+    base_url: "https://www.facebook.com"
+    selectors:
+      feed_container: "[data-pagelet='FeedUnit_0']"
+      post_input: "[data-contents='true']"
+      comment_input: "[aria-label*='commentaire']"
+
+  wikipedia:
+    base_url: "https://fr.wikipedia.org"
+    selectors:
+      content: "#mw-content-text"
+      search_input: "#searchInput"
+      search_button: "#searchButton"
+
+# === CONFIGURATIONS D'ENVIRONNEMENT ===
+
+environments:
+  development:
+    debug: true
+    log_level: "DEBUG"
+    enable_screenshots: true
+    mock_interactions: false
+
+  testing:
+    debug: false
+    log_level: "INFO"
+    enable_screenshots: true
+    mock_interactions: false
+
+  production:
+    debug: false
+    log_level: "WARNING"
+    enable_screenshots: false
+    mock_interactions: false
+
+# === PROFILS UTILISATEUR ===
+
+user_profiles:
+  default:
+    name: "Default User"
+    preferences:
+      language: "fr"
+      theme: "auto"
+      notifications: true
+
+  developer:
+    name: "Developer"
+    preferences:
+      language: "en"
+      theme: "dark"
+      notifications: true
+      debug_mode: true

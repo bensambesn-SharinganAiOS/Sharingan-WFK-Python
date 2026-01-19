@@ -101,7 +101,8 @@ def main():
 
     if report_path:
         duration = time.time() - start_time
-        print('.1f'        print(f'📄 Rapport: {report_path}')
+        print(f'Durée: {duration:.1f}s')
+        print(f'📄 Rapport: {report_path}')
         print('✅ Mission accomplie par Sharingan OS !')
     else:
         print('❌ Échec de la mission')

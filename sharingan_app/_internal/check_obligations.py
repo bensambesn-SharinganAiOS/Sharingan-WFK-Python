@@ -304,13 +304,17 @@ class ObligationChecker:
                         })
         
         # Résumé
+        passed_count = sum(1 for f in results["files"] if f["passed"])
         results["summary"] = {
             "total_files": len(results["files"]),
-            "passed": sum(1 for f in results["files"] if f["passed"]),
+            "passed": passed_count,
             "failed": sum(1 for f in results["files"] if not f["passed"]),
-            "compliance_rate": f"{(sum(1 for f in results['files'] if f['passed']) / len(results['files']) * 100):.1f}%" if results["files"] else "N/A"
+            "compliance_rate": f"{(passed_count / len(results['files']) * 100):.1f}%" if results["files"] else "N/A"
         }
-        
+
+        # Add overall passed
+        results["passed"] = passed_count == len(results["files"])
+
         return results
     
     def get_report(self) -> Dict:

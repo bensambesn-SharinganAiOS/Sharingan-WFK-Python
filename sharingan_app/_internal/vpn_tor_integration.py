@@ -419,7 +419,7 @@ ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy
 
         try:
             full_cmd = f"torsocks {command}"
-            result = subprocess.run(full_cmd, shell=True, capture_output=True, text=True, timeout=60)
+            result = subprocess.run(full_cmd.split(), capture_output=True, text=True, timeout=60)  # SECURITY: Removed shell=True
 
             return (result.returncode, result.stdout, result.stderr)
 

@@ -4,10 +4,12 @@ Sharingan OS - Browser Automation Tool Integration
 Integrates browser navigation capabilities into Sharingan OS tool system
 """
 
+import os
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 import json
 import logging
+import tempfile
 
 logger = logging.getLogger("sharingan.browser_tool")
 
@@ -154,7 +156,7 @@ class BrowserToolIntegrator:
                 },
                 "screenshot": {
                     "description": "Prendre une capture d'écran",
-                    "parameters": {"path": {"type": "string", "default": "/tmp/screenshot.png"}},
+                    "parameters": {"path": {"type": "string", "default": os.path.join(tempfile.gettempdir(), "screenshot.png")}},
                     "returns": {"status": "string", "path": "string"}
                 },
                 "new_tab": {

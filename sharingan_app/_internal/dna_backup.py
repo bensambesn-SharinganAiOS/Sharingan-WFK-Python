@@ -194,7 +194,7 @@ class DNABackupSystem:
         
         # Créer une copie horodatée
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        checksum = hashlib.md5(json.dumps(snapshot, sort_keys=True).encode()).hexdigest()[:8]
+        checksum = hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest()[:8]
         backup_filename = f"DNA_{timestamp}_{checksum}.json"
         backup_path = self.dna_dir / backup_filename
         

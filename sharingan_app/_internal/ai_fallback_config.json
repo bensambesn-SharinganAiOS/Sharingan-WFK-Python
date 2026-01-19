@@ -1,0 +1,20 @@
+{
+  "gemini": {
+    "enabled": true,
+    "api_keys": [
+      "AIzaSyAQ5Jq6doHAt3untxi3zD95n_TBoZft7wQ",
+      "AIzaSyA2vUDIH8m80nxYCOq15qOE5L61mJABPkU",
+      "AIzaSyAtMBJMWn2saI2Yo7ljPyJOMEq0eaVFY8E",
+      "AIzaSyBLJmwuYDFay2kbRx3xwWz1i3pSXR11LWg"
+    ],
+    "model": "gemini-1.5-flash",
+    "priority": 1
+  },
+  "fallback_chain": [
+    "opencode",
+    "gemini",
+    "ollama"
+  ],
+  "timeout_per_provider": 15,
+  "max_retries": 2
+}

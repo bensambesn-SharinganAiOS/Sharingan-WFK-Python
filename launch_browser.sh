@@ -20,67 +20,73 @@ if pgrep -f "sharingan_browser_server" > /dev/null; then
     exit 0
 fi
 
-echo "Lancement de Chrome vers YouTube..."
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <URL>"
+    echo "Example: $0 https://www.google.com"
+    exit 1
+fi
+
+TARGET_URL="$1"
+
+echo "Lancement de Chrome vers $TARGET_URL..."
 
 # Lancer le navigateur avec un script Python qui reste ouvert
-python3 << 'PYTHON_SCRIPT' &
-    import sys
-    import os
-    sys.path.insert(0, '/root/Projets/Sharingan-WFK-Python')
-    
-    from sharingan_app._internal.browser_manager import get_browser_manager
-    
-    bm = get_browser_manager()
-    
-    search_url = "https://www.youtube.com/results?search_query=aissatou+diop+fall+ngonalou+rewmi+adp+PublicSn"
-    
-    result = bm.launch('youtube', search_url, browser='chrome', headless=False)
-    
-    print(f"Navigateur lance: {result['status']}")
-    
-    if result['status'] == 'success':
-        print("")
-        print("=" * 70)
-        print("  NAVIGATEUR YOUTUBE OUVERT!")
-        print("=" * 70)
-        print("")
-        print("Le navigateur est ouvert sur ton ecran.")
-        print("")
-        print("Pour le controler, execute dans un AUTRE terminal:")
-        echo ""
-        echo "  # Voir la page actuelle"
-        echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; print(get_browser_manager().get_page_info())\""
-        echo ""
-        echo "  # Naviguer vers une autre URL"
-        echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().navigate('https://google.com')\""
-        echo ""
-        echo "  # Scroller vers le bas"
-        echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().scroll(500, 'down')\""
-        echo ""
-        echo "  # Fermer le navigateur"
-        echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().close()\""
-        echo ""
-        
-        # Garder le navigateur ouvert
-        import time
-        try:
-            while True:
-                time.sleep(10)
-                # Verifier si le navigateur est toujours actif
-                try:
-                    info = bm.get_page_info()
-                    if info['status'] != 'success':
-                        print("Navigateur ferme.")
-                        break
-                except:
+python3 << PYTHON_SCRIPT &
+import sys
+import os
+sys.path.insert(0, '/root/Projets/Sharingan-WFK-Python')
+
+from sharingan_app._internal.browser_manager import get_browser_manager
+
+bm = get_browser_manager()
+
+result = bm.launch('generic', '$TARGET_URL', browser='chrome', headless=False)
+
+print(f"Navigateur lance: {result['status']}")
+
+if result['status'] == 'success':
+    print("")
+    print("=" * 70)
+    print("  NAVIGATEUR OUVERT!")
+    print("=" * 70)
+    print("")
+    print("Le navigateur est ouvert sur ton ecran vers: $TARGET_URL")
+    print("")
+    print("Pour le controler, execute dans un AUTRE terminal:")
+    echo ""
+    echo "  # Voir la page actuelle"
+    echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; print(get_browser_manager().get_page_info())\""
+    echo ""
+    echo "  # Naviguer vers une autre URL"
+    echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().navigate('https://google.com')\""
+    echo ""
+    echo "  # Scroller vers le bas"
+    echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().scroll(500, 'down')\""
+    echo ""
+    echo "  # Fermer le navigateur"
+    echo "  python3 -c \"from sharingan_app._internal.browser_manager import get_browser_manager; get_browser_manager().close()\""
+    echo ""
+
+    # Garder le navigateur ouvert
+    import time
+    try:
+        while True:
+            time.sleep(10)
+            # Verifier si le navigateur est toujours actif
+            try:
+                info = bm.get_page_info()
+                if info['status'] != 'success':
                     print("Navigateur ferme.")
                     break
-        except KeyboardInterrupt:
-            print("\nFermeture du navigateur...")
-            bm.close()
-    
-    print("Script termine.")
-    
+            except:
+                print("Navigateur ferme.")
+                break
+    except KeyboardInterrupt:
+        print("\nFermeture du navigateur...")
+        bm.close()
+
+print("Script termine.")
+
 PYTHON_SCRIPT
 
 SERVER_PID=$!

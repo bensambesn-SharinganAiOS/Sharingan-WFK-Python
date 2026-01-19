@@ -303,6 +303,20 @@ class HybridProviderManager:
         self.parallel_results: List[Dict] = []
 
     def _initialize_providers(self):
+        """Initialize all AI providers including the new AI Ensemble"""
+
+        # Initialize individual providers
+        self.providers["tgpt"] = TgptProvider()
+        self.providers["minimax"] = MiniMaxProvider()
+        self.providers["grok-code-fast"] = GrokCodeFastProvider()
+
+        # NEW: Initialize AI Ensemble (combines all providers)
+        try:
+            from .ai_ensemble.ai_ensemble_provider import AIEnsembleProvider
+            self.providers["ensemble"] = AIEnsembleProvider()
+            logger.info("✅ AI Ensemble initialized - combines all free APIs")
+        except ImportError:
+            logger.warning("⚠️ AI Ensemble not available - missing ai_ensemble module")
         """Initialize available providers"""
         # tgpt - Phind/Grok (primary, general purpose)
         tgpt = TgptProvider()
@@ -514,6 +528,38 @@ class HybridProviderManager:
     def chat(self, message: str, provider: Optional[str] = None,
              context: Optional[List[Dict]] = None,
              mode: str = "auto") -> Dict:
+
+        # NEW: AI Ensemble mode - combines all APIs for maximum power
+        if provider == "ensemble" or mode == "ensemble":
+            if "ensemble" in self.providers:
+                logger.info("🤖 Using AI Ensemble - combining all free APIs")
+                try:
+                    import asyncio
+                    # Run the async ensemble method
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    result = loop.run_until_complete(
+                        self.providers["ensemble"].chat_ensemble(message, {"context": context})
+                    )
+                    loop.close()
+
+                    return {
+                        "success": True,
+                        "response": result.response,
+                        "strategy": "ensemble",
+                        "confidence": result.confidence,
+                        "sources": result.sources,
+                        "consensus_level": result.consensus_level,
+                        "processing_time": result.processing_time,
+                        "providers_used": result.sources
+                    }
+                except Exception as e:
+                    logger.error(f"Ensemble failed: {e}")
+                    # Fallback to normal mode
+                    provider = "tgpt"
+            else:
+                logger.warning("AI Ensemble not available, falling back to tgpt")
+                provider = "tgpt"
         """
         Main chat interface
 

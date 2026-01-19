@@ -407,8 +407,7 @@ class SystemPermissionsManager:
         # Exécution directe (pour les permissions élevées)
         try:
             result = subprocess.run(
-                command,
-                shell=True,
+                command.split(),  # SECURITY: Removed shell=True
                 capture_output=True,
                 text=True,
                 timeout=30

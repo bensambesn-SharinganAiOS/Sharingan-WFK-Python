@@ -80,7 +80,7 @@ def test_file_operations() -> Dict:
     
     try:
         sharingan = SharinganOS()
-        test_file = "/tmp/sharingan_autonomy_test.txt"
+        test_file = os.path.join(tempfile.gettempdir(), "sharingan_autonomy_test.txt")
         test_content = f"Test {datetime.now()}"
         
         with open(test_file, "w") as f: f.write(test_content)
@@ -217,6 +217,6 @@ def run_all_tests() -> Dict:
 
 if __name__ == "__main__":
     results = run_all_tests()
-    with open("/tmp/sharingan_autonomy.json", "w") as f:
+    with open(os.path.join(tempfile.gettempdir(), "sharingan_autonomy.json"), "w") as f:
         json.dump(results, f, indent=2, default=str)
     sys.exit(0 if results["summary"]["failed"] == 0 else 1)

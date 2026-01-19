@@ -611,6 +611,63 @@ def check_python_package(package_name: str) -> Tuple[bool, str]:
     return False, ""
 
 
+def check_dependencies() -> Dict[str, Any]:
+    """
+    Vérifie l'état des dépendances du système Sharingan OS.
+
+    Returns:
+        Dictionnaire avec l'état des dépendances
+    """
+    results = {
+        "timestamp": datetime.now().isoformat(),
+        "system_tools": {},
+        "python_packages": {},
+        "summary": {
+            "total_tools": len(TOOLS),
+            "installed_tools": 0,
+            "missing_tools": 0,
+            "total_packages": 0,
+            "installed_packages": 0,
+            "missing_packages": 0
+        }
+    }
+
+    # Vérifier les outils système
+    for tool in TOOLS:
+        installed, path = check_tool(tool.name)
+        results["system_tools"][tool.name] = {
+            "installed": installed,
+            "path": path,
+            "description": tool.description,
+            "category": tool.category
+        }
+        if installed:
+            results["summary"]["installed_tools"] += 1
+        else:
+            results["summary"]["missing_tools"] += 1
+
+    # Liste des packages Python importants
+    python_packages = [
+        "requests", "pyyaml", "pytest", "scikit-learn", "numpy",
+        "pandas", "torch", "onnxruntime", "opencv-python"
+    ]
+
+    for package in python_packages:
+        installed, version = check_python_package(package)
+        results["python_packages"][package] = {
+            "installed": installed,
+            "version": version
+        }
+        if installed:
+            results["summary"]["installed_packages"] += 1
+        else:
+            results["summary"]["missing_packages"] += 1
+
+    results["summary"]["total_packages"] = len(python_packages)
+
+    return results
+
+
 def analyze_tool_dependencies() -> Dict[str, Dict[str, str]]:
     """Analyse les dépendances des outils."""
     results = {

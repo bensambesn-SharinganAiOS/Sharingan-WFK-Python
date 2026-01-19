@@ -14,6 +14,9 @@ from dataclasses import dataclass, field
 from enum import Enum
 import logging
 
+# Memory optimization system (will be imported when needed)
+MEMORY_OPTIMIZATION_AVAILABLE = False
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("sharingan.genome")
 
@@ -78,7 +81,9 @@ class GenomeMemory:
         self.genes: Dict[str, Gene] = {}
         self.mutations: List[Mutation] = []
         self.instincts: List[Dict] = []
-        
+
+        # Memory optimization will be initialized when needed
+
         self._load_all()
         
         self.priority_rules = {
@@ -102,6 +107,12 @@ class GenomeMemory:
                 with open(self.genome_file, 'r') as f:
                     data = json.load(f)
                     for key, gene_data in data.items():
+                        # Skip non-gene entries (capabilities, evolution_history, etc.)
+                        if key in ["capabilities", "evolution_history"]:
+                            continue
+                        # Skip invalid gene formats
+                        if not isinstance(gene_data, dict) or "key" not in gene_data or "data" not in gene_data:
+                            continue
                         self.genes[key] = Gene(**gene_data)
                 logger.info(f"Loaded {len(self.genes)} genes from genome")
             except Exception as e:
@@ -227,6 +238,56 @@ class GenomeMemory:
         genes = list(self.genes.values())
         genes.sort(key=lambda g: (g.priority, g.success_rate), reverse=True)
         return genes[:limit]
+
+    def optimize_memory(self) -> Dict[str, Any]:
+        """
+        Run memory optimization on genome data
+        Returns optimization statistics
+        """
+        stats = {
+            'genes_before': len(self.genes),
+            'old_genes_cleaned': 0,
+            'memory_optimized': False,
+            'timestamp': datetime.now().isoformat()
+        }
+
+        try:
+            # Clean old genes with low success rate
+            cutoff_time = time.time() - (90 * 24 * 60 * 60)  # 90 days
+            genes_to_remove = []
+
+            for gene_key, gene in self.genes.items():
+                # Remove genes with very low success and few usages
+                if (gene.success_rate < 0.1 and
+                    gene.usage_count < 3 and
+                    gene.created_at):
+                    try:
+                        gene_time = datetime.fromisoformat(gene.created_at).timestamp()
+                        if gene_time < cutoff_time:
+                            genes_to_remove.append(gene_key)
+                            stats['old_genes_cleaned'] += 1
+                    except (ValueError, AttributeError):
+                        # Skip genes with invalid timestamps
+                        continue
+
+            # Remove old genes
+            for gene_key in genes_to_remove:
+                del self.genes[gene_key]
+
+            # Save optimized genome
+            if genes_to_remove:
+                self._save_genome()
+
+            stats['genes_after'] = len(self.genes)
+            stats['memory_optimized'] = True
+
+            logger.info(f"Genome memory optimized: {stats}")
+
+        except Exception as e:
+            logger.error(f"Genome memory optimization failed: {e}")
+            stats['error'] = str(e)
+
+        return stats
     
     def add_instinct(self, pattern: str, response: str, 
                      condition: Optional[str] = None) -> None:

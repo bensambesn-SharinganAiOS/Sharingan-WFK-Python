@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue-400;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Custom components */
+.btn-primary {
+  @apply bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+}
+
+.btn-secondary {
+  @apply bg-card-bg hover:bg-gray-700 text-text px-4 py-2 rounded-lg border border-gray-600 font-medium transition-colors duration-200;
+}
+
+.card {
+  @apply bg-card-bg border border-gray-700 rounded-xl p-6;
+}
+
+.input {
+  @apply bg-card-bg border border-gray-600 rounded-lg px-3 py-2 text-text placeholder-text-muted focus:outline-none focus:border-primary;
+}
+
+/* Status indicators */
+.status-online {
+  @apply text-success;
+}
+
+.status-offline {
+  @apply text-danger;
+}
+
+.status-warning {
+  @apply text-warning;
+}
+
+/* Utility classes */
+.text-gradient {
+  @apply bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent;
+}
+
+.glass-effect {
+  @apply bg-card-bg/50 backdrop-blur-sm border border-white/10;
+}

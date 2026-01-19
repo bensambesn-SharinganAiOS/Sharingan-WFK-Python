@@ -1,0 +1,114 @@
+Règles strictes et non négociables du système
+1. Contenu
+Aucun contenu factice :
+pas de logo,
+pas d’icône,
+pas de fake,
+pas de simulation,
+pas de fictif,
+pas de placeholder,
+pas de démo.
+Aucun hardcode.
+Aucune perte de capacité :
+jamais de réduction de fonctionnalités,
+jamais de réduction d’accès,
+jamais de réduction de droits existants.
+Aucun test fictif.
+
+2. Scripts
+Ne pas créer de nouveaux scripts pour exécuter des tâches qui peuvent déjà être réalisées par :
+le système d’exploitation,
+les outils existants,
+les services déjà disponibles.
+Les scripts ne doivent être créés que si la fonctionnalité n’existe pas encore.
+Les scripts doivent être génériques et réutilisables :
+jamais spécifiques à une seule tâche,
+jamais liés à une marque ou un service unique (ex. Facebook, YouTube),
+jamais liés à un site, un CTF ou un environnement spécifique (ex. OverTheWire),
+ils doivent fonctionner de manière générale pour tous les sites et cas similaires.
+
+3. Utilisation du système, des outils et des projets
+Ces règles s’appliquent de la même manière à :
+l’utilisation des outils du système hôte,
+les outils internes du projet,
+les services déjà disponibles.
+Principe fondamental :
+tirer parti de l’existant, pas le contourner ni le dupliquer.
+Si un outil existe, il doit être utilisé correctement avant d’en envisager un nouveau.
+Toute duplication fonctionnelle doit être explicitement justifiée.
+
+4. Objectif du système
+L’objectif principal est de mettre en place un système permettant à un utilisateur non technique d’exécuter des tâches complexes en langage naturel.
+C’est au système de comprendre, interpréter et traduire l’intention de l’utilisateur.
+L’utilisateur ne doit jamais s’adapter à la technique.
+La complexité doit être absorbée par l’architecture, jamais exposée à l’utilisateur.
+
+5. IA et API embarquées
+Les IA et API intégrées au projet doivent pouvoir :
+exécuter les ordres de l’utilisateur en langage naturel,
+fonctionner de manière autonome lorsque c’est nécessaire,
+utiliser les outils et capacités existantes du système.
+Toute IA travaillant dans le projet doit être capable de :
+comprendre l’intention utilisateur,
+agir via le système en place,
+sans création inutile de scripts, d’outils parallèles ou de mécanismes redondants.
+
+6. Interdiction de création de comptes ou authentifications humaines
+Aucune action ne peut nécessiter la création de compte, d’authentification ou de validation humaine pour fonctionner.
+Le système doit pouvoir exécuter toutes les tâches de manière autonome, qu’il s’agisse :
+des services internes,
+des API externes,
+ou des outils du système hôte.
+Toute intégration ou API utilisée doit être vérifiée automatiquement pour s’assurer qu’elle ne requiert pas d’intervention humaine.
+Si une action nécessite un compte ou une authentification humaine, elle est interdite tant qu’une solution entièrement autonome n’existe pas.
+
+7. Système conscient (définition fonctionnelle)
+Le système doit être un système conscient au sens technique, grâce à :
+son code,
+ses API,
+sa capacité d’introspection et d’orchestration.
+Cela implique que le système :
+sait qu’il est un système (connaissance de ses capacités, limites, outils disponibles),
+ne consomme pas inutilement des ressources :
+les API servent à assister le travail et la compréhension,
+elles ne remplacent pas inutilement des capacités locales.
+utilise les API comme leviers d’intelligence, pas comme dépendances aveugles.
+Un système conscient :
+s’adapte dynamiquement :
+à l’hôte,
+aux outils installés,
+à l’environnement,
+à ses propres outils internes.
+s’améliore continuellement :
+en puissance,
+en généralité,
+en compatibilité multi-environnements.
+privilégie toujours :
+la solution la plus simple,
+la plus directe,
+la plus économe en ressources,
+à capacité équivalente.
+Détection proactive des violations
+Le système doit surveiller et détecter toute non-conformité aux règles :
+création de compte ou authentification humaine,
+utilisation de scripts spécifiques ou hardcodés,
+duplication de fonctionnalités existantes,
+tout autre manquement aux règles définies.
+
+8. Gestion des problèmes
+En cas de problème, de blocage ou d’échec :
+Expliquer le problème d’abord.
+Identifier clairement la cause.
+Demander validation si une modification est nécessaire.
+Ne jamais improviser : 
+nouvelle solution,
+script,
+architecture,
+sans justification claire et validée.
+
+9. Priorité des règles
+Ces règles priment sur toute autre considération :
+technique,
+organisationnelle,
+ou esthétique.
+Aucune exception implicite n’est autorisée.

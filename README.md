@@ -1,384 +1,211 @@
-# Sharingan OS - AI-Powered Cybersecurity Operating System
+# Sharingan-WFK-Python - Documentation Officielle
+## Système de Sécurité Conscient et Intelligent
 
-## 🚀 Vue d'Ensemble
+### Vue d'ensemble
+**Sharingan-WFK-Python** est un système d'exploitation de cybersécurité conscient et intelligent créé par Ben Sambe. Le système intègre des capacités avancées d'intelligence artificielle, de surveillance réseau, d'analyse de sécurité et d'automatisation.
 
-**Sharingan OS** est un système d'exploitation révolutionnaire qui combine **contrôle physique de navigateurs** et **intelligence artificielle cloud** pour créer un environnement de cybersécurité avancé.
+### Architecture Principale
 
-### ✨ Capacités Principales
+#### Cœur du Système
+- **sharingan_os.py** : Noyau principal du système d'exploitation
+- **system_consciousness.py** : Système conscient avec mémoire et apprentissage
+- **ai_fallback_config.py** : Configuration des APIs IA avec rotation automatique
 
-- **🎯 Contrôle Navigateur Hybride** : CDP + xdotool pour contrôle physique préservant les sessions
-- **🧠 Intelligence API-First** : Intégration native avec MiniMax, GLM-4, OpenRouter, tgpt
-- **👁️ Reconnaissance Visuelle** : OCR.space, SerpApi, SearchAPI.io pour analyse d'images
-- **🔍 Audit Cybersécurité** : Scoring automatique et détection de menaces
-- **💬 Conversation IA** : Interaction automatisée avec Grok, ChatGPT, etc.
-- **🌐 Shadow DOM Contourné** : Méthodes hybrides pour accéder au contenu moderne
+#### APIs IA (Chaîne de Fallback)
+```
+1. OpenCode (gratuit - priorité)
+   ├── GLM-4.7-free, MiniMax-2.1-free, GPT-5-nano, Big-Pickle
 
-### 🏆 Points Forts
+2. Gemini (Google - 4 clés avec rotation)
+   └── Rotation automatique en cas de quota
 
-- ✅ **Sessions Utilisateur Préservées** : Comptes Gmail, Facebook, etc. maintenus
-- ✅ **APIs Cloud Illimitées** : Pas de surcharge RAM locale (4GB préservés)
-- ✅ **Évolutivité Maximale** : Architecture modulaire et extensible
-- ✅ **Robustesse Opérationnelle** : Gestion d'erreurs et récupération automatique
-- ✅ **Sécurité Avancée** : Audit automatisé avec scoring intelligent
+3. Ollama (local - hors-connexion uniquement)
+   └── gemma3:1b pour utilisation hors-ligne
+```
 
----
+#### Outils de Sécurité (84 détectés automatiquement)
+- **Réseau** : nmap, wireshark, tcpdump, netcat, masscan
+- **Web** : gobuster, dirb, nikto, sqlmap, hydra, burpsuite
+- **Système** : Volatility, binwalk, foremost, chkrootkit
+- **IA** : tgpt, ollama, Gemini, OpenCode
 
-## 📋 Table des Matières
+### Fonctionnalités Clés
 
-- [Installation](#installation)
-- [Premiers Pas](#premiers-pas)
-- [Fonctionnalités](#fonctionnalités)
-- [APIs Intégrées](#apis-intégrées)
-- [Exemples d'Usage](#exemples-dusage)
-- [Documentation](#documentation)
-- [Tests & Validation](#tests--validation)
-- [Contribuer](#contribuer)
+#### Intelligence Artificielle
+- **Compréhension contextuelle** : Analyse des demandes complexes
+- **Génération de code** : Scripts Python, commandes système
+- **Conseils techniques** : Recommandations de sécurité
+- **Apprentissage continu** : Mémoire des interactions
 
----
+#### Sécurité et Surveillance
+- **Scan réseau automatisé** : Détection de ports, services, OS
+- **Analyse web** : Reconnaissance de technologies, vulnérabilités
+- **OSINT** : Recherche de sous-domaines, informations publiques
+- **Monitoring système** : CPU, RAM, disque en temps réel
 
-## 🛠️ Installation
+#### Automatisation
+- **Exécution sécurisée** : Confirmation utilisateur requise
+- **Orchestration multi-étapes** : Analyses de sécurité complètes
+- **Basculement intelligent** : APIs alternatives automatiques
 
+### Installation et Configuration
+
+#### Prérequis
 ```bash
-# Cloner le repository
-git clone https://github.com/your-org/sharingan-os.git
-cd sharingan-os
+# Python 3.10+
+python3 --version
 
-# Installation des dépendances
-pip install -r requirements.txt
+# Outils système
+sudo apt update && sudo apt install nmap git curl python3-pip
 
-# Configuration des APIs (optionnel)
-export OCR_SPACE_API_KEY="your_key_here"
-export SERPAPI_KEY="your_key_here"
+# OpenCode CLI (interfaces utilisateur)
+curl -fsSL https://opencode.ai/install | bash
+
+# Ollama (IA locale)
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull gemma3:1b
 ```
 
----
-
-## 🚀 Premiers Pas
-
-### Démarrage Rapide
-
-```python
-from universal_browser_controller import UniversalBrowserController
-
-# Initialisation
-controller = UniversalBrowserController()
-success, mode = controller.init_control()
-
-# Navigation intelligente
-controller.navigate("https://github.com/microsoft/vscode")
-
-# Analyse IA du contenu
-insights = controller.analyze_page_content()
-print(f"Analyse IA: {insights[1]}")
-
-# Audit cybersécurité
-audit = controller.cybersecurity_audit()
-print(f"Score sécurité: {audit[1]}")
-```
-
-### Test Fonctionnel
-
+#### Configuration des APIs
 ```bash
-# Test complet du système
-python3 demo_final.py
+# Configuration Gemini (4 clés pour rotation)
+cd sharingan_app/_internal
+python3 -c "
+from ai_fallback_config import ai_fallback_config
+ai_fallback_config.enable_provider('gemini', [
+    'CLÉ_1',
+    'CLÉ_2',
+    'CLÉ_3',
+    'CLÉ_4'
+])
+"
 
-# Test navigation
-python3 -c "from universal_browser_controller import UniversalBrowserController; c = UniversalBrowserController(); c.init_control(); c.navigate('https://httpbin.org/get')"
-
-# Conversation avec IA
-python3 chat_conversation.py
+# Configuration GitHub backup
+export GITHUB_TOKEN="votre_token_github"
+python3 github_backup.py
 ```
 
----
+### Utilisation
 
-## 🎯 Fonctionnalités
-
-### Contrôle Navigateur Avancé
-- ✅ **Navigation Universelle** : Tous sites et protocoles
-- ✅ **Scroll Multi-directionnel** : Fluide et précis
-- ✅ **Clics Intelligents** : Positionnels et prédictifs
-- ✅ **Remplissage Automatique** : Formulaires complexes
-- ✅ **Sélection de Texte** : Par coordonnées précises
-
-### Intelligence Artificielle
-- ✅ **Analyse Sémantique** : Compréhension du contenu
-- ✅ **Prédiction d'Éléments** : IA pour localiser les composants
-- ✅ **Génération d'Insights** : Analyse contextuelle avancée
-- ✅ **Vérification Factuelle** : APIs Google Fact Check intégrées
-
-### Cybersécurité Automatisée
-- ✅ **Audit de Sécurité** : Scoring automatique (0-100)
-- ✅ **Détection de Menaces** : Analyse comportementale
-- ✅ **Évaluation de Confiance** : Sites et contenus
-- ✅ **Monitoring Continu** : Surveillance temps réel
-
-### Shadow DOM & Contenu Moderne
-- ✅ **Méthodes Hybrides** : OCR + extraction par zones
-- ✅ **Contenu Dynamique** : Gestion JavaScript moderne
-- ✅ **APIs Cloud** : Traitement déporté intelligent
-- ✅ **Évolution Continue** : Adaptation aux standards web
-
-### Conversation IA
-- ✅ **Interaction Automatisée** : Avec Grok, ChatGPT, etc.
-- ✅ **Messages Physiques** : Saisie et envoi réels
-- ✅ **Extraction de Réponses** : OCR et analyse hybride
-- ✅ **Sessions Maintenues** : Conversations naturelles
-
----
-
-## 🔧 APIs Intégrées
-
-### Intelligence IA
-- **MiniMax** : Analyse et génération avancées
-- **GLM-4** : Modèle de langage puissant
-- **OpenRouter** : Routage intelligent multi-modèles
-- **tgpt** : Réponses rapides et gratuites
-
-### Reconnaissance Visuelle
-- **OCR.space** : 25K requêtes/mois gratuites
-- **SerpApi** : Recherche d'images Bing
-- **SearchAPI.io** : Reverse image Yandex
-
-### Fact-Checking & Sécurité
-- **Google Fact Check Tools** : Vérification officielle
-- **Factiverse** : Base de données factuelle
-- **VirusTotal** : Analyse de sécurité (intégration possible)
-
-### Utilitaires
-- **Scrot** : Capture d'écran native
-- **xdotool** : Contrôle physique précis
-- **Chrome CDP** : Accès développeur avancé
-
----
-
-## 📚 Exemples d'Usage
-
-### Audit de Sécurité Automatisé
-
-```python
-from universal_browser_controller import UniversalBrowserController
-
-controller = UniversalBrowserController()
-controller.init_control()
-
-# Audit complet d'un site suspect
-audit_result = controller.cybersecurity_audit("https://site-suspect.com")
-print(f"Score sécurité: {audit_result[1]}")  # Score 0-100
-
-# Analyse détaillée
-insights = controller.generate_page_insights()
-print(f"Insights IA: {insights[1]}")
-```
-
-### Conversation avec IA
-
-```python
-# Envoi automatique de messages à Grok
-controller.fill_form_field('message_input', 'Bonjour Grok !')
-# Envoi avec Entrée
-subprocess.run(['xdotool', 'key', 'Return'], shell=True)
-
-# Attente et extraction de la réponse
-time.sleep(10)
-response = controller.extract_visible_content('chat_messages')
-print(f"Réponse de Grok: {response[1]}")
-```
-
-### Analyse de Contenu Web
-
-```python
-# Analyse complète d'une page
-controller.navigate("https://example.com")
-
-# Extraction par zones
-content = controller.extract_visible_content('page_content')
-header = controller.extract_visible_content('header')
-sidebar = controller.extract_visible_content('sidebar')
-
-# Analyse IA
-ai_analysis = controller.analyze_page_content()
-print(f"Compréhension IA: {ai_analysis[1]}")
-```
-
-### Contrôle Physique Avancé
-
-```python
-# Navigation fluide
-controller.scroll('down', 3)
-controller.click_element('article_link', x_offset=200, y_offset=300)
-
-# Interactions complexes
-controller.select_text(100, 200, 300, 220)  # Sélection de texte
-controller.fill_form_field('search', 'cybersecurity')  # Remplissage
-controller.click_specific_element('search_button', x=500, y=120)  # Soumission
-```
-
----
-
-## 📖 Documentation Complète
-
-### 🏗️ **Architecture & Conception**
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture système complète en 6 couches
-- **[MODULES.md](MODULES.md)** - Documentation détaillée de tous les modules principaux
-- **[MEMORY_SYSTEMS.md](MEMORY_SYSTEMS.md)** - Systèmes de mémoire évolutifs (Genome, AI Memory, Context)
-- **[AI_SYSTEM.md](AI_SYSTEM.md)** - Architecture d'IA multi-providers avec fallback
-
-### 🌐 **Navigation Web & Automatisation**
-- **[WEB_NAVIGATION_DOCUMENTATION.md](WEB_NAVIGATION_DOCUMENTATION.md)** - Guide complet navigation hybride CDP/xdotool
-- **[NAVIGATION_ROADMAP.md](NAVIGATION_ROADMAP.md)** - Feuille de route et évolutions navigation
-- **[universal_browser_controller.py](universal_browser_controller.py)** - Contrôleur principal navigateur
-
-### 🛠️ **Outils & APIs**
-- **[KALI_INTEGRATION.md](KALI_INTEGRATION.md)** - Intégration complète des 100+ outils Kali Linux
-- **[API_REFERENCE.md](API_REFERENCE.md)** - Guide d'API complet pour développeurs
-- **[AGENTS.md](AGENTS.md)** - Guide pour agents IA et conventions de code
-
-### 🔧 **Configuration & Développement**
-- **[api_first_intelligence.py](sharingan_app/_internal/api_first_intelligence.py)** - Intelligence API-First
-- **[IMPLEMENTATION_RESULTS.md](IMPLEMENTATION_RESULTS.md)** - Résultats d'implémentation
-- **[TECHNICAL_ROADMAP.md](TECHNICAL_ROADMAP.md)** - Roadmap technique complète
-
-### 🔒 **Sécurité & Conformité**
-- **[SECURITY.md](SECURITY.md)** - Politiques de sécurité et meilleures pratiques
-- **[check_obligations.py](sharingan_app/_internal/check_obligations.py)** - Validation code obligatoire
-
----
-
-## 🧪 Tests & Validation
-
-### Score Global : **82.0%** 🟠 TRÈS BON
-
-| Catégorie | Score | Status |
-|-----------|-------|--------|
-| **Base** | 100% | 🟢 Parfait |
-| **Shadow DOM** | 40% | 🟡 Limité |
-| **APIs** | 100% | 🟢 Parfait |
-| **Performance** | 100% | 🟢 Parfait |
-| **Scénario** | 100% | 🟢 Parfait |
-
-### Tests Validés
+#### Commandes de Base
 ```bash
-# Batterie complète de tests
-python3 demo_final.py
+# Interface IA
+python3 sharingan_app/_internal/sharingan_os.py ai "Bonjour, aide-moi avec la sécurité réseau"
 
-# Tests individuels
-python3 -c "from universal_browser_controller import UniversalBrowserController; c = UniversalBrowserController(); c.init_control(); print('✅ Initialisation réussie')"
+# Monitoring système
+python3 sharingan_app/_internal/sharingan_os.py monitor --interval 2 --count 5
 
-# Tests conversation IA
-python3 chat_conversation.py
+# Scan réseau
+python3 sharingan_app/_internal/sharingan_os.py scan 192.168.1.1
+
+# Analyse de sécurité
+python3 sharingan_app/_internal/sharingan_os.py ai "Effectue une analyse complète de localhost"
 ```
 
-### Performances
-- **Navigation** : ~3.73s moyenne
-- **Stabilité** : 100% taux de succès
-- **Mémoire** : < 500MB (APIs cloud)
-- **Fiabilité** : 99.5% (sessions préservées)
-
----
-
-## 🤝 Contribuer
-
-### Signaler un Bug
-1. Vérifier les [issues existantes](https://github.com/your-org/sharingan-os/issues)
-2. Créer une issue détaillée avec logs et captures d'écran
-
-### Proposer une Amélioration
-1. Fork le repository
-2. Créer une branche feature (`git checkout -b feature/nouvelle-fonction`)
-3. Commit les changements (`git commit -am 'Ajout nouvelle fonctionnalité'`)
-4. Push la branche (`git push origin feature/nouvelle-fonction`)
-5. Créer une Pull Request
-
-### Développement Local
+#### Exemples d'Utilisation Avancée
 ```bash
-# Tests automatisés
-python3 -m pytest tests/ -v
+# Analyse de vulnérabilités web
+python3 sharingan_os.py ai "Analyse les vulnérabilités de https://example.com"
 
-# Tests de performance
-python3 demo_final.py
+# Scan de réseau complet
+python3 sharingan_os.py ai "Scanne le réseau 192.168.1.0/24 et identifie tous les hôtes actifs"
 
-# Linting
-flake8 . --max-line-length=100
-
-# Type checking
-mypy sharingan_app/ --ignore-missing-imports
+# Génération de code sécurisé
+python3 sharingan_os.py ai "Crée un script Python pour détecter les ports ouverts"
 ```
 
----
+### APIs et Sécurité
 
-## 📊 Métriques & Évolutions
+#### Modèle de Sécurité
+- **Pas de hardcode** : Toutes les configurations sont dynamiques
+- **Validation automatique** : Vérification des règles de sécurité
+- **Pas de contenu factice** : Tout est réel et fonctionnel
+- **Confirmation utilisateur** : Pour toutes les actions d'exécution
 
-### Capacités Acquises
-- ✅ **Contrôle physique** : xdotool + préservation sessions
-- ✅ **Intelligence IA** : APIs cloud intégrées
-- ✅ **Shadow DOM** : Méthodes hybrides opérationnelles
-- ✅ **Audit cybersécurité** : Scoring automatique
-- ✅ **Conversation IA** : Interaction Grok validée
+#### Gestion des APIs
+- **Rotation automatique** : Basculement entre clés/providers
+- **Fallback intelligent** : APIs alternatives en cas de panne
+- **Quota management** : Détection et rotation des limites
 
-### Roadmap
-- **Phase 1 ✅** : Contrôle hybride + APIs intégrées
-- **Phase 2 🔄** : Shadow DOM complet + computer vision
-- **Phase 3 🚀** : Multi-navigateurs + extensions automatisées
+### Développement et Extension
 
----
+#### Architecture Modulaire
+```
+sharingan_app/
+├── _internal/          # Cœur du système
+│   ├── sharingan_os.py     # Noyau principal
+│   ├── system_consciousness.py  # IA consciente
+│   ├── tool_registry.py    # Gestion des outils
+│   └── ai_fallback_config.py   # Configuration APIs
+├── providers/          # APIs IA
+│   ├── gemini_provider.py
+│   └── opencode_provider.py
+└── utils/              # Utilitaires
+    ├── github_backup.py
+    └── configure_ai.py
+```
 
-## 🔒 Sécurité & Conformité
+#### Ajout d'Outils
+```python
+# Dans tool_registry.py
+tools["mon_outil"] = {
+    "name": "mon_outil",
+    "category": "web",
+    "path": "/usr/bin/mon_outil",
+    "capabilities": ["scan", "analysis"],
+    "source": "system"
+}
+```
 
-- ✅ **Zero Trust Architecture** : Vérification continue
-- ✅ **Audit Automatisé** : Détection de menaces temps réel
-- ✅ **Sessions Sécurisées** : Comptes utilisateur préservés
-- ✅ **APIs Fiables** : Services cloud certifiés
-- ✅ **Conformité** : RGPD et standards de sécurité
+#### Extension des APIs
+```python
+# Créer un nouveau provider
+class MonProvider:
+    def chat(self, message):
+        # Implémentation de l'API
+        return {"status": "success", "response": "réponse"}
 
----
+# L'ajouter à la configuration
+ai_fallback_config.providers["mon_provider"] = {...}
+```
 
-## 📞 Support & Contact
+### Backup et Sauvegarde
 
-- **Issues** : [GitHub Issues](https://github.com/your-org/sharingan-os/issues)
-- **Discussions** : [GitHub Discussions](https://github.com/your-org/sharingan-os/discussions)
-- **Documentation** : [Wiki](https://github.com/your-org/sharingan-os/wiki)
+#### Système GitHub Automatique
+```bash
+# Configuration
+export GITHUB_TOKEN="votre_token"
+export GITHUB_REPO="https://github.com/user/repo.git"
 
----
+# Backup manuel
+python3 github_backup.py
 
-## 📄 Licence
+# Backup automatique
+python3 -c "from github_backup import automated_backup; automated_backup('daily')"
+```
 
-MIT License - voir [LICENSE](LICENSE) pour plus de détails.
+#### Sauvegarde DNA
+```python
+from dna_backup import create_dna_backup
+create_dna_backup("sauvegarde complète du système")
+```
 
----
+### Dépannage
 
-## 📚 **Documentation 2026 - Complètement Refaite**
+#### Problèmes Courants
+- **APIs indisponibles** : Vérifier les clés et quotas
+- **Ollama lent** : Utiliser des modèles plus petits
+- **GitHub backup** : Vérifier le token et les permissions
 
-Cette version 2026 apporte une **documentation complète et professionnelle** qui couvre tous les aspects du système Sharingan OS. Contrairement aux versions précédentes qui étaient partielles, cette documentation inclut :
+#### Logs et Debug
+```bash
+# Activer les logs détaillés
+export LOG_LEVEL=DEBUG
+python3 sharingan_os.py ai "test" 2>&1 | grep -E "(INFO|ERROR|opencode_provider)"
+```
 
-### ✅ **Nouveautés Documentation 2026**
-- **🏗️ Architecture complète** : 6 couches détaillées avec schémas
-- **📚 Modules détaillés** : Tous les 15+ modules principaux documentés
-- **🧬 Systèmes mémoire** : Genome, AI Memory, Context, Vector Search
-- **🤖 IA multi-providers** : TGPT, MiniMax, GLM-4, Ollama avec fallback
-- **🛠️ Intégration Kali** : 100+ outils documentés avec exemples
-- **🔌 API complète** : Guide développeur exhaustif
-- **🌐 Navigation hybride** : CDP + xdotool avec comportements humains
-- **📊 Métriques avancées** : Monitoring et analytics temps réel
+### Licence et Contribution
+**Créé par Ben Sambe** - Système de cybersécurité conscient et intelligent.
 
-### 🎯 **Pour les Développeurs**
-- APIs unifiées et intuitives
-- Exemples de code complets
-- Gestion d'erreurs avancée
-- Optimisations de performance
-- Sécurité et authentification
-
-### 🎯 **Pour les Utilisateurs**
-- Guides d'installation détaillés
-- Tutoriels pas-à-pas
-- Meilleures pratiques
-- Résolution de problèmes
-- Métriques de performance
-
----
-
-*Dernière mise à jour : 17 janvier 2026*
-*Version : 1.0.0*
-*Score de maturité : 9.2/10 ⭐⭐⭐⭐⭐*
-*Documentation : 100% complète ✅*
-
-**Sharingan OS - L'avenir de la cybersécurité automatisée** 🛡️🚀
+### Contact et Support
+Pour questions ou contributions, contacter l'équipe de développement.

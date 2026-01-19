@@ -453,7 +453,7 @@ class KaliToolManager:
             package_name = tool.package_name or tool.name
             cmd = ["apt", "update", "&&", "apt", "install", "-y", package_name]
 
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600, shell=True)
+            result = subprocess.run(cmd.split(), capture_output=True, text=True, timeout=600)  # SECURITY: Removed shell=True
 
             version = None
             if result.returncode == 0:

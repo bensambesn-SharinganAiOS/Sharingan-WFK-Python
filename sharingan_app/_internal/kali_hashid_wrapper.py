@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 hashid Wrapper for Sharingan OS
 Real hash type identification tool

@@ -292,8 +292,8 @@ class HydraWrapper:
         self.name = "hydra"
         self.description = "Network login cracker"
 
-    def crack(self, target: str, service: str, login_file: str = None,
-              password_file: str = None, login: str = None, **kwargs) -> Dict[str, Any]:
+    def crack(self, target: str, service: str, login_file: Optional[str] = None,
+              password_file: Optional[str] = None, login: Optional[str] = None, **kwargs) -> Dict[str, Any]:
         """Effectue un cracking avec Hydra"""
         cmd = [self.command, "-t", "4", "-f"]
 
@@ -400,9 +400,21 @@ class MedusaWrapper:
         self.name = "medusa"
         self.description = "Modular login brute-forcer"
 
-    def crack(self, host: str, user: str = "admin", password_file: str = "/usr/share/wordlists/rockyou.txt",
+    def crack(self, host: str, user: str = None, password_file: str = None,
               module: str = "ssh", **kwargs) -> Dict[str, Any]:
         """Effectue un cracking avec Medusa"""
+
+        # Utilisation de valeurs sécurisées depuis l'environnement
+        if user is None:
+            user = os.environ.get('MEDUSA_DEFAULT_USER', 'admin')
+        if password_file is None:
+            password_file = os.environ.get('MEDUSA_DEFAULT_PASSWORDLIST', '/usr/share/wordlists/rockyou.txt')
+
+        # Validation des inputs
+        if not host:
+            return {"success": False, "error": "Host required"}
+        if not os.path.isfile(password_file) or not os.access(password_file, os.R_OK):
+            return {"success": False, "error": f"Invalid or inaccessible password file: {password_file}"}
         cmd = [
             self.command,
             "-h", host,

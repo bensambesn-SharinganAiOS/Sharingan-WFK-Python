@@ -54,7 +54,7 @@ class BrowserShell:
     @property
     def br(self):
         """Accès au navigateur CDP."""
-        if not self._connected:
+        if not self._connected or self._browser is None:
             raise RuntimeError("Non connecté. Appelez connect() d'abord.")
         # BrowserAPI a la propriété 'br' qui retourne le CDPBrowser
         return self._browser.br
@@ -103,7 +103,11 @@ class BrowserShell:
         await self.connect()
         return {"url": await self.br.get_url(), "title": await self.br.get_title()}
     
-    async def screenshot(self, path: str = "/tmp/sharingan.png") -> Dict[str, Any]:
+    async def screenshot(self, path: Optional[str] = None) -> Dict[str, Any]:
+        if path is None:
+            import tempfile
+            from pathlib import Path
+            path = str(Path(tempfile.gettempdir()) / "sharingan.png")
         await self.connect()
         success = await self.br.get_screenshot(path)
         return {"status": "success" if success else "error", "path": path}
@@ -160,7 +164,7 @@ async def current() -> Dict[str, Any]:
     return await get_browser_shell().current()
 
 
-async def screenshot(path: str = "/tmp/sharingan.png") -> Dict[str, Any]:
+async def screenshot(path: Optional[str] = None) -> Dict[str, Any]:
     return await get_browser_shell().screenshot(path)
 
 
@@ -267,7 +271,7 @@ class InteractiveShell:
                 print(f"   {'✅' if result.get('status')=='success' else '❌'}\n")
             
             elif cmd == 'press':
-                await self.browser.press_key(args)
+                await self.browser.press(args)
                 print("   ✅\n")
             
             elif cmd == 'current':
