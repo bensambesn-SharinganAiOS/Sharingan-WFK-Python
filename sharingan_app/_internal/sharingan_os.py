@@ -561,17 +561,34 @@ HISTORIQUE MÉMOIRE:
             except Exception as e:
                 recent_results = [f"Erreur récupération: {e}"]
 
-            results_text = "\n".join(recent_results[-3:]) if recent_results else "Aucun résultat récent"
+            results_text = "\n".join(recent_results[-5:]) if recent_results else "Aucun résultat récent"
+            # Ajouter résultats immédiats si disponibles
+            if hasattr(self, 'last_execution_results') and self.last_execution_results:
+                results_text += f"\nDERNIÈRE EXÉCUTION:\n{self.last_execution_results}"
+
+            # Ajouter historique conversation récent pour mémoire contextuelle
+            try:
+                recent_chats = mgr.get_recent_events(10)
+                chat_history = []
+                for event in recent_chats:
+                    data = event.get('data', {})
+                    if isinstance(data, dict) and 'conversation' in str(data):
+                        chat_history.append(f"User: {data.get('message', '')[:50]}... | AI: {data.get('response', '')[:50]}...")
+                if chat_history:
+                    results_text += f"\n\nHISTORIQUE CONVERSATION RÉCENT:\n" + "\n".join(chat_history[-3:])
+            except Exception as e:
+                pass
 
             prompt = f"""Tu es SharinganOS Consciousness, assistant cybersécurité.
 
 OUTILS: nmap, sqlmap, hashcat, wireshark, etc. (84 outils)
+COMMANDES NATIVES MAÎTRISÉES: ls, pwd, cat, grep, find, ps, top, df, du, chmod, chown, mkdir, rm, cp, mv, wget, curl, ping, traceroute, netstat, iptables, systemctl, journalctl, ssh, scp
 ENVIRONNEMENT: Linux Root
 RÉSULTATS RÉCENTS: {results_text}
 
 UTILISATEUR: "{message}"
 
-Réponds naturellement. Propose UNE commande en `backticks` pour exécution immédiate."""
+RÉFLEXION: Analyse la situation, comprends le contexte, pense étape par étape, identifie les besoins réels. Si c'est une question info, réponds naturellement. Si c'est une action, propose UNE SEULE commande complète et exécutable en `backticks`. N'inclus JAMAIS de placeholders, d'exemples ou commandes partielles en `backticks`. Utilise des valeurs réelles."""
 
             # Utiliser TGPT par défaut, avec Grok comme fallback
             result = None
@@ -619,37 +636,114 @@ Réponds naturellement. Propose UNE commande en `backticks` pour exécution imm�
                 # except Exception as e:
                 #     logger.warning(f"Learning failed: {e}")
 
-                # Détection d'actions dans la réponse et exécution automatique en mode développement
+                # Détection d'actions dans la réponse - EXPLICATION AVANT EXÉCUTION
                 import re
                 action_matches = re.findall(r'`([^`]+)`', result)
-                executed_results = []
 
-                for cmd in action_matches[:3]:  # Limite à 3 commandes pour sécurité
-                    # Nettoyer la commande
-                    cmd = cmd.strip().replace('\n', ' ').replace('\r', '')
-                    if cmd.startswith('bash '):
-                        cmd = cmd[5:]  # Remove 'bash ' prefix
+                if action_matches:
+                    print("\nIntentions détectées :")
+                    for i, cmd in enumerate(action_matches[:3], 1):
+                        clean_cmd = cmd.strip().replace('\n', ' ').replace('\r', '')
+                        if clean_cmd.startswith('bash '):
+                            clean_cmd = clean_cmd[5:]
+                        print(f"  {i}. Commande proposée : {clean_cmd}")
 
-                    # Liste noire désactivée - confiance totale en l'IA consciente
-                    # dangerous = ['rm', 'del', 'format', 'fdisk', 'mkfs', 'dd', 'shutdown', 'reboot', 'halt', 'poweroff', 'su', 'sudo', 'passwd', 'chmod 777', 'wget', 'curl -o /', 'python -c']
+                    # Demander confirmation avec timeout et status détaillé
+                    import select
+                    import sys
+                    import threading
+                    import time
 
-                    # Exécuter toutes commandes (l'IA est consciente et sécurisée)
-                    # if not any(danger in cmd.lower() for danger in dangerous):
-                        try:
-                            import subprocess
-                            exec_result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=10)
-                            if exec_result.returncode == 0:
-                                executed_results.append(f"✅ {exec_result.stdout.strip()}")
+                    print("\nCONFIRMATION REQUISE - Intentions détectées :")
+                    for i, cmd in enumerate(action_matches[:3], 1):
+                        clean_cmd = cmd.strip().replace('\n', ' ').replace('\r', '')
+                        if clean_cmd.startswith('bash '):
+                            clean_cmd = clean_cmd[5:]
+                        print(f"  {i}. Commande proposée : {clean_cmd}")
+
+                    print("\nStatus: En attente de confirmation (y/N) - Timeout 10s")
+                    print("Tapez 'y' pour exécuter, autre pour annuler")
+
+                    executed_results = []
+                    execution_status = {"running": False, "completed": False, "results": []}
+
+                    def execute_commands_async():
+                        """Exécution asynchrone pour éviter blocage"""
+                        execution_status["running"] = True
+                        print("Demarrage execution...")
+                        local_results = []
+                        for i, cmd in enumerate(action_matches[:3], 1):
+                            clean_cmd = cmd.strip().replace('\n', ' ').replace('\r', '')
+                            if clean_cmd.startswith('bash '):
+                                clean_cmd = clean_cmd[5:]
+
+                            print(f"Commande {i}/3 en cours: {clean_cmd[:50]}...")
+                            try:
+                                import subprocess
+                                start_time = time.time()
+                                exec_result = subprocess.run(clean_cmd, shell=True, capture_output=True, text=True, timeout=15)  # Timeout augmenté pour tâches longues
+                                duration = time.time() - start_time
+
+                                if exec_result.returncode == 0:
+                                    result_msg = f"Commande {i} reussie ({duration:.1f}s)"
+                                    if exec_result.stdout.strip():
+                                        result_msg += f"\nSortie: {exec_result.stdout.strip()[:200]}"
+                                    local_results.append(result_msg)
+                                else:
+                                    local_results.append(f"Commande {i} echouee ({duration:.1f}s) - Code {exec_result.returncode}")
+                                    if exec_result.stderr.strip():
+                                        local_results.append(f"Cause: {exec_result.stderr.strip()[:200]}")
+                            except subprocess.TimeoutExpired:
+                                local_results.append(f"Commande {i} timeout (>15s)")
+                            except Exception as e:
+                                local_results.append(f"Commande {i} exception: {str(e)[:200]}")
+
+                        execution_status["results"] = local_results
+                        execution_status["completed"] = True
+                        execution_status["running"] = False
+                        print("Execution terminee")
+
+                    try:
+                        # Attendre confirmation avec feedback
+                        ready, _, _ = select.select([sys.stdin], [], [], 10.0)
+                        if ready:
+                            confirm = sys.stdin.readline().strip().lower()
+                            if confirm == 'y':
+                                print("Lancement execution asynchrone...")
+                                # Lancer exécution en thread séparé
+                                exec_thread = threading.Thread(target=execute_commands_async, daemon=True)
+                                exec_thread.start()
+
+                                # Attendre complétion avec status
+                                timeout_wait = 60  # 60s max pour exécution
+                                start_wait = time.time()
+                                while not execution_status["completed"] and (time.time() - start_wait) < timeout_wait:
+                                    if execution_status["running"]:
+                                        print("⏳ Exécution en cours... (Ctrl+C pour interrompre)")
+                                        time.sleep(2)
+                                    else:
+                                        time.sleep(0.5)
+
+                                if execution_status["completed"]:
+                                    executed_results = execution_status["results"]
+                                    print("📋 RÉSULTATS DISPONIBLES")
+                                else:
+                                    executed_results = ["Timeout global - Execution interrompue"]
+                                    print("TIMEOUT - Execution trop longue, interrompue")
                             else:
-                                executed_results.append(f"❌ Erreur: {exec_result.stderr.strip()}")
-                        except subprocess.TimeoutExpired:
-                            executed_results.append(f"⏰ Timeout pour '{cmd}'")
-                        except Exception as e:
-                            executed_results.append(f"❌ Exception: {e}")
-                            if exec_result.stderr:
-                                executed_results.append(f"Erreurs: {exec_result.stderr}")
-                        except Exception as e:
-                            executed_results.append(f"Erreur exécution '{cmd}': {e}")
+                                executed_results = ["Annule par utilisateur"]
+                                print("ANNULATION CONFIRMEE")
+                        else:
+                            executed_results = ["Timeout confirmation (10s) - Annule automatiquement"]
+                            print("TIMEOUT CONFIRMATION - Annule automatiquement")
+                    except KeyboardInterrupt:
+                        executed_results = ["🛑 Interrompu par utilisateur (Ctrl+C)"]
+                        print("🛑 INTERRUPTION UTILISATEUR")
+                    except Exception as e:
+                        executed_results = [f"Erreur systeme: {str(e)[:200]}"]
+                        print(f"ERREUR SYSTEME: {str(e)[:100]}")
+                else:
+                    executed_results = []
 
                 if executed_results:
                     result += "\n\n**RÉSULTATS D'EXÉCUTION:**\n" + "\n".join(executed_results)
@@ -664,6 +758,11 @@ Réponds naturellement. Propose UNE commande en `backticks` pour exécution imm�
                                     "result": output.strip(),
                                     "timestamp": datetime.now().isoformat()
                                 }, "EXECUTION")
+                        # Stocker résumé pour contexte immédiat
+                        self.last_execution_results = "\n".join(executed_results)
+                    except Exception as e:
+                        logger.debug(f"Memory storage failed: {e}")
+                        self.last_execution_results = "\n".join(executed_results)
                     except Exception as e:
                         logger.warning(f"Failed to store execution results: {e}")
 

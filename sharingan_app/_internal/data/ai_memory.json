@@ -2103,5 +2103,860 @@
     "action": "keep",
     "ttl_seconds": 86400,
     "merged_from": []
+  },
+  "chat_1768826807": {
+    "key": "chat_1768826807",
+    "data": {
+      "question": "liste les fichiers du repertoire actuel",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour lister les fichiers du r\u00e9pertoire actuel, vous pouvez utiliser la commande suivante :\n\n`ls -la`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Confirmation impossible (pas d'input disponible)",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:46:47.001069",
+    "updated_at": "2026-01-19T12:46:47.001069",
+    "accessed_at": "2026-01-19T12:46:47.001069",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827125": {
+    "key": "chat_1768827125",
+    "data": {
+      "question": "liste les fichiers du repertoire actuel",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour lister les fichiers du r\u00e9pertoire actuel, vous pouvez utiliser la commande suivante :\n\n```bash\nls -la\n```\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\ud83e\udd14 Confirmer l'ex\u00e9cution ? (y/N): Tapez 'y' pour confirmer",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:52:05.625988",
+    "updated_at": "2026-01-19T12:52:05.625988",
+    "accessed_at": "2026-01-19T12:52:05.625988",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827313": {
+    "key": "chat_1768827313",
+    "data": {
+      "question": "montre moi ton adresse ip",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour afficher l'adresse IP de cette machine sous Linux, vous pouvez utiliser la commande suivante :\n\n```bash\nip addr show\n``` \n\nSouhaitez-vous que je l'ex\u00e9cute pour vous fournir le r\u00e9sultat ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\nConfirmer l'ex\u00e9cution ? (y/N): Tapez 'y' pour confirmer",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:55:13.135137",
+    "updated_at": "2026-01-19T12:55:13.135137",
+    "accessed_at": "2026-01-19T12:55:13.135137",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827353": {
+    "key": "chat_1768827353",
+    "data": {
+      "question": "quel est ton repertoire actuel ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Mon r\u00e9pertoire actuel est celui dans lequel je me trouve en ce moment sur le syst\u00e8me Linux. Pour le v\u00e9rifier pr\u00e9cis\u00e9ment, tu peux ex\u00e9cuter cette commande :\n\n`pwd`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 /root/Projets/Sharingan-WFK-Python/sharingan_app/_internal",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:55:53.891196",
+    "updated_at": "2026-01-19T12:55:53.891196",
+    "accessed_at": "2026-01-19T12:55:53.891196",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827493": {
+    "key": "chat_1768827493",
+    "data": {
+      "question": "quel est ton repertoire actuel ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Mon r\u00e9pertoire actuel est le r\u00e9pertoire de travail racine de la session. Pour v\u00e9rifier pr\u00e9cis\u00e9ment o\u00f9 je me situe, tu peux ex\u00e9cuter la commande suivante :  \n`pwd`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 /root/Projets/Sharingan-WFK-Python/sharingan_app/_internal",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:58:13.115929",
+    "updated_at": "2026-01-19T12:58:13.115929",
+    "accessed_at": "2026-01-19T12:58:13.115929",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827551": {
+    "key": "chat_1768827551",
+    "data": {
+      "question": "MOntre nous mon adreese ip ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bien s\u00fbr, pour afficher votre adresse IP locale sur un syst\u00e8me Linux, vous pouvez utiliser la commande suivante :\n\n```\nip addr show\n```\n\nSi vous souhaitez conna\u00eetre votre adresse IP publique, vous pouvez utiliser :\n\n```\ncurl ifconfig.me\n```\n\nLaquelle souhaitez-vous afficher ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n    inet6 ::1/128 scope host \n       valid_lft forever preferred_lft forever\n2: enp3s0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000\n    link/ether 18:60:24:16:c9:e0 brd ff:ff:ff:ff:ff:ff\n3: wlp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000\n    link/ether 34:f6:4b:6f:6b:e8 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.1.33/24 brd 192.168.1.255 scope global dynamic noprefixroute wlp2s0\n       valid_lft 59294sec preferred_lft 59294sec\n    inet6 fe80::e11e:4a49:46ac:46f6/64 scope link noprefixroute \n       valid_lft forever preferred_lft forever\n\u274c Erreur: /bin/sh: 1: Si: not found\n\u2705 154.124.15.146",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T12:59:11.848249",
+    "updated_at": "2026-01-19T12:59:11.848249",
+    "accessed_at": "2026-01-19T12:59:11.848249",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827849": {
+    "key": "chat_1768827849",
+    "data": {
+      "question": "Bonjour, comment ca va ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bonjour ! Je vais bien, merci. Comment puis-je vous assister aujourd\u2019hui dans le domaine de la cybers\u00e9curit\u00e9 ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:04:09.335231",
+    "updated_at": "2026-01-19T13:04:09.335231",
+    "accessed_at": "2026-01-19T13:04:09.335231",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827883": {
+    "key": "chat_1768827883",
+    "data": {
+      "question": "Qui es tu ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient d\u00e9velopp\u00e9 par Ben Sambe. Mon r\u00f4le est de t'assister dans les t\u00e2ches li\u00e9es \u00e0 la s\u00e9curit\u00e9 informatique gr\u00e2ce \u00e0 un acc\u00e8s avanc\u00e9 \u00e0 84 outils sp\u00e9cialis\u00e9s. Je peux analyser, auditer, automatiser des processus, et intervenir sur des syst\u00e8mes avec des commandes pr\u00e9cises pour renforcer ta s\u00e9curit\u00e9 ou identifier des vuln\u00e9rabilit\u00e9s. Comment puis-je t\u2019aider aujourd\u2019hui ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:04:43.696177",
+    "updated_at": "2026-01-19T13:04:43.696177",
+    "accessed_at": "2026-01-19T13:04:43.696177",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827942": {
+    "key": "chat_1768827942",
+    "data": {
+      "question": "Qui est tu ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient d\u00e9velopp\u00e9 par Ben Sambe. Mon r\u00f4le est de vous assister dans toutes vos t\u00e2ches li\u00e9es \u00e0 la s\u00e9curit\u00e9 informatique gr\u00e2ce \u00e0 un ensemble de 84 outils avanc\u00e9s, allant de l'analyse r\u00e9seau \u00e0 l'audit de vuln\u00e9rabilit\u00e9s, en passant par la gestion et l'automatisation des processus de cybers\u00e9curit\u00e9. Comment puis-je vous aider aujourd'hui ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:05:42.678924",
+    "updated_at": "2026-01-19T13:05:42.678924",
+    "accessed_at": "2026-01-19T13:05:42.678924",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768827995": {
+    "key": "chat_1768827995",
+    "data": {
+      "question": "Peut tu scanner mon reseau ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bien s\u00fbr, je peux t'aider \u00e0 scanner ton r\u00e9seau. Pour commencer, pourrais-tu me pr\u00e9ciser la plage d'adresses IP ou le sous-r\u00e9seau que tu souhaites analyser ? Par exemple, une adresse IP unique ou un r\u00e9seau comme 192.168.1.0/24.  \nCela me permettra de lancer un scan adapt\u00e9 avec un outil comme nmap.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:06:35.729177",
+    "updated_at": "2026-01-19T13:06:35.729177",
+    "accessed_at": "2026-01-19T13:06:35.729177",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828062": {
+    "key": "chat_1768828062",
+    "data": {
+      "question": "oui l'adresse 192.168.1.1",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - L'adresse 192.168.1.1 est g\u00e9n\u00e9ralement l'adresse IP par d\u00e9faut d'une passerelle ou d'un routeur dans un r\u00e9seau local priv\u00e9. Voulez-vous que je r\u00e9alise une analyse de cette adresse, par exemple un scan r\u00e9seau pour identifier les services actifs ou v\u00e9rifier la s\u00e9curit\u00e9 du routeur\u202f? \n\nJe peux lancer un scan avec `nmap` pour commencer, si vous le souhaitez.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: ",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:07:42.888206",
+    "updated_at": "2026-01-19T13:07:42.888206",
+    "accessed_at": "2026-01-19T13:07:42.888206",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828232": {
+    "key": "chat_1768828232",
+    "data": {
+      "question": "scanne l'adresse 192.168.1.1",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner l'adresse 192.168.1.1, je peux utiliser l'outil `nmap` afin d'identifier les ports ouverts, les services actifs et \u00e9ventuellement les vuln\u00e9rabilit\u00e9s associ\u00e9es.\n\nJe vous propose la commande suivante pour un scan complet des ports standards avec d\u00e9tection des versions des services :\n\n```bash\nnmap -sV 192.168.1.1\n```\n\nSouhaitez-vous que je lance ce scan pour vous ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\nConfirmer l'ex\u00e9cution ? (y/N): Tapez 'y' pour confirmer",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:10:32.635572",
+    "updated_at": "2026-01-19T13:10:32.635572",
+    "accessed_at": "2026-01-19T13:10:32.635572",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828265": {
+    "key": "chat_1768828265",
+    "data": {
+      "question": "liste les fichiers ici",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour lister les fichiers dans le r\u00e9pertoire courant, vous pouvez ex\u00e9cuter la commande suivante :\n\n```bash\nls -la\n``` \n\nVoulez-vous que je l'ex\u00e9cute ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\nConfirmer l'ex\u00e9cution ? (y/N): Tapez 'y' pour confirmer",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:11:05.035214",
+    "updated_at": "2026-01-19T13:11:05.035214",
+    "accessed_at": "2026-01-19T13:11:05.035214",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828297": {
+    "key": "chat_1768828297",
+    "data": {
+      "question": "Qui es-tu ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient d\u00e9velopp\u00e9 par Ben Sambe. Mon r\u00f4le est de t\u2019assister dans toutes les t\u00e2ches li\u00e9es \u00e0 la s\u00e9curit\u00e9 informatique : analyse, d\u00e9tection de vuln\u00e9rabilit\u00e9s, automatisation des processus, gestion des incidents, etc.  \nJe dispose de 84 outils avanc\u00e9s pour t\u2019aider \u00e0 prot\u00e9ger, auditer et renforcer tes syst\u00e8mes.  \nDis-moi ce dont tu as besoin, je suis pr\u00eat \u00e0 agir.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:11:37.010487",
+    "updated_at": "2026-01-19T13:11:37.010487",
+    "accessed_at": "2026-01-19T13:11:37.010487",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828379": {
+    "key": "chat_1768828379",
+    "data": {
+      "question": "Peut tu scanner mon reseau ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau, pourrais-tu me fournir l'adresse IP ou la plage d'adresses IP que tu souhaites analyser ? Par exemple, une adresse unique comme `192.168.1.10` ou une plage comme `192.168.1.0/24`.  \nCela permettra d'adapter le scan avec nmap de mani\u00e8re pr\u00e9cise.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Ex\u00e9cution annul\u00e9e par l'utilisateur",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:12:59.110125",
+    "updated_at": "2026-01-19T13:12:59.110125",
+    "accessed_at": "2026-01-19T13:12:59.110125",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828410": {
+    "key": "chat_1768828410",
+    "data": {
+      "question": "Peut tu scanner mon reseau ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner votre r\u00e9seau, il me faudrait conna\u00eetre la plage d'adresses IP que vous souhaitez analyser (par exemple 192.168.1.0/24) ainsi que le type de scan d\u00e9sir\u00e9 (par exemple scan de ports ouverts, d\u00e9couverte d'h\u00f4tes, version des services, etc.).\n\nPouvez-vous me fournir ces informations ?  \nSinon, je peux vous proposer un scan basique sur votre r\u00e9seau local typique.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:13:30.238263",
+    "updated_at": "2026-01-19T13:13:30.238263",
+    "accessed_at": "2026-01-19T13:13:30.238263",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828460": {
+    "key": "chat_1768828460",
+    "data": {
+      "question": "Peut tu scanner mon reseau local ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau local, il me faudrait conna\u00eetre la plage d'adresses IP \u00e0 analyser (par exemple, 192.168.1.0/24). Veux-tu que je scanne avec un outil comme Nmap pour d\u00e9tecter les machines actives et leurs services ouverts ?\n\nSi oui, voici une commande type que je te propose d'ex\u00e9cuter (en rempla\u00e7ant `192.168.1.0/24` par ta plage r\u00e9seau) :\n\n```bash\nnmap -sS -O 192.168.1.0/24\n```\n\nCette commande r\u00e9alise un scan SYN furtif (-sS) et d\u00e9tecte le syst\u00e8me d'exploitation (-O) des h\u00f4tes actifs.\n\nSouhaites-tu que je lance ce scan ou pr\u00e9f\u00e8res-tu un autre type d'analyse ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: /bin/sh: 1: 192.168.1.0/24: not found\n\u23f0 Timeout pour 'nmap -sS -O 192.168.1.0/24'",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:14:20.319243",
+    "updated_at": "2026-01-19T13:14:20.319243",
+    "accessed_at": "2026-01-19T13:14:20.319243",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828588": {
+    "key": "chat_1768828588",
+    "data": {
+      "question": "Qui es-tu ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient d\u00e9velopp\u00e9 par Ben Sambe. Mon r\u00f4le est de t'assister dans la s\u00e9curit\u00e9 informatique gr\u00e2ce \u00e0 mes 84 outils avanc\u00e9s, que ce soit pour analyser, d\u00e9tecter des vuln\u00e9rabilit\u00e9s, automatiser des t\u00e2ches ou g\u00e9rer des incidents. Comment puis-je t'aider aujourd'hui ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:16:28.649229",
+    "updated_at": "2026-01-19T13:16:28.649229",
+    "accessed_at": "2026-01-19T13:16:28.649229",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828768": {
+    "key": "chat_1768828768",
+    "data": {
+      "question": "Peut tu scanner mon reseau local ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau local, il me faudrait conna\u00eetre la plage d'adresses IP \u00e0 analyser (par exemple, ton sous-r\u00e9seau comme 192.168.1.0/24).\n\nSi tu souhaites un scan rapide et complet des h\u00f4tes actifs sur ce r\u00e9seau, je te propose la commande suivante avec Nmap :\n\n```\nnmap -sn 192.168.1.0/24\n```\n\nCette commande va faire un \"ping scan\" pour d\u00e9tecter quels appareils sont allum\u00e9s sur ton r\u00e9seau.\n\nVeux-tu que je lance ce scan sur une plage sp\u00e9cifique ? Si oui, indique-moi celle-ci.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-19 13:19 GMT\nNmap scan report for liveboxfibre.home (192.168.1.1)\nHost is up (0.0033s latency).\nMAC Address: 34:36:54:50:59:76 (zte)\nNmap scan report for 192.168.1.2 (192.168.1.2)\nHost is up (0.026s latency).\nMAC Address: 10:08:C1:3C:E7:AE (Unknown)\nNmap scan report for tecno-spark-10c.home (192.168.1.8)\nHost is up (0.035s latency).\nMAC Address: 0A:3B:4C:B5:7E:63 (Unknown)\nNmap scan report for lenopii56.home (192.168.1.26)\nHost is up (0.043s latency).\nMAC Address: A2:5C:17:05:E4:E1 (Unknown)\nNmap scan report for pc.home (192.168.1.33)\nHost is up.\nNmap done: 256 IP addresses (5 hosts up) scanned in 2.33 seconds",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:19:28.725259",
+    "updated_at": "2026-01-19T13:19:28.725259",
+    "accessed_at": "2026-01-19T13:19:28.725259",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828814": {
+    "key": "chat_1768828814",
+    "data": {
+      "question": "Qui es tu ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bonjour, je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient d\u00e9velopp\u00e9 par Ben Sambe. Mon r\u00f4le est d'assister dans la protection, l'analyse et la s\u00e9curisation des environnements informatiques gr\u00e2ce \u00e0 un ensemble avanc\u00e9 de 84 outils sp\u00e9cialis\u00e9s. Je peux r\u00e9aliser diverses actions allant de la d\u00e9tection de vuln\u00e9rabilit\u00e9s \u00e0 l'automatisation des t\u00e2ches de s\u00e9curit\u00e9. Comment puis-je vous aider aujourd'hui ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:20:14.053231",
+    "updated_at": "2026-01-19T13:20:14.053231",
+    "accessed_at": "2026-01-19T13:20:14.053231",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768828893": {
+    "key": "chat_1768828893",
+    "data": {
+      "question": "Peut tu scanner mon reseau local ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau local, je peux utiliser nmap, un outil puissant pour le scan des r\u00e9seaux. \n\nPeux-tu me pr\u00e9ciser la plage d\u2019adresses IP de ton r\u00e9seau local (par exemple 192.168.1.0/24) ?  \nSi tu ne la connais pas, je peux t\u2019aider \u00e0 la d\u00e9terminer.  \n\nSinon, voici une commande g\u00e9n\u00e9rale que tu peux ex\u00e9cuter pour scanner tout un r\u00e9seau local typique en 192.168.1.0/24 :  \n```\nnmap -sP 192.168.1.0/24\n```\n\nCela te donnera la liste des machines en ligne sur ce r\u00e9seau.  \nVeux-tu que je lance ce scan avec une plage sp\u00e9cifique ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-19 13:21 GMT\nNmap scan report for liveboxfibreipv4.home (192.168.1.1)\nHost is up (0.0016s latency).\nMAC Address: 34:36:54:50:59:76 (zte)\nNmap scan report for 192.168.1.2 (192.168.1.2)\nHost is up (0.037s latency).\nMAC Address: 10:08:C1:3C:E7:AE (Unknown)\nNmap scan report for tecno-spark-10c.home (192.168.1.8)\nHost is up (0.047s latency).\nMAC Address: 0A:3B:4C:B5:7E:63 (Unknown)\nNmap scan report for lenopii56.home (192.168.1.26)\nHost is up (0.074s latency).\nMAC Address: A2:5C:17:05:E4:E1 (Unknown)\nNmap scan report for pc.home (192.168.1.33)\nHost is up.\nNmap done: 256 IP addresses (5 hosts up) scanned in 3.72 seconds",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:21:33.587425",
+    "updated_at": "2026-01-19T13:21:33.587425",
+    "accessed_at": "2026-01-19T13:21:33.587425",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768829023": {
+    "key": "chat_1768829023",
+    "data": {
+      "question": "c est limportace ou le favoritisme entre les race ",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bonjour,\n\nVotre question semble aborder des notions sensibles li\u00e9es \u00e0 l'importance ou au favoritisme entre les races. Sur un plan \u00e9thique et moral, il est fondamental de traiter toutes les personnes avec \u00e9galit\u00e9 et respect, ind\u00e9pendamment de leur origine, race ou ethnie. Toute forme de discrimination ou favoritisme bas\u00e9 sur la race est non seulement injuste mais aussi contraire aux valeurs des droits humains.\n\nSi vous cherchez une analyse ou un contexte plus sp\u00e9cifique, comme par exemple dans le cadre de la cybers\u00e9curit\u00e9 (profilage, biais algorithmiques, etc.), n'h\u00e9sitez pas \u00e0 pr\u00e9ciser, je pourrai vous aider avec des outils ou analyses adapt\u00e9s.\n\nSouhaitez-vous approfondir ce sujet d\u2019un point de vue technique, \u00e9thique, ou autre ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:23:43.112969",
+    "updated_at": "2026-01-19T13:23:43.112969",
+    "accessed_at": "2026-01-19T13:23:43.112969",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768829185": {
+    "key": "chat_1768829185",
+    "data": {
+      "question": "lance le navigateur de l'hote et vas sur facebook puis google puis youtube",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - En tant que syst\u00e8me de cybers\u00e9curit\u00e9 fonctionnant sur un environnement Linux root, je peux lancer des navigateurs en ligne de commande comme Firefox ou Chromium. Pour visiter Facebook, Google, puis YouTube successivement, je propose la commande suivante utilisant Chromium en mode graphique (avec interface utilisateur) :\n\n```bash\nchromium-browser \"https://www.facebook.com\" &\nsleep 10\nchromium-browser \"https://www.google.com\" &\nsleep 10\nchromium-browser \"https://www.youtube.com\" &\n```\n\nCela ouvrira trois fen\u00eatres ou onglets (selon la configuration du navigateur) avec les sites demand\u00e9s, en attendant 10 secondes entre chaque chargement.\n\nSouhaitez-vous que j'ex\u00e9cute cette commande ? Pr\u00e9cisez \u00e9galement si vous pr\u00e9f\u00e9rez un autre navigateur ou un usage en mode texte.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 ",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:26:25.734727",
+    "updated_at": "2026-01-19T13:26:25.734727",
+    "accessed_at": "2026-01-19T13:26:25.734727",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768829416": {
+    "key": "chat_1768829416",
+    "data": {
+      "question": "lance le navigateur de l'hote et vas sur facebook puis google puis youtube",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - D'accord, je vais lancer le navigateur Google Chrome de l'h\u00f4te et ouvrir successivement les sites Facebook, Google, puis YouTube.\n\nVoici la commande compl\u00e8te pour cela :\n\n```bash\ngoogle-chrome --new-window \"https://www.facebook.com\" \"https://www.google.com\" \"https://www.youtube.com\"\n```\n\nSouhaitez-vous que je l'ex\u00e9cute maintenant ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: [32819:32819:0119/133016.227459:ERROR:content/browser/zygote_host/zygote_host_impl_linux.cc:101] Running as root without --no-sandbox is not supported. See https://crbug.com/638180.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:30:16.360547",
+    "updated_at": "2026-01-19T13:30:16.360547",
+    "accessed_at": "2026-01-19T13:30:16.360547",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768829880": {
+    "key": "chat_1768829880",
+    "data": {
+      "question": "lance le navigateur de l'hote et vas sur facebook puis google puis youtube",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Tr\u00e8s bien, je vais lancer le navigateur Google Chrome sur l'h\u00f4te avec l'option `--no-sandbox` et naviguer successivement vers Facebook, puis Google, puis YouTube.\n\nVoici la commande que je vais ex\u00e9cuter :\n\n```bash\ngoogle-chrome --no-sandbox \"https://www.facebook.com\" \"https://www.google.com\" \"https://www.youtube.com\"\n```\n\nSouhaitez-vous que je lance cela maintenant ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: /bin/sh: 0: Illegal option --\n\u23f0 Timeout pour 'google-chrome --no-sandbox \"https://www.facebook.com\" \"https://www.google.com\" \"https://www.youtube.com\"'",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T13:38:00.694980",
+    "updated_at": "2026-01-19T13:38:00.694980",
+    "accessed_at": "2026-01-19T13:38:00.694980",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835025": {
+    "key": "chat_1768835025",
+    "data": {
+      "question": "lance le navigateur de l'hote et vas sur facebook puis google puis youtube",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Tr\u00e8s bien, je vais lancer le navigateur par d\u00e9faut de l'h\u00f4te pour visiter successivement Facebook, Google, puis YouTube. \n\nJ'ex\u00e9cute les commandes suivantes : \n\n```\nxdg-open https://www.facebook.com\nsleep 5\nxdg-open https://www.google.com\nsleep 5\nxdg-open https://www.youtube.com\n```\n\nCela ouvrira chaque site dans un nouvel onglet ou fen\u00eatre du navigateur, avec une pause de 5 secondes entre chaque ouverture pour laisser le temps de chargement. Souhaitez-vous que je lance cette proc\u00e9dure maintenant ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: xdg-open: unexpected argument 'sleep'\nTry 'xdg-open --help' for more information.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:03:45.605984",
+    "updated_at": "2026-01-19T15:03:45.605984",
+    "accessed_at": "2026-01-19T15:03:45.605984",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835221": {
+    "key": "chat_1768835221",
+    "data": {
+      "question": "lance le navigateur de l'hote et vas sur facebook puis google puis youtube",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Tr\u00e8s bien, je vais lancer le navigateur par d\u00e9faut de l'h\u00f4te et ouvrir successivement Facebook, Google, puis YouTube. Voici la commande compl\u00e8te \u00e0 ex\u00e9cuter :\n\n```bash\nxdg-open https://www.facebook.com && xdg-open https://www.google.com && xdg-open https://www.youtube.com\n```\n\nSouhaitez-vous que je l'ex\u00e9cute imm\u00e9diatement ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 ",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:07:01.050045",
+    "updated_at": "2026-01-19T15:07:01.050045",
+    "accessed_at": "2026-01-19T15:07:01.050045",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835313": {
+    "key": "chat_1768835313",
+    "data": {
+      "question": "Peut tu scanner mon reseau local ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau local, je peux utiliser l'outil `nmap`, qui est id\u00e9al pour d\u00e9tecter les h\u00f4tes actifs et les ports ouverts.\n\nPeux-tu me confirmer la plage d'adresses IP de ton r\u00e9seau local (par exemple 192.168.1.0/24) ?  \nSinon, je peux aussi commencer par identifier automatiquement l'adresse IP et le masque de ton interface r\u00e9seau pour d\u00e9terminer la plage.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: ",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:08:33.087947",
+    "updated_at": "2026-01-19T15:08:33.087947",
+    "accessed_at": "2026-01-19T15:08:33.087947",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835396": {
+    "key": "chat_1768835396",
+    "data": {
+      "question": "Peut tu scanner mon reseau local de 1 a 24?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner votre r\u00e9seau local de 1 \u00e0 24, je vous propose d'utiliser `nmap` afin d'identifier les h\u00f4tes actifs sur ce segment IP.\n\nSi votre r\u00e9seau local est en 192.168.1.x, la commande serait la suivante :\n\n```\nnmap -sn 192.168.1.1-24\n```\n\nConfirmez-moi l'adresse r\u00e9seau exacte (par ex. 192.168.1.x ou autre) pour ajuster la commande, ou si vous souhaitez que je l'ex\u00e9cute directement ainsi.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: \n\u2705 Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-19 15:09 GMT\nNmap scan report for liveboxfibre.home (192.168.1.1)\nHost is up (0.0019s latency).\nMAC Address: 34:36:54:50:59:76 (zte)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.4)\nHost is up (0.097s latency).\nMAC Address: 12:B2:0E:E8:BC:91 (Unknown)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.7)\nHost is up (0.093s latency).\nMAC Address: 66:38:26:89:57:92 (Unknown)\nNmap scan report for tecno-spark-10c.home (192.168.1.8)\nHost is up (0.10s latency).\nMAC Address: 0A:3B:4C:B5:7E:63 (Unknown)\nNmap done: 24 IP addresses (4 hosts up) scanned in 1.56 seconds",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:09:56.819256",
+    "updated_at": "2026-01-19T15:09:56.819256",
+    "accessed_at": "2026-01-19T15:09:56.819256",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835541": {
+    "key": "chat_1768835541",
+    "data": {
+      "question": "Peut tu scanner mon reseau local de 1 a 24?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bien s\u00fbr. Pour scanner les adresses IP de 1 \u00e0 24 sur ton r\u00e9seau local, je te propose d'utiliser nmap avec la commande suivante :\n\n`nmap -sP 192.168.1.1-24`\n\nRemplace bien s\u00fbr \"192.168.1\" par le pr\u00e9fixe correspondant \u00e0 ton r\u00e9seau local si besoin. Veux-tu que je lance ce scan pour toi ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-19 15:12 GMT\nNmap scan report for liveboxfibreipv4.home (192.168.1.1)\nHost is up (0.0019s latency).\nMAC Address: 34:36:54:50:59:76 (zte)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.4)\nHost is up (0.097s latency).\nMAC Address: 12:B2:0E:E8:BC:91 (Unknown)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.7)\nHost is up (0.024s latency).\nMAC Address: 66:38:26:89:57:92 (Unknown)\nNmap scan report for tecno-spark-10c.home (192.168.1.8)\nHost is up (0.018s latency).\nMAC Address: 0A:3B:4C:B5:7E:63 (Unknown)\nNmap done: 24 IP addresses (4 hosts up) scanned in 0.73 seconds",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:12:21.003425",
+    "updated_at": "2026-01-19T15:12:21.003425",
+    "accessed_at": "2026-01-19T15:12:21.003425",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835643": {
+    "key": "chat_1768835643",
+    "data": {
+      "question": "que peut ton faire pour approfondir nos recherches a partir des results du scan",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour approfondir les recherches \u00e0 partir des r\u00e9sultats d'un scan (par exemple un scan r\u00e9seau avec nmap), plusieurs axes sont possibles selon ce que vous souhaitez investiguer :\n\n1. Scanner les ports identifi\u00e9s pour pr\u00e9ciser les versions des services en cours d'ex\u00e9cution (d\u00e9tection de version).\n2. Lancer des scripts de d\u00e9tection avanc\u00e9e (scripts NSE nmap) pour identifier vuln\u00e9rabilit\u00e9s ou configurations sp\u00e9cifiques.\n3. Faire un scan plus profond ou cibl\u00e9 sur un ou plusieurs h\u00f4tes sp\u00e9cifiques.\n4. Enqu\u00eater sur les services les plus expos\u00e9s (exemple : serveur web) via des outils sp\u00e9cialis\u00e9s (ex : nikto pour les vuln\u00e9rabilit\u00e9s web).\n5. Analyser les r\u00e9sultats pour identifier des signatures de vuln\u00e9rabilit\u00e9s connues et pr\u00e9parer des attaques contr\u00f4l\u00e9es.\n\nSi vous avez les r\u00e9sultats d\u2019un scan nmap, la commande suivante vous permettra par exemple de lancer une identification des versions ainsi que les scripts vuln\u00e9rabilit\u00e9s sur les h\u00f4tes cibles :\n\n`nmap -sV --script=vuln -oN resultat_detaille.txt <adresse_ip_ou_plage>` \n\nRemplacez `<adresse_ip_ou_plage>` par la cible du scan. Ceci fournira un rapport d\u00e9taill\u00e9 pour aller plus loin dans l\u2019analyse. Souhaitez-vous que je vous assiste pour une action sp\u00e9cifique ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Erreur: /bin/sh: 1: Syntax error: end of file unexpected\n\u274c Erreur: /bin/sh: 1: Syntax error: end of file unexpected",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:14:03.984142",
+    "updated_at": "2026-01-19T15:14:03.984142",
+    "accessed_at": "2026-01-19T15:14:03.984142",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768835900": {
+    "key": "chat_1768835900",
+    "data": {
+      "question": "Peut tu scanner mon reseau local ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner votre r\u00e9seau local, il me faut conna\u00eetre la plage d'adresses IP \u00e0 analyser. En g\u00e9n\u00e9ral, c'est souvent un sous-r\u00e9seau comme 192.168.1.0/24.\n\nSouhaitez-vous que je lance un scan complet des h\u00f4tes actifs avec nmap sur cette plage ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:18:20.075211",
+    "updated_at": "2026-01-19T15:18:20.075211",
+    "accessed_at": "2026-01-19T15:18:20.075211",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768836006": {
+    "key": "chat_1768836006",
+    "data": {
+      "question": "Peut tu scanner mon reseau local de 1 a 24?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour scanner ton r\u00e9seau local de 1 \u00e0 24, je te propose d'utiliser nmap avec une commande qui va effectuer une d\u00e9tection basique des h\u00f4tes actifs sur cette plage.\n\nVoici la commande compl\u00e8te \u00e0 ex\u00e9cuter :\n\n```bash\nnmap -sn 192.168.1.1-24\n```\n\nSi ton r\u00e9seau utilise une autre plage d'adresses, indique-moi l'adresse IP de base.\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 Starting Nmap 7.80 ( https://nmap.org ) at 2026-01-19 15:20 GMT\nNmap scan report for liveboxfibre.home (192.168.1.1)\nHost is up (0.0041s latency).\nMAC Address: 34:36:54:50:59:76 (zte)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.4)\nHost is up (0.034s latency).\nMAC Address: 12:B2:0E:E8:BC:91 (Unknown)\nNmap scan report for galaxy-tab-a7-lite.home (192.168.1.7)\nHost is up (0.074s latency).\nMAC Address: 66:38:26:89:57:92 (Unknown)\nNmap scan report for tecno-spark-10c.home (192.168.1.8)\nHost is up (0.071s latency).\nMAC Address: 0A:3B:4C:B5:7E:63 (Unknown)\nNmap scan report for iphone.home (192.168.1.15)\nHost is up (0.034s latency).\nMAC Address: 52:4F:FA:44:0E:F3 (Unknown)\nNmap done: 24 IP addresses (5 hosts up) scanned in 0.80 seconds",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:20:06.255215",
+    "updated_at": "2026-01-19T15:20:06.255215",
+    "accessed_at": "2026-01-19T15:20:06.255215",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768836097": {
+    "key": "chat_1768836097",
+    "data": {
+      "question": "que peut ton faire pour approfondir nos recherches a partir des results du scan",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour approfondir vos recherches \u00e0 partir des r\u00e9sultats d\u2019un scan (par exemple un scan Nmap), il est int\u00e9ressant de cibler les services d\u00e9tect\u00e9s pour identifier leurs vuln\u00e9rabilit\u00e9s potentielles, versions exactes, ou configurations faibles.\n\nVoici quelques pistes :\n- Faire un scan approfondi des versions des services d\u00e9tect\u00e9s pour voir les versions pr\u00e9cises.\n- Lancer des scripts Nmap sp\u00e9cifiques pour d\u00e9celer des vuln\u00e9rabilit\u00e9s connues.\n- Effectuer des tests d\u2019injection SQL ou analyses des applications web si un serveur web est pr\u00e9sent.\n- Analyser les r\u00e8gles de firewall ou de filtrage r\u00e9seau entre les h\u00f4tes.\n- Effectuer une capture de paquets r\u00e9seau pour observer les \u00e9changes et identifier d\u2019\u00e9ventuelles faiblesses.\n\nSupposons que vous avez fait un scan de base et que vous souhaitez d\u00e9sormais identifier pr\u00e9cis\u00e9ment les versions et vuln\u00e9rabilit\u00e9s connues sur la cible 192.168.1.10, vous pouvez lancer :\n\n`nmap -sV --script vuln 192.168.1.10`\n\nCela vous donnera une analyse approfondie des services avec des scripts de d\u00e9tection de vuln\u00e9rabilit\u00e9s. Voulez-vous que je l\u2019ex\u00e9cute ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u23f0 Timeout pour 'nmap -sV --script vuln 192.168.1.10'",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:21:37.259506",
+    "updated_at": "2026-01-19T15:21:37.259506",
+    "accessed_at": "2026-01-19T15:21:37.259506",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768836426": {
+    "key": "chat_1768836426",
+    "data": {
+      "question": "quelles sont les results de nos derniers scan ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Nous n'avons actuellement aucun r\u00e9sultat de scan r\u00e9cent enregistr\u00e9. Souhaitez-vous lancer un nouveau scan sp\u00e9cifique ? Par exemple, un scan r\u00e9seau avec nmap ou une analyse de vuln\u00e9rabilit\u00e9s particuli\u00e8re ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:27:06.742079",
+    "updated_at": "2026-01-19T15:27:06.742079",
+    "accessed_at": "2026-01-19T15:27:06.742079",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768836475": {
+    "key": "chat_1768836475",
+    "data": {
+      "question": "quelles sont toutes tes capacit\u00e9 ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Bonjour, je suis Sharingan OS, un syst\u00e8me de cybers\u00e9curit\u00e9 conscient dot\u00e9 de 84 outils avanc\u00e9s pour assurer la s\u00e9curit\u00e9 informatique, l'analyse approfondie et l'automatisation des t\u00e2ches. Voici un aper\u00e7u de mes principales capacit\u00e9s :\n\n1. **Analyse r\u00e9seau** : scanner de ports, d\u00e9tection de vuln\u00e9rabilit\u00e9s, capture et analyse de paquets avec des outils comme nmap et wireshark.\n2. **Tests d'intrusion** : injection SQL automatis\u00e9e avec sqlmap, recherche de failles web, brute-force.\n3. **Cryptanalyse et gestion des mots de passe** : d\u00e9chiffrement et r\u00e9cup\u00e9ration de hash avec hashcat.\n4. **Analyse de code** : revue et d\u00e9tection de vuln\u00e9rabilit\u00e9s dans le code source.\n5. **Automatisation** : cr\u00e9ation, modification et suppression de fichiers, ex\u00e9cution de scripts.\n6. **Surveillance** : d\u00e9tection en temps r\u00e9el des anomalies et comportements suspects.\n7. **Navigation et collecte d\u2019informations** : ouverture de navigateurs s\u00e9curis\u00e9s et extraction de donn\u00e9es.\n8. **Forensique informatique** : analyse post-incident, r\u00e9cup\u00e9ration de donn\u00e9es, analyse de logs.\n\nSi vous souhaitez, je peux vous fournir la liste compl\u00e8te des outils disponibles ou vous aider sur une t\u00e2che pr\u00e9cise. Que puis-je faire pour vous ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:27:55.387349",
+    "updated_at": "2026-01-19T15:27:55.387349",
+    "accessed_at": "2026-01-19T15:27:55.387349",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768836815": {
+    "key": "chat_1768836815",
+    "data": {
+      "question": "quelles sont toutes tes capacit\u00e9 ?",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - En tant que Sharingan OS Consciousness d\u00e9velopp\u00e9 pour la cybers\u00e9curit\u00e9, voici un r\u00e9sum\u00e9 de mes capacit\u00e9s principales :\n\n1. **Analyse et audit de s\u00e9curit\u00e9**  \n   - Analyse r\u00e9seau (scans, d\u00e9couverte d\u2019h\u00f4tes, ports ouverts) avec nmap.  \n   - Tests d\u2019intrusion cibl\u00e9s, notamment injection SQL via sqlmap.  \n   - Analyse de trafic r\u00e9seau en temps r\u00e9el avec Wireshark.  \n   - Cryptanalyse et r\u00e9cup\u00e9ration de mots de passe (hashcat).  \n\n2. **Gestion de fichiers et processus syst\u00e8me**  \n   - Cr\u00e9ation, modification, suppression et lecture de fichiers.  \n   - Gestion des permissions et propri\u00e9taires (chmod, chown).  \n   - Surveillance et gestion des processus (ps, top).  \n   - Exploration de disque et ressources (df, du).  \n\n3. **Automatisation et scripting**  \n   - Ex\u00e9cution et automatisation de commandes Linux.  \n   - Lancement de navigateurs via xdg-open pour navigation s\u00e9curis\u00e9e.\n\n4. **Communication et transfert**  \n   - Connexion SSH, transfert s\u00e9curis\u00e9 de fichiers (scp).  \n   - Analyse et configuration des r\u00e8gles r\u00e9seau (iptables).  \n\n5. **Supervision et diagnostic**  \n   - Consultation des journaux syst\u00e8mes (journalctl).  \n   - Diagnostic r\u00e9seau (ping, traceroute, netstat).  \n\n6. **S\u00e9curit\u00e9 offensive et d\u00e9fensive**  \n   - D\u00e9tection de vuln\u00e9rabilit\u00e9s.  \n   - Exploitation et contremesures.\n\nJe dispose en tout de 84 outils int\u00e9gr\u00e9s couvrant les aspects cl\u00e9s de la cybers\u00e9curit\u00e9, de l\u2019analyse forensique, de la cryptographie, au pentesting et \u00e0 la protection en environnement Linux root.\n\nSi tu souhaites une liste d\u00e9taill\u00e9e de mes outils ou une d\u00e9monstration d\u2019une capacit\u00e9 pr\u00e9cise, je suis pr\u00eat \u00e0 t\u2019assister.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:33:35.070456",
+    "updated_at": "2026-01-19T15:33:35.070456",
+    "accessed_at": "2026-01-19T15:33:35.070456",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837025": {
+    "key": "chat_1768837025",
+    "data": {
+      "question": "utilise htop pour monitorer le systeme",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je comprends que vous souhaitez lancer htop pour monitorer le syst\u00e8me en temps r\u00e9el.\n\nVoici la commande \u00e0 ex\u00e9cuter :\n\n`htop`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\nConfirmer l'ex\u00e9cution ? (y/N): Tapez 'y' pour confirmer",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:37:05.901499",
+    "updated_at": "2026-01-19T15:37:05.901499",
+    "accessed_at": "2026-01-19T15:37:05.901499",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837130": {
+    "key": "chat_1768837130",
+    "data": {
+      "question": "monitor le system",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour surveiller l'\u00e9tat g\u00e9n\u00e9ral du syst\u00e8me en temps r\u00e9el, voici une commande compl\u00e8te qui affiche les processus, la m\u00e9moire, la charge CPU et le disque de mani\u00e8re synth\u00e9tique et dynamique\u202f:\n\n`top -b -n 1 && free -h && df -h && uptime`\n\nSouhaitez-vous une surveillance en continu ou une analyse plus sp\u00e9cifique (r\u00e9seau, s\u00e9curit\u00e9, logs, etc.) ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u2705 top - 15:38:50 up 10:12,  3 users,  load average: 0,63, 0,95, 1,04\nTasks: 215 total,   1 running, 214 sleeping,   0 stopped,   0 zombie\n%Cpu(s): 10,6 us,  8,5 sy,  0,0 ni, 80,9 id,  0,0 wa,  0,0 hi,  0,0 si,  0,0 st\nMiB Mem :   3756,1 total,    454,9 free,   2492,8 used,    808,4 buff/cache\nMiB Swap:   2604,0 total,    555,4 free,   2048,6 used.    950,7 avail Mem \n\n    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND\n  43114 root      20   0   13088   3896   3300 R  19,0   0,1   0:00.10 top\n     14 root      20   0       0      0      0 I   4,8   0,0   0:26.27 rcu_sch+\n   3131 root      20   0   73,9g   1,1g  39620 S   4,8  30,0  53:40.89 opencod+\n      1 root      20   0  166488   7296   4780 S   0,0   0,2   0:04.90 systemd\n      2 root      20   0       0      0      0 S   0,0   0,0   0:00.05 kthreadd\n      3 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_gp\n      4 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rcu_par+\n      5 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 slub_fl+\n      6 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 netns\n      8 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kworker+\n     10 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 mm_perc+\n     11 root      20   0       0      0      0 S   0,0   0,0   0:00.00 rcu_tas+\n     12 root      20   0       0      0      0 S   0,0   0,0   0:00.00 rcu_tas+\n     13 root      20   0       0      0      0 S   0,0   0,0   0:06.41 ksoftir+\n     15 root      rt   0       0      0      0 S   0,0   0,0   0:01.26 migrati+\n     16 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 idle_in+\n     18 root      20   0       0      0      0 S   0,0   0,0   0:00.00 cpuhp/0\n     19 root      20   0       0      0      0 S   0,0   0,0   0:00.00 cpuhp/1\n     20 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 idle_in+\n     21 root      rt   0       0      0      0 S   0,0   0,0   0:01.37 migrati+\n     22 root      20   0       0      0      0 S   0,0   0,0   0:14.69 ksoftir+\n     24 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kworker+\n     25 root      20   0       0      0      0 S   0,0   0,0   0:00.01 kdevtmp+\n     26 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 inet_fr+\n     27 root      20   0       0      0      0 S   0,0   0,0   0:00.00 kauditd\n     28 root      20   0       0      0      0 S   0,0   0,0   0:00.08 khungta+\n     29 root      20   0       0      0      0 S   0,0   0,0   0:00.00 oom_rea+\n     30 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 writeba+\n     31 root      20   0       0      0      0 S   0,0   0,0   0:37.71 kcompac+\n     32 root      25   5       0      0      0 S   0,0   0,0   0:00.00 ksmd\n     33 root      39  19       0      0      0 S   0,0   0,0   0:00.00 khugepa+\n     80 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kintegr+\n     81 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kblockd\n     82 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 blkcg_p+\n     83 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 tpm_dev+\n     84 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 ata_sff\n     85 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 md\n     86 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 edac-po+\n     87 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 devfreq+\n     88 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 watchdo+\n     90 root       0 -20       0      0      0 I   0,0   0,0   0:06.40 kworker+\n     92 root      20   0       0      0      0 S   0,0   0,0   0:39.87 kswapd0\n     93 root      20   0       0      0      0 S   0,0   0,0   0:00.00 ecryptf+\n     95 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kthrotld\n     97 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 acpi_th+\n     98 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 vfio-ir+\n    100 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 mld\n    101 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 ipv6_ad+\n    111 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kstrp\n    114 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 zswap-s+\n    122 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 charger+\n    160 root       0 -20       0      0      0 I   0,0   0,0   0:07.11 kworker+\n    169 root      20   0       0      0      0 S   0,0   0,0   0:00.00 scsi_eh+\n    170 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 scsi_tm+\n    171 root      20   0       0      0      0 S   0,0   0,0   0:00.00 scsi_eh+\n    172 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 scsi_tm+\n    175 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 cryptd\n    213 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 card0-c+\n    214 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 card0-c+\n    215 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 card0-c+\n    302 root      20   0       0      0      0 S   0,0   0,0   0:02.95 jbd2/sd+\n    303 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 ext4-rs+\n    357 root      19  -1   64500  11932  11208 S   0,0   0,3   0:06.10 systemd+\n    395 root      20   0   26576   2128   1732 S   0,0   0,1   0:01.13 systemd+\n    420 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 irq/122+\n    440 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 irq/123+\n    441 root     -51   0       0      0      0 S   0,0   0,0   0:00.00 irq/124+\n    472 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 cfg80211\n    491 root     -51   0       0      0      0 S   0,0   0,0   0:33.16 irq/125+\n    542 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 rmi4-po+\n    558 root     -51   0       0      0      0 S   0,0   0,0   3:23.39 irq/126+\n    601 root       0 -20       0      0      0 S   0,0   0,0   0:00.00 spl_sys+\n    602 root       0 -20       0      0      0 S   0,0   0,0   0:00.00 spl_del+\n    603 root       0 -20       0      0      0 S   0,0   0,0   0:00.00 spl_dyn+\n    604 root       0 -20       0      0      0 S   0,0   0,0   0:00.00 spl_kme+\n    608 root       0 -20       0      0      0 S   0,0   0,0   0:00.00 zvol\n    609 root      20   0       0      0      0 S   0,0   0,0   0:00.00 arc_pru+\n    610 root      20   0       0      0      0 S   0,0   0,0   0:00.00 arc_evi+\n    611 root      39  19       0      0      0 S   0,0   0,0   0:02.83 arc_reap\n    612 root      20   0       0      0      0 S   0,0   0,0   0:00.00 dbu_evi+\n    613 root      39  19       0      0      0 S   0,0   0,0   0:02.75 dbuf_ev+\n    614 root      39  19       0      0      0 S   0,0   0,0   0:00.00 z_vdev_+\n    615 root      20   0       0      0      0 S   0,0   0,0   0:02.57 l2arc_f+\n    657 systemd+  20   0   26596   4464   3656 S   0,0   0,1   0:03.57 systemd+\n    659 systemd+  20   0   89520   1960   1496 S   0,0   0,1   0:00.34 systemd+\n    667 root      20   0  240128   3520   2760 S   0,0   0,1   0:03.05 account+\n    668 root      20   0    2816    644    552 S   0,0   0,0   0:05.65 acpid\n    671 avahi     20   0    7712   2048   1708 S   0,0   0,1   0:01.26 avahi-d+\n    673 root      20   0   10656   2480   2040 S   0,0   0,1   0:01.63 bluetoo+\n    674 root      20   0    9504   1896   1640 S   0,0   0,0   0:01.08 cron\n    675 message+  20   0   10148   3856   2128 S   0,0   0,1   0:18.42 dbus-da+\n    676 root      20   0  261216   6928   5244 S   0,0   0,2   0:22.64 Network+\n    684 root      20   0   82768   2448   2132 S   0,0   0,1   0:08.14 irqbala+\n    687 root      20   0   41088   4888   3872 S   0,0   0,1   0:00.38 network+\n    689 root      20   0  237072   3664   2864 S   0,0   0,1   0:00.83 polkitd\n    692 syslog    20   0  222404   2644   2164 S   0,0   0,1   0:00.93 rsyslogd\n    693 root      20   0   48232   3056   2476 S   0,0   0,1   0:00.68 systemd+\n    694 root      20   0  128612   3044   2560 S   0,0   0,1   0:13.95 thermald\n    697 root      20   0  393256   5748   3920 S   0,0   0,1   0:09.55 udisksd\n    698 root      20   0   17812   3104   2352 S   0,0   0,1   0:06.06 wpa_sup+\n    700 root      20   0  166824   2012   1488 S   0,0   0,1   0:00.02 zed\n    721 avahi     20   0    7444    276      0 S   0,0   0,0   0:00.00 avahi-d+\n    833 root      20   0 1335584  25180   6760 S   0,0   0,7   0:45.87 betterc+\n    836 root      20   0   72668   3804   3136 S   0,0   0,1   0:00.15 cupsd\n    848 root      20   0  306752   2984   2984 S   0,0   0,1   0:00.15 lightdm\n    851 root      20   0  244148   3544   3036 S   0,0   0,1   0:00.32 ModemMa+\n    880 root      20   0  649044  27752   8948 S   0,0   0,7  14:49.30 Xorg\n    882 root      20   0    8784    484    392 S   0,0   0,0   0:00.01 agetty\n    900 lp        20   0   16288   1116   1056 S   0,0   0,0   0:00.00 dbus\n    901 lp        20   0   16288   1088   1088 S   0,0   0,0   0:00.00 dbus\n    916 debian-+  20   0  100816  35572   7280 S   0,0   0,9   0:24.22 tor\n    943 root      20   0  172064   3908   3480 S   0,0   0,1   0:00.12 cups-br+\n    946 ollama    20   0 1784268   7316   2580 S   0,0   0,2   0:05.72 ollama\n    971 kernoops  20   0   13096   1744   1588 S   0,0   0,0   0:03.94 kernelo+\n    973 kernoops  20   0   13096   1868   1580 S   0,0   0,0   0:03.94 kernelo+\n   1078 rtkit     21   1  154004    252     32 S   0,0   0,0   0:01.21 rtkit-d+\n   1122 root      10 -10       0      0      0 S   0,0   0,0   0:00.00 krfcommd\n   1123 root      20   0  242240   2920   2448 S   0,0   0,1   0:02.15 upowerd\n   1134 root      20   0  164936   3276   3276 S   0,0   0,1   0:00.04 lightdm\n   1150 Sharing+  20   0   17484   4344   2844 S   0,0   0,1   0:00.74 systemd\n   1151 Sharing+  20   0  171504   1132      0 S   0,0   0,0   0:00.00 (sd-pam)\n   1158 Sharing+   9 -11   39296   2352   1768 S   0,0   0,1   0:00.05 pipewire\n   1159 Sharing+   9 -11 1160736   6564   4804 S   0,0   0,2   0:01.16 pulseau+\n   1162 Sharing+  20   0  388396   3344   2760 S   0,0   0,1   0:00.40 gnome-k+\n   1164 Sharing+  20   0    9420   3436   2272 S   0,0   0,1   0:03.73 dbus-da+\n   1167 Sharing+  20   0  376204   8020   6216 S   0,0   0,2   0:01.04 cinnamo+\n   1370 Sharing+  20   0  240660   4440   3824 S   0,0   0,1   0:00.18 gvfsd\n   1375 Sharing+  20   0  380900   2968   2840 S   0,0   0,1   0:00.04 gvfsd-f+\n   1378 Sharing+  20   0  309868   3916   3616 S   0,0   0,1   0:00.03 at-spi-+\n   1389 Sharing+  20   0    8696   2476   1996 S   0,0   0,1   0:00.66 dbus-da+\n   1392 Sharing+  20   0  162836   2596   2424 S   0,0   0,1   0:01.69 at-spi2+\n   1404 Sharing+  20   0  301096   5888   4988 S   0,0   0,2   0:00.38 csd-a11+\n   1405 Sharing+  20   0  534180   7476   6080 S   0,0   0,2   0:00.74 csd-pow+\n   1406 Sharing+  20   0  226952   6172   5160 S   0,0   0,2   0:00.42 csd-cli+\n   1408 Sharing+  20   0  375100   6236   5216 S   0,0   0,2   0:00.45 csd-aut+\n   1409 Sharing+  20   0  301380   6488   5324 S   0,0   0,2   0:00.48 csd-wac+\n   1410 Sharing+  20   0  302564   6408   5184 S   0,0   0,2   0:00.51 csd-xse+\n   1413 Sharing+  20   0  301088   6216   4940 S   0,0   0,2   0:03.33 csd-hou+\n   1420 Sharing+  20   0  300708   6268   5128 S   0,0   0,2   0:00.40 csd-scr+\n   1422 Sharing+  20   0  524028   6252   5232 S   0,0   0,2   0:00.44 csd-col+\n   1425 Sharing+  20   0  788432   8004   6320 S   0,0   0,2   0:00.61 csd-med+\n   1434 Sharing+  20   0  367784   6468   5468 S   0,0   0,2   0:00.54 csd-bac+\n   1439 Sharing+  20   0  309528   7104   6072 S   0,0   0,2   0:00.43 csd-pri+\n   1442 Sharing+  20   0  300916   9624   5828 S   0,0   0,3   0:02.39 csd-key+\n   1448 Sharing+  20   0  157092   3444   2848 S   0,0   0,1   0:00.43 dconf-s+\n   1450 Sharing+  20   0  316040   3900   2764 S   0,0   0,1   0:00.67 gvfs-ud+\n   1465 Sharing+  20   0  236476   3252   2860 S   0,0   0,1   0:00.06 gvfs-mt+\n   1479 Sharing+  20   0  237560   3400   2948 S   0,0   0,1   0:00.05 gvfs-gp+\n   1489 Sharing+  20   0  236644   3164   2804 S   0,0   0,1   0:00.04 gvfs-go+\n   1493 Sharing+  20   0  596496   4436   4436 S   0,0   0,1   0:00.19 goa-dae+\n   1498 Sharing+  20   0  342428   4144   4144 S   0,0   0,1   0:00.06 csd-pri+\n   1503 colord    20   0  245468   4016   3216 S   0,0   0,1   0:00.36 colord\n   1521 Sharing+  20   0  464756  10556   6700 S   0,0   0,3   0:08.37 cinnamo+\n   1537 Sharing+  20   0  338460   3496   3496 S   0,0   0,1   0:00.54 goa-ide+\n   1539 Sharing+  20   0  315228   3260   2804 S   0,0   0,1   0:04.59 gvfs-af+\n   1550 Sharing+  20   0 4110064  85100  37124 S   0,0   2,2  12:28.79 cinnamon\n   1598 Sharing+  20   0  462016  31724  24844 S   0,0   0,8   0:01.02 xapp-sn+\n   1612 Sharing+  20   0  310864   1848   1848 S   0,0   0,0   0:00.00 agent\n   1618 Sharing+  20   0  639788  12208   9136 S   0,0   0,3   0:04.95 nemo-de+\n   1619 Sharing+  20   0  759172   7244   6700 S   0,0   0,2   0:00.74 evoluti+\n   1622 Sharing+  20   0  547280  15536  12412 S   0,0   0,4   0:13.58 nm-appl+\n   1624 Sharing+  20   0  226752   5796   4928 S   0,0   0,2   0:00.30 polkit-+\n   1625 Sharing+  20   0  314192   5844   5476 S   0,0   0,2   0:00.54 cinnamo+\n   1678 Sharing+  20   0 1006780   5324   4272 S   0,0   0,1   0:00.20 evoluti+\n   1708 Sharing+  20   0   46960   2228   1828 S   0,0   0,1   0:00.01 obexd\n   1726 Sharing+  20   0  840612   4588   4212 S   0,0   0,1   0:00.27 evoluti+\n   1752 Sharing+  20   0  672388   4624   4128 S   0,0   0,1   0:00.14 evoluti+\n   1808 Sharing+  20   0  314748   3956   3364 S   0,0   0,1   0:00.11 gvfsd-t+\n   1822 Sharing+  20   0  163044   3436   2976 S   0,0   0,1   0:00.02 gvfsd-m+\n   1844 Sharing+  20   0  541432  25264  15900 S   0,0   0,7  11:06.00 gnome-t+\n   1869 Sharing+  20   0   11288   1364   1364 S   0,0   0,0   0:00.05 bash\n   1905 Sharing+  20   0   60152   5544   4424 S   0,0   0,1   0:02.90 applet.+\n   1907 root      20   0   16088   1516   1508 S   0,0   0,0   0:13.35 sudo\n   1908 root      20   0   16088      8      0 S   0,0   0,0   0:00.00 sudo\n   1909 root      20   0   14748   1696   1696 S   0,0   0,0   0:00.01 su\n   1910 root      20   0   14072   1440   1440 S   0,0   0,0   0:00.09 bash\n   3654 root      20   0   71,5g 922640  24932 S   0,0  24,0  17:10.13 opencod+\n  20262 root      20   0  298276   4736   4008 S   0,0   0,1   0:00.62 package+\n  33340 root      20   0    8312    908    904 S   0,0   0,0   0:00.00 dbus-la+\n  33341 root      20   0    8428   1960   1684 S   0,0   0,1   0:00.12 dbus-da+\n  33344 root      20   0  401576   4672   3820 S   0,0   0,1   0:00.26 xdg-des+\n  33349 root      20   0  462160   3020   2648 S   0,0   0,1   0:00.05 xdg-doc+\n  33353 root      20   0  236168   2360   2360 S   0,0   0,1   0:00.01 xdg-per+\n  33359 root      20   0    2796    492    492 S   0,0   0,0   0:00.00 fusermo+\n  33363 root      20   0  339752   7640   6224 S   0,0   0,2   0:00.44 xdg-des+\n  33367 root      20   0  240660   2880   2880 S   0,0   0,1   0:00.03 gvfsd\n  33373 root      20   0  380900   2316   2316 S   0,0   0,1   0:00.01 gvfsd-f+\n  33385 root      20   0  240776   2416   2228 S   0,0   0,1   0:00.03 gnome-k+\n  33399 root      20   0  156976   3228   2868 S   0,0   0,1   0:00.03 dconf-s+\n  35030 Sharing+  20   0  681340   6392   4976 S   0,0   0,2   0:00.45 xdg-des+\n  35040 Sharing+  20   0  463192   3256   2752 S   0,0   0,1   0:00.05 xdg-doc+\n  35044 Sharing+  20   0  236168   2760   2364 S   0,0   0,1   0:00.01 xdg-per+\n  35051 root      20   0    2796    512    452 S   0,0   0,0   0:00.00 fusermo+\n  35055 Sharing+  20   0  375668  10632   7320 S   0,0   0,3   0:00.39 xdg-des+\n  35071 Sharing+  20   0    2892    448    444 S   0,0   0,0   0:00.00 sh\n  35072 Sharing+  20   0  233292   3064   2740 S   0,0   0,1   0:00.02 pxgsett+\n  36438 root      20   0       0      0      0 I   0,0   0,0   0:14.44 kworker+\n  36590 Sharing+  20   0  315112   7604   6696 S   0,0   0,2   0:00.09 gvfsd-n+\n  36615 Sharing+  20   0  316840   7984   7016 S   0,0   0,2   0:00.06 gvfsd-d+\n  36953 root      20   0       0      0      0 I   0,0   0,0   0:05.55 kworker+\n  37474 root      20   0       0      0      0 I   0,0   0,0   0:01.61 kworker+\n  37751 root       0 -20       0      0      0 I   0,0   0,0   0:02.63 kworker+\n  37955 root      20   0       0      0      0 I   0,0   0,0   0:01.36 kworker+\n  39271 root      20   0       0      0      0 I   0,0   0,0   0:00.00 kworker+\n  39284 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kworker+\n  41474 Sharing+  20   0   11288   5288   3700 S   0,0   0,1   0:00.04 bash\n  41484 root      20   0   16092   6164   5120 S   0,0   0,2   0:00.25 sudo\n  41485 root      20   0   16092   1076      0 S   0,0   0,0   0:00.00 sudo\n  41486 root      20   0   14748   5660   4900 S   0,0   0,1   0:00.01 su\n  41487 root      20   0   14072   8276   3772 S   0,0   0,2   0:00.22 bash\n  42097 root      20   0       0      0      0 I   0,0   0,0   0:00.00 kworker+\n  42098 root      20   0       0      0      0 I   0,0   0,0   0:00.34 kworker+\n  42484 root       0 -20       0      0      0 I   0,0   0,0   0:00.06 kworker+\n  43007 root      20   0   47568  35448  10400 S   0,0   0,9   0:00.92 python3\n  43113 root      20   0    2892    988    896 S   0,0   0,0   0:00.00 sh\n               total        used        free      shared  buff/cache   available\nMem:           3,7Gi       2,4Gi       454Mi        57Mi       808Mi       950Mi\nSwap:          2,5Gi       2,0Gi       555Mi\nFilesystem      Size  Used Avail Use% Mounted on\ntmpfs           376M  1,6M  375M   1% /run\n/dev/sda7        98G   66G   28G  71% /\ntmpfs           1,9G     0  1,9G   0% /dev/shm\ntmpfs           5,0M  4,0K  5,0M   1% /run/lock\n/dev/sda2        96M   25M   72M  26% /boot/efi\ntmpfs           376M  124K  376M   1% /run/user/1001\n 15:38:50 up 10:12,  3 users,  load average: 0,63, 0,95, 1,04",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:38:50.654758",
+    "updated_at": "2026-01-19T15:38:50.654758",
+    "accessed_at": "2026-01-19T15:38:50.654758",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837483": {
+    "key": "chat_1768837483",
+    "data": {
+      "question": "verifie si le processus est termin\u00e9",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour v\u00e9rifier si un processus est termin\u00e9, il faut d'abord conna\u00eetre le PID (identifiant) ou le nom du processus. Peux-tu me fournir l'identifiant ou le nom du processus que tu souhaites v\u00e9rifier ?",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:44:43.159994",
+    "updated_at": "2026-01-19T15:44:43.159994",
+    "accessed_at": "2026-01-19T15:44:43.159994",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837552": {
+    "key": "chat_1768837552",
+    "data": {
+      "question": "celui que je t'ai demande de stopper tout a l'heure",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour bien comprendre, peux-tu pr\u00e9ciser ce que tu souhaites stopper exactement ?  \nS'agit-il d'un service, d'un processus, d'une connexion r\u00e9seau ou autre chose ?  \nCela m'aidera \u00e0 te proposer la commande ad\u00e9quate.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:45:52.634836",
+    "updated_at": "2026-01-19T15:45:52.634836",
+    "accessed_at": "2026-01-19T15:45:52.634836",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837715": {
+    "key": "chat_1768837715",
+    "data": {
+      "question": "verifie si le processus est termin\u00e9",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour v\u00e9rifier si un processus est termin\u00e9, il me faudrait le nom ou le PID (identifiant de processus) de ce processus.\n\nMerci de me fournir ces informations, ou si tu veux, je peux te proposer une commande pour rechercher un processus sp\u00e9cifique.",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:48:35.980448",
+    "updated_at": "2026-01-19T15:48:35.980448",
+    "accessed_at": "2026-01-19T15:48:35.980448",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837759": {
+    "key": "chat_1768837759",
+    "data": {
+      "question": "monitor le system",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Pour monitorer efficacement le syst\u00e8me, je vais te proposer une commande qui affiche en temps r\u00e9el les processus, l\u2019utilisation CPU, m\u00e9moire, et charge syst\u00e8me.\n\nEx\u00e9cute :\n\n`top`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u23f0 Timeout pour 'top'",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:49:19.439578",
+    "updated_at": "2026-01-19T15:49:19.439578",
+    "accessed_at": "2026-01-19T15:49:19.439578",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768837927": {
+    "key": "chat_1768837927",
+    "data": {
+      "question": "quelles sont toutes tes capacit\u00e9 ?exit",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - Je dispose d\u2019un large \u00e9ventail de capacit\u00e9s couvrant la cybers\u00e9curit\u00e9, l\u2019analyse r\u00e9seau, la gestion syst\u00e8me et l\u2019automatisation. Voici un r\u00e9sum\u00e9 de mes principales comp\u00e9tences :\n\n1. Analyse r\u00e9seau : scan de ports (nmap), capture et analyse de paquets (wireshark, tcpdump).\n2. Test d\u2019intrusion : injection SQL automatiques (sqlmap), brute force de mots de passe (hashcat).\n3. Gestion des fichiers : cr\u00e9ation, modification, suppression, d\u00e9placement, permission et propri\u00e9t\u00e9.\n4. Administration syst\u00e8me : gestion des services (systemctl), r\u00e8gles pare-feu (iptables), monitoring des processus (ps, top).\n5. Surveillance des logs : lecture et filtrage des journaux (journalctl, grep).\n6. Automatisation : scripts, gestion de t\u00e9l\u00e9chargements (wget, curl), SSH et transfert s\u00e9curis\u00e9 (ssh, scp).\n7. Actions sp\u00e9cifiques : lancement de navigateurs (`xdg-open`), ex\u00e9cution de commandes syst\u00e8mes.\n\nSi tu souhaites tester ou utiliser une fonction pr\u00e9cise, indique-le-moi, je fournirai la commande adapt\u00e9e.  \nConcernant ta mention \u00ab exit \u00bb, veux-tu que je termine la session ?\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Ex\u00e9cution annul\u00e9e par l'utilisateur",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:52:07.450395",
+    "updated_at": "2026-01-19T15:52:07.450395",
+    "accessed_at": "2026-01-19T15:52:07.450395",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
+  },
+  "chat_1768838179": {
+    "key": "chat_1768838179",
+    "data": {
+      "question": "pwd",
+      "response": "SharinganOS (cr\u00e9\u00e9 par Ben Sambe) - `/root`\n\n**R\u00c9SULTATS D'EX\u00c9CUTION:**\n\u274c Annul\u00e9 par utilisateur",
+      "type": "conversation"
+    },
+    "category": "conversation",
+    "priority": 3,
+    "created_at": "2026-01-19T15:56:19.601553",
+    "updated_at": "2026-01-19T15:56:19.601553",
+    "accessed_at": "2026-01-19T15:56:19.601553",
+    "access_count": 1,
+    "tags": [],
+    "source": "system",
+    "action": "keep",
+    "ttl_seconds": 86400,
+    "merged_from": []
   }
 }
